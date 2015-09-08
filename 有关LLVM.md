@@ -1,17 +1,61 @@
-﻿有关LLVM
+有关LLVM
 =====
 
-- 源码编译
+----------
 
-> git clone [http://llvm.org/git/llvm.git](http://llvm.org/git/llvm.git)
+- Linux下源码编译
 
-> cd llvm/tools
+	> $git clone [http://llvm.org/git/llvm.git](http://llvm.org/git/llvm.git)
+	
+	> $cd llvm/tools
+	
+	> $git clone [http://llvm.org/git/clang.git](http://llvm.org/git/clang.git)
+	
+	> $cd clang/tools
+	
+	> $git clone [http://llvm.org/git/clang-tools-extra.git](http://llvm.org/git/clang-tools-extra.git) extra
+	
+	> $cd ../../llvm/projects
+	
+	> $git clone [http://llvm.org/git/compiler-rt.git](http://llvm.org/git/compiler-rt.git)
 
-> git clone [http://llvm.org/git/clang.git](http://llvm.org/git/clang.git)
+	> $ git clone [http://llvm.org/git/llvm-project/test-suite.git](http://llvm.org/git/llvm-project/test-suite.git)   #测试套，可选
 
-> cd llvm/projects
+	> $cd ../llvm/tools
+	
+	> $git clone http://llvm.org/git/llvm-project/lldb.git #低级别调试器，可选
+	
+	> $mkdir where-you-want-to-install	#安装目录
+	
+	> $mkdir where-you-want-to-build		#编译目录
+	
+	> $cd where-you-want-to-build
+	
+	> $/PATH_TO_SOURCE/configure --disable-optimized --prefix=../where-youwant-to-install  #--enable-optimized(off),--enable-assertions(on),--enable-shared(off),--enable-jit(on),--enable-targets(all)
+	
+	> $make && make install				#开始编译
+	
+	> $echo $?    #返回0.表明编译成功
+	
+	> $export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
+	
+	> $clang –v
 
-> git clone [http://llvm.org/git/compiler-rt.git](http://llvm.org/git/compiler-rt.git) #侦测工具
+- Windows下源码编译
+	> 下载源码，同上
+
+	> 下载[cmake-3.3.1-win32-x86.exe](http://www.cmake.org/files/v3.3/cmake-3.3.1-win32-x86.exe)，安装cmake
+
+	> 打开cmake GUI， ADD Entry。 CMAKE_INSTALL_PREFIX等同于--prefix；LLVM_TARGETS_
+TO_BUILD("ARM;Mips;X86")等同于--enable-targets
+
+----------
+
+- Mac OS X下源码编译
+	> 比windows,cmake多一个变量LLVM\_ENABLE\_PIC
+
+----------
+
 
 - Clang
 	- 多语言前端（multiple language front-ends）
@@ -21,6 +65,13 @@
 	- 抽象语法树（AST）
 	- 选项
 		- -fsanitize=address
+	- extras工具
+		- Clang Check：语法检查，输出AST
+		- Clang Format: 代码格式化
+		- Clang Modernizer: C++11风格
+		- Clang Tidy: Google代码风格检查
+		- Modularize: 模块化
+		- PPTrace: C++预编译跟踪 
 	- 流程分析
 		- ParseTopLevelDecl
 			- ParseExternalDeclaration
@@ -60,6 +111,9 @@
 													
 		- **代码生成，**HandleTopLevelDecl
 		
+
+
+----------
 									
 - LLVM
 	- bytecode
