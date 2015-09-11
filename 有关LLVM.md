@@ -66,6 +66,7 @@ TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 	- 选项
 		- -###	编译详细信息
 		- -fsanitize=address
+	- 用例
 		- ..\clang.exe  "-cc1" "-triple" "i686-pc-windows-msvc" "-emit-obj" "-mrelax-all" "-disable-free" "-main-file-name" "hello.c" "-mrelocation-model" "static" "-mthread-model" "posix" "-mdisable-fp-elim" "-relaxed-aliasing" "-fmath-errno" "-masm-verbose" "-mconstructor-aliases" "-target-cpu" "pentium4" "-D_MT" "--dependent-lib=libcmt" "--dependent-lib=oldnames" "-fdiagnostics-format" "msvc" "-dwarf-column-info" "-resource-dir" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0" "-internal-isystem" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0\\include" "-internal-isystem" "D:\\Microsoft Visual Studio 12.0\\VC\\include" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\shared" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\um" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\winrt" "-fdebug-compilation-dir" "D:\\LLVM\\bin\\test" "-ferror-limit" "19" "-mstackrealign" "-fms-extensions" "-fms-compatibility" "-fms-compatibility-version=17.00" "-fdelayed-template-parsing" "-fcolor-diagnostics" "-o" "C:\\Users\\mac\\AppData\\Local\\Temp\\hello-b2de2c.obj" "-x" "c" "hello.c" "-S" "-emit-llvm-bc" "-o" "hello.BC"
 	- extras工具
 		- Clang Check：语法检查，输出AST
@@ -75,42 +76,57 @@ TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 		- Modularize: 模块化
 		- PPTrace: C++预编译跟踪 
 	- 流程分析
-		- ParseTopLevelDecl
-			- ParseExternalDeclaration
-			    - ParseDeclaration
-			    	- 获取token类型
-				    	- **case 模板、导出：**
-				    		- ParseDeclarationStartingWithTemplate
-				    	- **case 内联：**
-				    		- ParseSimpleDeclaration
-				    	- **case 名字空间：**
-				    		- ParseNamespace
-				    	- **case using：**
-				    		- ParseUsingDirectiveOrDeclaration
-				    	- **case assert：**
-				    		- ParseStaticAssertDeclaration
-						- **case 其他：**
-				    		- ParseSimpleDeclaration
-					- ConvertDeclToDeclGroup			    		
-			    		
-				- **case 未知：** ParseDeclarationOrFunctionDefinition
-					- ParseDeclOrFunctionDefInternal
-						- ParseDeclGroup			
-							- ActOnDeclarator
-								- HandleDeclarator
-									- or ActOnTypedefDeclarator
-									- or ActOnFunctionDeclarator
-									- or ActOnVariableDeclarator
-							- **函数定义**ParseFunctionDefinition
-								- ParseFunctionDefinition
-									- ParseCompoundStatementBody
-										- ParseStatementOrDeclaration
-											- ParseStatementOrDeclarationAfterAttributes
-												- **case if语句**
-													- ParseIfStatement
-												- **case 其他语句**
-													- Pasese_XX_Statement
-													
+
+        ```
+        graph TD
+        A(main) --> B(cc1_main)
+        A[main] --> C
+        ```
+
+		- 词法分析
+			- class Sema
+			- class Parser
+				- Preprocessor &PP
+				- Token Tok
+			- class Preprocessor
+				- Lex() 
+		- 语法分析
+			- ParseTopLevelDecl
+				- ParseExternalDeclaration
+				    - ParseDeclaration
+				    	- 获取token类型
+					    	- **case 模板、导出：**
+					    		- ParseDeclarationStartingWithTemplate
+					    	- **case 内联：**
+					    		- ParseSimpleDeclaration
+					    	- **case 名字空间：**
+					    		- ParseNamespace
+					    	- **case using：**
+					    		- ParseUsingDirectiveOrDeclaration
+					    	- **case assert：**
+					    		- ParseStaticAssertDeclaration
+							- **case 其他：**
+					    		- ParseSimpleDeclaration
+						- ConvertDeclToDeclGroup			    		
+				    		
+					- **case 未知：** ParseDeclarationOrFunctionDefinition
+						- ParseDeclOrFunctionDefInternal
+							- ParseDeclGroup			
+								- ActOnDeclarator
+									- HandleDeclarator
+										- or ActOnTypedefDeclarator
+										- or ActOnFunctionDeclarator
+										- or ActOnVariableDeclarator
+								- **函数定义**ParseFunctionDefinition
+									- ParseFunctionDefinition
+										- ParseCompoundStatementBody
+											- ParseStatementOrDeclaration
+												- ParseStatementOrDeclarationAfterAttributes
+													- **case if语句**
+														- ParseIfStatement
+													- **case 其他语句**
+														- Pasese_XX_Statement
+														
 		- **代码生成，**HandleTopLevelDecl
 		
 
