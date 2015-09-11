@@ -63,8 +63,12 @@ TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 	- 虚拟指令集（virtual instruction set）
 		- 虚拟寄存器Static Single Assignment（SSA）
 	- 抽象语法树（AST）
-	- 选项
-		- -###	编译详细信息
+	- 选项（Options.td定义）
+		- -###	打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
+		- -ccc-print-phases 打印clang driver Pipeline阶段信息
+		- -ccc-print-bindings 打印clang driver Bind阶段各工具链及输入输出文件
+		- --driver-mode=cl 等同于clang-cl，兼容VC
+		- emit-llvm 生成.ll中间语言文件
 		- -fsanitize=address
 	- 用例
 		- ..\clang.exe  "-cc1" "-triple" "i686-pc-windows-msvc" "-emit-obj" "-mrelax-all" "-disable-free" "-main-file-name" "hello.c" "-mrelocation-model" "static" "-mthread-model" "posix" "-mdisable-fp-elim" "-relaxed-aliasing" "-fmath-errno" "-masm-verbose" "-mconstructor-aliases" "-target-cpu" "pentium4" "-D_MT" "--dependent-lib=libcmt" "--dependent-lib=oldnames" "-fdiagnostics-format" "msvc" "-dwarf-column-info" "-resource-dir" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0" "-internal-isystem" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0\\include" "-internal-isystem" "D:\\Microsoft Visual Studio 12.0\\VC\\include" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\shared" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\um" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\winrt" "-fdebug-compilation-dir" "D:\\LLVM\\bin\\test" "-ferror-limit" "19" "-mstackrealign" "-fms-extensions" "-fms-compatibility" "-fms-compatibility-version=17.00" "-fdelayed-template-parsing" "-fcolor-diagnostics" "-o" "C:\\Users\\mac\\AppData\\Local\\Temp\\hello-b2de2c.obj" "-x" "c" "hello.c" "-S" "-emit-llvm-bc" "-o" "hello.BC"
@@ -88,7 +92,7 @@ TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 			- class Parser
 				- Preprocessor &PP
 				- Token Tok
-			- class Preprocessor
+			- class Preprocessor词法分析和预处理
 				- Lex() 
 		- 语法分析
 			- ParseTopLevelDecl
