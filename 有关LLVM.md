@@ -42,9 +42,9 @@
 
 - **The Clang “Basic” Library**
 	
-		这个“基本”库包含了跟踪和操作代码缓存，源码缓存区中的定位，诊断，序列，目标抽取，和被编译的编程语言的子集的相关信息这一系列的底层公共操作。这个库的一
-		部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语言重用（SourceLocation, SourceManager, Diagnostics,
-		FileManager）。
+		这个“基本”库包含了跟踪和操作代码缓存，源码缓存区中的定位，诊断，序列，目标抽取，和被编译的编程语言的子集的相关信息这
+        一系列的底层公共操作。这个库的一部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语言
+		重用（SourceLocation, SourceManager, Diagnostics, FileManager）。
 
 - **诊断字系统（Diagnostics）**
 	- **Diagnostic、DiagnosticConsumer类**
@@ -75,7 +75,8 @@
 		- DeclContext类
 		- CFG类
 		
-					源码级控制流图，专用于语句(Stmt\*),通常用于函数体CompoundStmt，通过查找“: public Stmt”可以找到所有的子类语句*
+					源码级控制流图，专用于语句(Stmt\*),通常用于函数体CompoundStmt，通过查找“: public Stmt”可以找到所有
+					的子类语句
 
 			- 基本块 
 			
