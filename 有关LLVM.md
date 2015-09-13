@@ -43,8 +43,8 @@
 - **The Clang “Basic” Library**
 	
 		这个“基本”库包含了跟踪和操作代码缓存，源码缓存区中的定位，诊断，序列，目标抽取，和被编译的编程语言的子集的相关信息这
-        一系列的底层公共操作。这个库的一部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语言
-		重用（SourceLocation, SourceManager, Diagnostics, FileManager）。
+        一系列的底层公共操作。这个库的一部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语
+		言重用（SourceLocation, SourceManager, Diagnostics, FileManager）。
 
 - **诊断字系统（Diagnostics）**
 	- **Diagnostic、DiagnosticConsumer类**
