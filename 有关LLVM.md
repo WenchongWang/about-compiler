@@ -33,6 +33,10 @@
 
 
 ##二、Clang
+	clang分三个实体概念：
+		clang编译器：由clang库实现
+		clang驱动：clang
+		clang前端：clang -cc1 或者 -Xclang，入口为cc1_main
 
 ###1、Clang由各个库组成的逻辑结构，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
 
@@ -47,6 +51,9 @@
 		言重用（SourceLocation, SourceManager, Diagnostics, FileManager）。
 
 - **诊断字系统（Diagnostics）**
+
+		DiagnosticParseKinds.td
+
 	- **Diagnostic、DiagnosticConsumer类**
 		- SourceLocation、SourceManager类
 		- SourceManager类用于加载和缓存源代码
@@ -81,9 +88,10 @@
 			- 基本块 
 			
 					是一个只能从它的第一条指令进入，并从最后一条指令离开的最长的指令序列。
+					基本块第一条指令（首领leader）：1、程序的入口点 2、分支的目标 3、分支下条指令
 
 				- CFGBlock
-			- 进入和出去块
+			- 入口(entry)和出口节点(exit)
 				- null
 			- 条件控制流
 				- null   
@@ -173,19 +181,18 @@
 	- **代码生成，**HandleTopLevelDecl
 	
 
-
-----------
 									
-- LLVM
-	- bytecode
-	- Three-address code
-		- 算术操作arithmetic
-		- 逻辑操作logical
-	- Run-time optimization
-	- Just-In-Time (JIT)
-	- Multi-stage Optimization
-	- native code
-	
+##三、LLVM
+
+- bytecode
+- Three-address code
+	- 算术操作arithmetic
+	- 逻辑操作logical
+- Run-time optimization
+- Just-In-Time (JIT)
+- Multi-stage Optimization
+- native code
+
 - Run Time
    - Profile
    		- 热点函数（hot functions）
