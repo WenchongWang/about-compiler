@@ -34,9 +34,9 @@
 
 ##二、Clang
 	clang分三个实体概念：
-		clang编译器：由clang库实现
+		clang前端：由clang库实现
 		clang驱动：clang
-		clang前端：clang -cc1 或者 -Xclang，入口为cc1_main
+		clang编译器：clang -cc1 或者 -Xclang，入口为cc1_main
 
 ###1、Clang由各个库组成的逻辑结构，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
 
