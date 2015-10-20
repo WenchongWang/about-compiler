@@ -125,14 +125,39 @@
 	- Clang Tidy: Google代码风格检查
 	- Modularize: 模块化
 	- PPTrace: C++预编译跟踪 
-- 
+
 - 流程分析
 
-    ```
-    graph TD
-    A(main) --> B(cc1_main)
-    A[main] --> C
-    ```
+    - cc1_main
+	
+		> 创建编译器对象Clang（CompilerInstance）
+		>
+		> 解析参数CompilerInvocation::CreateFromArgs
+		> 
+		> 创建诊断对象Clang->createDiagnostics()
+		> 
+		> 执行前端action，ExecuteCompilerInvocation↓
+	    
+		- 加载插件LoadLibraryPermanently
+		- 创建action，CreateFrontendAction
+			- 调用CreateFrontendBaseAction
+				- **编译宏CLANG_ENABLE_STATIC_ANALYZER，同时参数为RunAnalysis**: 创建静态分析Action（AnalysisAction）并返回
+		- 执行action，Clang->ExecuteAction，传入ACT（AnalysisAction）
+			> Act.BeginSourceFile（FrontendAction::BeginSourceFile）
+			- 创建具体的Consumer并插入到Consumers（AnalysisConsumer只是其中之一），CI.setASTConsumer(CreateWrappedASTConsumer(CI, InputFile));
+			- 创建ASTConsumer对象
+
+			> action真正执行，Act.Execute()
+			- 调用ExecuteAction
+				- 编译器对象创建源代码Consumer，通过createCodeCompletionConsumer函数
+				- 编译器对象使用源代码Consumer，来创建语义对象（Sema）
+				- ParseAST
+					- 语法分析（词法分析）ParseTopLevelDecl
+					- HandleTopLevelDecl（由具体ASTConsumer子类对象决定，如果是CodeGenerator就生成二进制文件）
+			 
+			> Act.EndSourceFile（FrontendAction::EndSourceFile）
+			- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
+			- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 
 	- 词法分析
 		- class Sema
