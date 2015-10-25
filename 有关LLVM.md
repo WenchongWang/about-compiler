@@ -34,11 +34,11 @@
 
 ##二、Clang
 	clang分三个实体概念：
-		clang前端：由clang库实现
-		clang驱动：clang
-		clang编译器：clang -cc1 或者 -Xclang，入口为cc1_main
+		clang驱动：利用现有OS、编译环境以及参数选项来驱动整个编译过程的工具。
+		clang编译器：利用clang前端组件及库打造的编译器，其入口为cc1_main; 参数为clang -cc1 或者 -Xclang；
+        clang前端组件及库：包括Support、Basic、Diagnostics、Preprocessor、Lexer、Sema、CodeGen等；
 
-###1、Clang由各个库组成的逻辑结构，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
+###1、clang前端组件及库，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
 
 - **LLVM Support Library**
 
@@ -103,19 +103,134 @@
 
 		输入AST输出LLVM IR
 
-- 多语言前端（multiple language front-ends）
-- 语言级别静态优化（Static Optimizer）
-- 虚拟指令集（virtual instruction set）
-	- 虚拟寄存器Static Single Assignment（SSA）
-- 抽象语法树（AST）
-- 选项（Options.td定义）
+###2、clang编译器
+####21、编译器选项
+####22、流程分析
+- 入口cc1_main
+
+	> 创建编译器对象Clang（CompilerInstance）
+	>
+	> 解析选项Clang->CreateFromArgs
+	- 解析静态分析相关参数选项ParseAnalyzerArgs，例如-analyze
+	- ParseFrontendArgs
+	- ...
+	> 创建诊断对象Clang->createDiagnostics()
+	> 
+	> 执行前端action，ExecuteCompilerInvocation↓
+    
+	- 创建action，CreateFrontendAction
+		- 调用CreateFrontendBaseAction
+			- **编译宏CLANG_ENABLE_STATIC_ANALYZER，同时参数为RunAnalysis: 创建静态分析Action（AnalysisAction）并返回**
+	- 执行action，Clang->ExecuteAction，传入ACT（AnalysisAction）
+		> Act.BeginSourceFile（FrontendAction::BeginSourceFile）
+		- 创建具体的Consumer并插入到Consumers（AnalysisConsumer只是其中之一），CI.setASTConsumer(CreateWrappedASTConsumer(CI, InputFile));
+		- 创建ASTConsumer对象
+
+		> action真正执行，Act.Execute()
+		- 调用ExecuteAction
+			- 编译器对象创建源代码Consumer，通过createCodeCompletionConsumer函数
+			- 编译器对象使用源代码Consumer，来创建语义对象（Sema）
+			- ParseAST
+				- 语法分析（词法分析）ParseTopLevelDecl
+				- HandleTopLevelDecl（由具体ASTConsumer子类对象决定，如果是CodeGenerator就生成二进制文件）
+		 
+		> Act.EndSourceFile（FrontendAction::EndSourceFile）
+		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
+		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
+
+- 词法分析
+	- class Sema
+	- class Parser
+		- Preprocessor &PP
+		- Token Tok
+	- class Preprocessor词法分析和预处理
+		- Lex() 
+- 语法分析
+	- ParseTopLevelDecl
+		- ParseExternalDeclaration
+		    - ParseDeclaration
+		    	- 获取token类型
+			    	- **case 模板、导出：**
+			    		- ParseDeclarationStartingWithTemplate
+			    	- **case 内联：**
+			    		- ParseSimpleDeclaration
+			    	- **case 名字空间：**
+			    		- ParseNamespace
+			    	- **case using：**
+			    		- ParseUsingDirectiveOrDeclaration
+			    	- **case assert：**
+			    		- ParseStaticAssertDeclaration
+					- **case 其他：**
+			    		- ParseSimpleDeclaration
+				- ConvertDeclToDeclGroup			    		
+		    		
+			- **case 未知：** ParseDeclarationOrFunctionDefinition
+				- ParseDeclOrFunctionDefInternal
+					- ParseDeclGroup			
+						- ActOnDeclarator
+							- HandleDeclarator
+								- or ActOnTypedefDeclarator
+								- or ActOnFunctionDeclarator
+								- or ActOnVariableDeclarator
+						- **函数定义**ParseFunctionDefinition
+							- ParseFunctionDefinition
+								- ParseCompoundStatementBody
+									- ParseStatementOrDeclaration
+										- ParseStatementOrDeclarationAfterAttributes
+											- **case if语句**
+												- ParseIfStatement
+											- **case 其他语句**
+												- Pasese_XX_Statement
+												
+- **代码生成，**HandleTopLevelDecl
+
+####23、静态分析Clang Static Analyzer
+
+
+###3、clang驱动
+####31、 驱动选项（Options.td定义）
 	- -###	打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
 	- -ccc-print-phases 打印clang driver Pipeline阶段信息
 	- -ccc-print-bindings 打印clang driver Bind阶段各工具链及输入输出文件
 	- --driver-mode=cl 等同于clang-cl，兼容VC
 	- emit-llvm 生成.ll中间语言文件
 	- -fsanitize=address
-	- -fsyntax-only 语法检查
+####32、流程分析
+	1、解析参数选项
+	2.1、如果有-cc1，走clang编译器流程
+	2.2、创建Driver对象，闯入Triple（编译clang时已指定）
+	3、llvm初始化平台
+	4、获取环境变量，如CC_PRINT_OPTIONS
+	5、Driver.BuildCompilation，返回编译器对象
+		⑴ 根据Triple，创建工具链对象，例如toolchains::Windows★
+		⑵ 创建编译器对象C（Compilation）
+		Driver.BuildActions构建JobAction
+			⑶ getFinalPhase，根据参数选项，获取编译最终阶段FinaPhases
+			⑷ getCompilationPhases，分析所需的阶段放入PL中
+			for_each遍历PL
+				⑸ ConstructPhaseAction，根据不同阶段创建不同的JobAction并放入Actions,例如预处理阶段，创建PreprocessJobAction; phases::Link不在这里处理
+				
+			⑹ 如果LinkerInputs不为空，按需创建LinkJobAction放入Actions
+		Driver.BuildJobs构建任务
+			⑺ BuildJobsForAction
+				BuildJobsForAction
+					TC->SelectTool
+					√ clang::Constructjob，创建clang编译器的大量参数选项★
+					√ visualstudio::Link::Constructjob，Link的参数选项★
+			
+	6、Driver.ExecuteCompilation，编译器对象执行任务
+		Compilation::ExecuteJob
+			ExecuteCommand★
+				创建子进程执行命令，例如clang -cc1 xxxx; link.exe xxxx★
+	7、Driver.generateCompilationDiagnostics,产生诊断信息
+	8、llvm::llvm_shutdown()
+        
+####33、其他
+- 多语言前端（multiple language front-ends）
+- 语言级别静态优化（Static Optimizer）
+- 虚拟指令集（virtual instruction set）
+	- 虚拟寄存器Static Single Assignment（SSA）
+- 抽象语法树（AST）
 - 用例
 	- ..\clang.exe  "-cc1" "-triple" "i686-pc-windows-msvc" "-emit-obj" "-mrelax-all" "-disable-free" "-main-file-name" "hello.c" "-mrelocation-model" "static" "-mthread-model" "posix" "-mdisable-fp-elim" "-relaxed-aliasing" "-fmath-errno" "-masm-verbose" "-mconstructor-aliases" "-target-cpu" "pentium4" "-D_MT" "--dependent-lib=libcmt" "--dependent-lib=oldnames" "-fdiagnostics-format" "msvc" "-dwarf-column-info" "-resource-dir" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0" "-internal-isystem" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0\\include" "-internal-isystem" "D:\\Microsoft Visual Studio 12.0\\VC\\include" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\shared" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\um" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\winrt" "-fdebug-compilation-dir" "D:\\LLVM\\bin\\test" "-ferror-limit" "19" "-mstackrealign" "-fms-extensions" "-fms-compatibility" "-fms-compatibility-version=17.00" "-fdelayed-template-parsing" "-fcolor-diagnostics" "-o" "C:\\Users\\mac\\AppData\\Local\\Temp\\hello-b2de2c.obj" "-x" "c" "hello.c" "-S" "-emit-llvm-bc" "-o" "hello.BC"
 - extras工具
@@ -127,84 +242,6 @@
 	- PPTrace: C++预编译跟踪 
 
 - 流程分析
-
-    - cc1_main
-	
-		> 创建编译器对象Clang（CompilerInstance）
-		>
-		> 解析参数CompilerInvocation::CreateFromArgs
-		> 
-		> 创建诊断对象Clang->createDiagnostics()
-		> 
-		> 执行前端action，ExecuteCompilerInvocation↓
-	    
-		- 加载插件LoadLibraryPermanently
-		- 创建action，CreateFrontendAction
-			- 调用CreateFrontendBaseAction
-				- **编译宏CLANG_ENABLE_STATIC_ANALYZER，同时参数为RunAnalysis**: 创建静态分析Action（AnalysisAction）并返回
-		- 执行action，Clang->ExecuteAction，传入ACT（AnalysisAction）
-			> Act.BeginSourceFile（FrontendAction::BeginSourceFile）
-			- 创建具体的Consumer并插入到Consumers（AnalysisConsumer只是其中之一），CI.setASTConsumer(CreateWrappedASTConsumer(CI, InputFile));
-			- 创建ASTConsumer对象
-
-			> action真正执行，Act.Execute()
-			- 调用ExecuteAction
-				- 编译器对象创建源代码Consumer，通过createCodeCompletionConsumer函数
-				- 编译器对象使用源代码Consumer，来创建语义对象（Sema）
-				- ParseAST
-					- 语法分析（词法分析）ParseTopLevelDecl
-					- HandleTopLevelDecl（由具体ASTConsumer子类对象决定，如果是CodeGenerator就生成二进制文件）
-			 
-			> Act.EndSourceFile（FrontendAction::EndSourceFile）
-			- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
-			- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
-
-	- 词法分析
-		- class Sema
-		- class Parser
-			- Preprocessor &PP
-			- Token Tok
-		- class Preprocessor词法分析和预处理
-			- Lex() 
-	- 语法分析
-		- ParseTopLevelDecl
-			- ParseExternalDeclaration
-			    - ParseDeclaration
-			    	- 获取token类型
-				    	- **case 模板、导出：**
-				    		- ParseDeclarationStartingWithTemplate
-				    	- **case 内联：**
-				    		- ParseSimpleDeclaration
-				    	- **case 名字空间：**
-				    		- ParseNamespace
-				    	- **case using：**
-				    		- ParseUsingDirectiveOrDeclaration
-				    	- **case assert：**
-				    		- ParseStaticAssertDeclaration
-						- **case 其他：**
-				    		- ParseSimpleDeclaration
-					- ConvertDeclToDeclGroup			    		
-			    		
-				- **case 未知：** ParseDeclarationOrFunctionDefinition
-					- ParseDeclOrFunctionDefInternal
-						- ParseDeclGroup			
-							- ActOnDeclarator
-								- HandleDeclarator
-									- or ActOnTypedefDeclarator
-									- or ActOnFunctionDeclarator
-									- or ActOnVariableDeclarator
-							- **函数定义**ParseFunctionDefinition
-								- ParseFunctionDefinition
-									- ParseCompoundStatementBody
-										- ParseStatementOrDeclaration
-											- ParseStatementOrDeclarationAfterAttributes
-												- **case if语句**
-													- ParseIfStatement
-												- **case 其他语句**
-													- Pasese_XX_Statement
-													
-	- **代码生成，**HandleTopLevelDecl
-	
 
 									
 ##三、LLVM
