@@ -104,8 +104,10 @@
 		输入AST输出LLVM IR
 
 ###2、clang编译器
-####21、编译器选项
-####22、流程分析
+####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）
+####22、架构图
+![clang编译器](clang编译器.gif)
+####23、流程分析
 - 入口cc1_main
 
 	> 创建编译器对象Clang（CompilerInstance）
@@ -188,7 +190,7 @@
 
 
 ###3、clang驱动
-####31、 驱动选项（Options.td定义）
+####31、 驱动选项（clang -help，Options.td定义）
 	- -###	打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
 	- -ccc-print-phases 打印clang driver Pipeline阶段信息
 	- -ccc-print-bindings 打印clang driver Bind阶段各工具链及输入输出文件
@@ -198,7 +200,7 @@
 ####32、流程分析
 	1、解析参数选项
 	2.1、如果有-cc1，走clang编译器流程
-	2.2、创建Driver对象，闯入Triple（编译clang时已指定）
+	2.2、创建Driver对象，传入Triple（编译clang时已指定）
 	3、llvm初始化平台
 	4、获取环境变量，如CC_PRINT_OPTIONS
 	5、Driver.BuildCompilation，返回编译器对象
