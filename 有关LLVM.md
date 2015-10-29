@@ -105,8 +105,42 @@
 
 ###2、clang编译器
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）
+	一、常用选项
 ####22、架构图
 ![clang编译器](clang编译器.gif)
+#####221、预处理
+	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
+ 	1、文件包含，例如：#include
+	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
+	3、布局控制，例如：#progma
+	4、宏替换，例如：#define
+	
+	二、预编译
+
+	三、Preprocessor类，包含
+		DiagnosticsEngine诊断引擎
+		LangOptions编译选项
+		TargetInfo存储目标信息
+		FileManager文件管理器
+		SourceManager源码管理器
+		ModuleLoader module加载器
+
+#####222、词法分析
+	一、Token类型
+		- CXToken_Punctuation，标点符号
+		- CXToken_Keyword，关键字
+		- CXToken_Identifier，标识符
+		- CXToken_Literal，数字、字符、字符串
+		- CXToken_Comment，注释
+
+	二、TokenKinds.def，关键字定义	 
+
+	三、class列表
+		- PreprocessorLexer
+		- Lexer
+			- ::ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
+#####223、语法分析
+#####224、编译
 ####23、流程分析
 - 入口cc1_main
 
@@ -141,12 +175,7 @@
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 
 - 词法分析
-	- class Sema
-	- class Parser
-		- Preprocessor &PP
-		- Token Tok
-	- class Preprocessor词法分析和预处理
-		- Lex() 
+
 - 语法分析
 	- ParseTopLevelDecl
 		- ParseExternalDeclaration
@@ -197,7 +226,8 @@
 	- --driver-mode=cl 等同于clang-cl，兼容VC
 	- emit-llvm 生成.ll中间语言文件
 	- -fsanitize=address
-####32、流程分析
+####32、架构图
+####33、流程分析
 	1、解析参数选项
 	2.1、如果有-cc1，走clang编译器流程
 	2.2、创建Driver对象，传入Triple（编译clang时已指定）
@@ -234,7 +264,6 @@
 	- 虚拟寄存器Static Single Assignment（SSA）
 - 抽象语法树（AST）
 - 用例
-	- ..\clang.exe  "-cc1" "-triple" "i686-pc-windows-msvc" "-emit-obj" "-mrelax-all" "-disable-free" "-main-file-name" "hello.c" "-mrelocation-model" "static" "-mthread-model" "posix" "-mdisable-fp-elim" "-relaxed-aliasing" "-fmath-errno" "-masm-verbose" "-mconstructor-aliases" "-target-cpu" "pentium4" "-D_MT" "--dependent-lib=libcmt" "--dependent-lib=oldnames" "-fdiagnostics-format" "msvc" "-dwarf-column-info" "-resource-dir" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0" "-internal-isystem" "D:\\LLVM\\bin\\..\\lib\\clang\\3.6.0\\include" "-internal-isystem" "D:\\Microsoft Visual Studio 12.0\\VC\\include" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\shared" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\um" "-internal-isystem" "C:\\Program Files (x86)\\Windows Kits\\8.1\\include\\winrt" "-fdebug-compilation-dir" "D:\\LLVM\\bin\\test" "-ferror-limit" "19" "-mstackrealign" "-fms-extensions" "-fms-compatibility" "-fms-compatibility-version=17.00" "-fdelayed-template-parsing" "-fcolor-diagnostics" "-o" "C:\\Users\\mac\\AppData\\Local\\Temp\\hello-b2de2c.obj" "-x" "c" "hello.c" "-S" "-emit-llvm-bc" "-o" "hello.BC"
 - extras工具
 	- Clang Check：语法检查，输出AST
 	- Clang Format: 代码格式化
@@ -265,7 +294,12 @@
    - Reoptimization
    		- offline reoptimizer
 
-
-- 类索引
-	- FileEntry类，文件
-	- Token类，标记
+- examples例子
+	- BrainF
+	- ExceptionDemo
+	- Fibonacci
+	- HowToUseJIT
+	- ModuleMaker
+	- Kaleidoscope，展示了如何在LLVM之上构建一个支持一门自己定义的编程语言的编译器
+	- OCaml-Kaleidoscope
+	- ParallelJIT
