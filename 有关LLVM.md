@@ -104,8 +104,7 @@
 		输入AST输出LLVM IR
 
 ###2、clang编译器
-####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）
-	一、常用选项
+####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
 ####22、架构图
 ![clang编译器](clang编译器.gif)
 #####221、预处理
@@ -128,7 +127,7 @@
 #####222、词法分析
 	一、Token类型
 		- CXToken_Punctuation，标点符号
-		- CXToken_Keyword，关键字
+		- CXToken_Keyword，关键字或保留字
 		- CXToken_Identifier，标识符
 		- CXToken_Literal，数字、字符、字符串
 		- CXToken_Comment，注释
@@ -220,12 +219,50 @@
 
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
-	- -###	打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
-	- -ccc-print-phases 打印clang driver Pipeline阶段信息
-	- -ccc-print-bindings 打印clang driver Bind阶段各工具链及输入输出文件
-	- --driver-mode=cl 等同于clang-cl，兼容VC
-	- emit-llvm 生成.ll中间语言文件
-	- -fsanitize=address
+- -cc1，clang编译器
+
+- -###，打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
+
+- -ccc-print-phases，打印clang driver Pipeline阶段信息
+
+![ccc-print-phases](clang_example/ccc-print-phases.PNG)
+
+- -ccc-print-bindings，打印clang driver Bind阶段各工具链及输入输出文件
+
+![ccc-print-bindings](clang_example/ccc-print-bindings.PNG)
+
+- -Ｅ，预处理
+
+![preprocessor](clang_example/preprocessor.PNG)
+
+- -Ｓ，预处理～汇编
+
+![assembler](clang_example/assembler.PNG)
+
+- -c，预处理～生成obj
+
+![object](clang_example/object.PNG)
+
+- -fcolor-diagnostics，诊断色彩
+
+![fcolor-diagnostics](clang_example/fcolor-diagnostics.PNG)
+
+- -driver-mode=cl，等同于clang-cl，兼容VC
+
+- emit-llvm，生成.ll中间语言文件
+
+- -fsanitize=address
+
+- -Wpadded
+
+- -fpack-struct=1 or n，压缩
+
+![pack-struct.PNG](clang_example/pack-struct.PNG)
+
+- -Wunused-variable，未初始化
+
+![unused-variable](clang_example/unused-variable.PNG)
+
 ####32、架构图
 ####33、流程分析
 	1、解析参数选项
