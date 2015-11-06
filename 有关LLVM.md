@@ -104,7 +104,7 @@
 
 ###2、clang编译器
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
-选项  | 说明 | Action子类 | Consumer子类 | 备注
+   选项     | 说明 | Action子类 | Consumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
