@@ -31,7 +31,6 @@
 	比windows,cmake多一个变量LLVM_ENABLE_PIC
 
 
-
 ##二、Clang
 	clang分三个实体概念：
 		clang驱动：利用现有OS、编译环境以及参数选项来驱动整个编译过程的工具。
@@ -105,6 +104,10 @@
 
 ###2、clang编译器
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
+分组  | 具体 | |
+------------- | ------------- | -------------
+AST相关 | -ast-* |
+
 ####22、架构图
 ![clang编译器](clang编译器.gif)
 
