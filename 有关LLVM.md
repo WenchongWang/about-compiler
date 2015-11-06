@@ -109,7 +109,9 @@
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
--emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
+-dump-tokens | 打印token | DumpTokensAction | ASTViewer | ![-dump-tokens](clang_example/-dump-tokens.PNG)
+-dump-raw-tokens | 打印token | DumpRawTokensAction | ASTViewer | 打印包括空格符；DumpTokensAction和DumpRawTokensAction都继承于PreprocessorFrontendAction，说明在预处理阶段就处理token
+，-emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 
 ####22、架构图
