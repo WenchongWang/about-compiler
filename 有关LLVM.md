@@ -104,14 +104,12 @@
 
 ###2、clang编译器
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
-分组  | 具体 | |
-------------- | ------------- | -------------
-AST相关 | -ast-* |
+选项  | 说明 | 对应Action | 对应Consumer | 备注
+------------- | ------------- | ------------- | ------------- | -------------
+-emit-llvm | | EmitLLVMAction | BackendConsumer |
 
 ####22、架构图
 ![clang编译器](clang编译器.gif)
-
-####23、Action与Consumer关系
 
 irst Header  | Second Header
 ------------- | -------------
