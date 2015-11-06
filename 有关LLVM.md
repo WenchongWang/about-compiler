@@ -28,7 +28,7 @@
 	打开cmake GUI， ADD Entry。 CMAKE_INSTALL_PREFIX等同于--prefix；LLVM_TARGETS_TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 
 ###3、Mac OS X下源码编译
-	比windows,cmake多一个变量LLVM\_ENABLE\_PIC
+	比windows,cmake多一个变量LLVM_ENABLE_PIC
 
 
 
@@ -107,7 +107,7 @@
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
 ####22、架构图
 ![clang编译器](clang编译器.gif)
-#####221、预处理
+####23、预处理
 	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
  	1、文件包含，例如：#include
 	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
@@ -124,7 +124,7 @@
 		SourceManager源码管理器
 		ModuleLoader module加载器
 
-#####222、词法分析
+####24、词法分析
 	一、Token类型
 		- CXToken_Punctuation，标点符号
 		- CXToken_Keyword，关键字或保留字
@@ -138,9 +138,16 @@
 		- PreprocessorLexer
 		- Lexer
 			- ::ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
-#####223、语法分析
-#####224、编译
-####23、流程分析
+####25、语法分析
+####26、编译
+####27、Action与Consumer关系
+
+| 选项  | Action子类 | Consumer子类 | 备注说明  |
+| ------------- | ------------- | ------------- |
+| Content Cell  | Content Cell  | ------------- |
+| Content Cell  | Content Cell  | ------------- |
+
+#####232、流程分析
 - 入口cc1_main
 
 	> 创建编译器对象Clang（CompilerInstance）
@@ -313,6 +320,21 @@
 
 									
 ##三、LLVM
+###PASS内容
+####内置pass
+	CodegenAction::Execuetion
+		clang::ParseAST
+	BackendConsumer::HandleTranslationUnit
+		clang::EmitBackendOutput
+			EmitAssemblyHelper::EmitAssembly,根据参数选项添加不同的pass
+				case Backend_EmitNothing： 不创建，对应-emit-llvm-only
+				case Backend_EmitBC： 创建WriteBitcodePass，对应选项-emit-llvm-bc
+				case Backend_EmitLL:  创建PrintModulePassWrapper，对应-emit-llvm
+				case 其他：			创建TargetLibraryInfoWrapperPass，FunctionPass，对应-emit-obj、-emit-codegen-only
+
+####pass相关类
+	PassManagerBuilderWrapper
+####编写一个pass
 
 - bytecode
 - Three-address code
