@@ -107,7 +107,15 @@
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
 ####22、架构图
 ![clang编译器](clang编译器.gif)
-####23、预处理
+
+####23、Action与Consumer关系
+
+irst Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+####24、预处理
 	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
  	1、文件包含，例如：#include
 	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
@@ -124,7 +132,7 @@
 		SourceManager源码管理器
 		ModuleLoader module加载器
 
-####24、词法分析
+####25、词法分析
 	一、Token类型
 		- CXToken_Punctuation，标点符号
 		- CXToken_Keyword，关键字或保留字
@@ -138,16 +146,10 @@
 		- PreprocessorLexer
 		- Lexer
 			- ::ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
-####25、语法分析
-####26、编译
-####27、Action与Consumer关系
+####26、语法分析
+####27、编译
 
-| 选项  | Action子类 | Consumer子类 | 备注说明  |
-| ------------- | ------------- | ------------- |
-| Content Cell  | Content Cell  | ------------- |
-| Content Cell  | Content Cell  | ------------- |
-
-#####232、流程分析
+####28、流程分析
 - 入口cc1_main
 
 	> 创建编译器对象Clang（CompilerInstance）
@@ -221,7 +223,7 @@
 												
 - **代码生成，**HandleTopLevelDecl
 
-####23、静态分析Clang Static Analyzer
+####29、静态分析Clang Static Analyzer
 
 
 ###3、clang驱动
