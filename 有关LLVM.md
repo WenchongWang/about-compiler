@@ -107,7 +107,7 @@
 选项  | 说明 | Action子类 | Consumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
--ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](-ast-dump.PNG)
+-ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 
