@@ -106,7 +106,8 @@
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
 选项  | 说明 | 对应Action | 对应Consumer | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
--emit-llvm | | EmitLLVMAction | BackendConsumer |
+-emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang -emit-llvm hello.c -o hello.ll
+-emit-llvm-bc | 生成.bc IR二进制文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang -emit-llvm-bc hello.c -o hello.bc
 
 ####22、架构图
 ![clang编译器](clang编译器.gif)
