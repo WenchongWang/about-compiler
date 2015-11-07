@@ -97,10 +97,10 @@
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-                  <y:Geometry height="103.76799999999986" width="325.50000000000006" x="275.70000000000005" y="378.03200000000004"/>
+                  <y:Geometry height="103.76799999999986" width="191.86000000000013" x="409.34" y="378.03200000000004"/>
                   <y:Fill color="#FFFFFFE6" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
-                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="72.015625" x="126.7421875" y="81.0668281249998">编译Compile<y:LabelModel>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="72.015625" x="59.922187500000064" y="81.0668281249998">编译Compile<y:LabelModel>
                       <y:SmartNodeLabelModel distance="4.0"/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -212,7 +212,7 @@
                   <y:Geometry height="101.39999999999992" width="187.60399999999993" x="622.844" y="378.03200000000004"/>
                   <y:Fill color="#FFFFFFE6" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
-                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="80.6875" x="53.45825000000002" y="78.69882812499986">汇编assember<y:LabelModel>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="80.6875" x="53.45824999999991" y="78.69882812499986">汇编assember<y:LabelModel>
                       <y:SmartNodeLabelModel distance="4.0"/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -313,7 +313,7 @@
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-                  <y:Geometry height="69.07999999999998" width="113.80000000000001" x="295.53999999999996" y="392.88"/>
+                  <y:Geometry height="69.07999999999998" width="113.80000000000001" x="256.4616000000002" y="392.88"/>
                   <y:Fill color="#FFFFFFE6" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="71.34765625" x="21.226171874999977" y="46.37882812499993">词法分析Lex<y:LabelModel>
@@ -365,10 +365,10 @@
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-                  <y:Geometry height="103.76799999999986" width="113.80000000000001" x="137.0320000000001" y="378.03200000000004"/>
+                  <y:Geometry height="103.76799999999986" width="250.12000000000003" x="137.0320000000001" y="378.03200000000004"/>
                   <y:Fill color="#FFFFFFE6" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
-                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="111.361328125" x="1.2193359375000057" y="81.0668281249998">预处理Preprocessor<y:LabelModel>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="111.361328125" x="69.3793359375" y="81.0668281249998">预处理Preprocessor<y:LabelModel>
                       <y:SmartNodeLabelModel distance="4.0"/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -466,7 +466,7 @@
         <node id="n2::n9">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="44.0" x="333.93999999999994" y="523.28"/>
+              <y:Geometry height="30.0" width="44.0" x="294.8616000000002" y="523.28"/>
               <y:Fill color="#FFCC00" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="39.35546875" x="2.322265625" y="5.6494140625">tokens<y:LabelModel>
@@ -534,7 +534,7 @@
         <node id="n2::n13">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="37.0" x="337.43999999999994" y="410.5"/>
+              <y:Geometry height="30.0" width="37.0" x="298.3616000000002" y="410.5"/>
               <y:Fill color="#FFCC00" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="34.017578125" x="1.4912109375" y="5.6494140625">Lexer<y:LabelModel>
@@ -551,7 +551,7 @@
         <node id="n2::n14">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="30.0" x="259.91039999999987" y="523.28"/>
+              <y:Geometry height="30.0" width="30.0" x="220.8320000000001" y="523.28"/>
               <y:Fill color="#FFCC00" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="13.333984375" x="8.3330078125" y="5.6494140625">.c<y:LabelModel>
@@ -897,7 +897,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="delta"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" visible="true" width="100.697265625" x="-50.34863525390631" y="44.37152221679685">-dump-tokens
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" visible="true" width="100.697265625" x="-50.348635595702945" y="44.37152221679685">-dump-tokens
 -dump-raw-tokens<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
