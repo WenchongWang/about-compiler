@@ -61,12 +61,12 @@
 - **The Frontend Library**
 - **The Lexer and Preprocessor Library**
 	
-		token分为：
-			1、正常token 
-			2、注解token
-
-
+	- token分为：
+		- 1、正常token 
+		- 2、注解token
 	- Preprocessor类
+		- 成员变量
+			- LexingRawMode： 原始模式，输出空格、注释等token 
 	- Token类
 	- TokenLexer类
 	- Lexer类
@@ -104,7 +104,7 @@
 
 ###2、clang编译器
 ####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
-   选项     | 说明 | Action子类 | Consumer子类 | 备注
+   选项     | 说明 | FrontendAction子类 | Consumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
@@ -117,46 +117,102 @@
 ####22、架构图
 ![clang编译器](clang编译器.gif)
 
-irst Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
-####24、预处理
+#####编译Compile
+######词法分析Lex
+#######预处理Preprocessor
 	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
  	1、文件包含，例如：#include
 	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
 	3、布局控制，例如：#progma
 	4、宏替换，例如：#define
+
+	三、Preprocessor类
+		成员变量:
+			DiagnosticsEngine诊断引擎
+			LangOptions编译选项
+			TargetInfo存储目标信息
+			FileManager文件管理器
+			SourceManager源码管理器
+			ModuleLoader module加载器
+		成员函数:
+			Lex,根据CurLexerKind类型调用具体的PreprocessorLexer子类的成员函数Lex去生成Tokens
 	
-	二、预编译
-
-	三、Preprocessor类，包含
-		DiagnosticsEngine诊断引擎
-		LangOptions编译选项
-		TargetInfo存储目标信息
-		FileManager文件管理器
-		SourceManager源码管理器
-		ModuleLoader module加载器
-
-####25、词法分析
-	一、Token类型
-		- CXToken_Punctuation，标点符号
-		- CXToken_Keyword，关键字或保留字
-		- CXToken_Identifier，标识符
-		- CXToken_Literal，数字、字符、字符串
-		- CXToken_Comment，注释
 
 	二、TokenKinds.def，关键字定义	 
 
-	三、class列表
-		- PreprocessorLexer
-		- Lexer
-			- ::ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
-####26、语法分析
-####27、编译
+#######Lexer
+	CXToken类
+ 		int_data[0]: a CXTokenKind
+ 		int_data[1]: starting token location
+ 		int_data[2]: token length
+ 		int_data[3]: reserved
+ 		ptr_data: for identifiers and keywords, an IdentifierInfo*. otherwise unused.
+	
+	CXTokenKind枚举
+		CXToken_Punctuation: 标点符号
+		CXToken_Keyword: 关键字或保留字
+		CXToken_Identifier: 标识符
+		CXToken_Literal: 数字、字符、字符串
+		CXToken_Comment: 注释
 
-####28、流程分析
+	CurLexerKind枚举
+		CLK_Lexer:	
+    	CLK_PTHLexer:
+    	CLK_TokenLexer: 对应TokenLexer类，用于处理macro宏
+    	CLK_CachingLexer:
+    	CLK_LexAfterModuleImport:
+
+	PreprocessorLexer类
+		成员变量LexingRawMode，模式
+
+		Lexer类↑
+			成员变量:
+				ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
+			成员函数:
+				Lex
+					LexTokenInternal
+
+######语法分析Parser
+- ParseTopLevelDecl
+	- ParseExternalDeclaration
+	    - ParseDeclaration
+	    	- 获取token类型
+		    	- **case 模板、导出：**
+		    		- ParseDeclarationStartingWithTemplate
+		    	- **case 内联：**
+		    		- ParseSimpleDeclaration
+		    	- **case 名字空间：**
+		    		- ParseNamespace
+		    	- **case using：**
+		    		- ParseUsingDirectiveOrDeclaration
+		    	- **case assert：**
+		    		- ParseStaticAssertDeclaration
+				- **case 其他：**
+		    		- ParseSimpleDeclaration
+			- ConvertDeclToDeclGroup			    		
+	    		
+		- **case 未知：** ParseDeclarationOrFunctionDefinition
+			- ParseDeclOrFunctionDefInternal
+				- ParseDeclGroup			
+					- ActOnDeclarator
+						- HandleDeclarator
+							- or ActOnTypedefDeclarator
+							- or ActOnFunctionDeclarator
+							- or ActOnVariableDeclarator
+					- **函数定义**ParseFunctionDefinition
+						- ParseFunctionDefinition
+							- ParseCompoundStatementBody
+								- ParseStatementOrDeclaration
+									- ParseStatementOrDeclarationAfterAttributes
+										- **case if语句**
+											- ParseIfStatement
+										- **case 其他语句**
+											- Pasese_XX_Statement
+												
+- **代码生成，**HandleTopLevelDecl
+
+
+####流程分析
 - 入口cc1_main
 
 	> 创建编译器对象Clang（CompilerInstance）
@@ -189,46 +245,8 @@ Content Cell  | Content Cell
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 
-- 词法分析
 
 - 语法分析
-	- ParseTopLevelDecl
-		- ParseExternalDeclaration
-		    - ParseDeclaration
-		    	- 获取token类型
-			    	- **case 模板、导出：**
-			    		- ParseDeclarationStartingWithTemplate
-			    	- **case 内联：**
-			    		- ParseSimpleDeclaration
-			    	- **case 名字空间：**
-			    		- ParseNamespace
-			    	- **case using：**
-			    		- ParseUsingDirectiveOrDeclaration
-			    	- **case assert：**
-			    		- ParseStaticAssertDeclaration
-					- **case 其他：**
-			    		- ParseSimpleDeclaration
-				- ConvertDeclToDeclGroup			    		
-		    		
-			- **case 未知：** ParseDeclarationOrFunctionDefinition
-				- ParseDeclOrFunctionDefInternal
-					- ParseDeclGroup			
-						- ActOnDeclarator
-							- HandleDeclarator
-								- or ActOnTypedefDeclarator
-								- or ActOnFunctionDeclarator
-								- or ActOnVariableDeclarator
-						- **函数定义**ParseFunctionDefinition
-							- ParseFunctionDefinition
-								- ParseCompoundStatementBody
-									- ParseStatementOrDeclaration
-										- ParseStatementOrDeclarationAfterAttributes
-											- **case if语句**
-												- ParseIfStatement
-											- **case 其他语句**
-												- Pasese_XX_Statement
-												
-- **代码生成，**HandleTopLevelDecl
 
 ####29、静态分析Clang Static Analyzer
 
