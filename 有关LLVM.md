@@ -114,6 +114,10 @@
 ，-emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 
+![FrontendAction](http://clang.llvm.org/doxygen/inherit_graph_601.png)
+
+![](http://clang.llvm.org/doxygen/inherit_graph_119.png)
+
 ####22、架构图
 ![clang编译器](clang编译器.gif)
 
@@ -211,32 +215,37 @@
 												
 - **代码生成，**HandleTopLevelDecl
 
+![Decl](http://clang.llvm.org/doxygen/classclang_1_1Decl__inherit__graph.png)
+![Stmt](http://clang.llvm.org/doxygen/classStmt__inherit__graph.png)
 
 ####流程分析
 - 入口cc1_main
 
-	> 创建编译器对象Clang（CompilerInstance）
+	> 创建编译器对象Clang（CompilerInstance类）
 	>
-	> 解析选项Clang->CreateFromArgs
-	- 解析静态分析相关参数选项ParseAnalyzerArgs，例如-analyze
-	- ParseFrontendArgs
-	- ...
-	> 创建诊断对象Clang->createDiagnostics()
+	> CompilerInvocation::CreateFromArgs
+	- 从clang/Driver/Options.inc读取选项，构建选项表
+	- ParseFrontendArgs解析出前端选项，例如选项-analyze，对应frontend::RunAnalysis
+	- ParseAnalyzerArgs解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker
+	> 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics
 	> 
-	> 执行前端action，ExecuteCompilerInvocation↓
+	> ExecuteCompilerInvocation↓
     
-	- 创建action，CreateFrontendAction
-		- 调用CreateFrontendBaseAction
-			- **编译宏CLANG_ENABLE_STATIC_ANALYZER，同时参数为RunAnalysis: 创建静态分析Action（AnalysisAction）并返回**
-	- 执行action，Clang->ExecuteAction，传入ACT（AnalysisAction）
-		> Act.BeginSourceFile（FrontendAction::BeginSourceFile）
-		- 创建具体的Consumer并插入到Consumers（AnalysisConsumer只是其中之一），CI.setASTConsumer(CreateWrappedASTConsumer(CI, InputFile));
-		- 创建ASTConsumer对象
+	- 创建FrontendAction子类对象，CreateFrontendAction工厂模式
+		- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
+			- 如果frontend::RunAnalysis，创建AnalysisAction类对象
+			- 其他类型创建其他FrontendAction子类对象
+			- 如果选项为frontend::PluginAction（选项-plugin），
+	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
+		> FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
+		- CreateWrappedASTConsumer，返回Consumer子类对象
+			- CreateASTConsumer
+			- 创建clang插件Consumer
 
-		> action真正执行，Act.Execute()
-		- 调用ExecuteAction
-			- 编译器对象创建源代码Consumer，通过createCodeCompletionConsumer函数
-			- 编译器对象使用源代码Consumer，来创建语义对象（Sema）
+		> FrontendAction::Execute()
+		- ASTFrontendAction::ExecuteAction()
+			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
+			- 创建语义对象，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成（Sema类）
 			- ParseAST
 				- 语法分析（词法分析）ParseTopLevelDecl
 				- HandleTopLevelDecl（由具体ASTConsumer子类对象决定，如果是CodeGenerator就生成二进制文件）
@@ -246,10 +255,66 @@
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 
 
-- 语法分析
-
 ####29、静态分析Clang Static Analyzer
+#####Analyzer框架机制
+>ExplodedGraph CFG路径
+![ExplodedGraph](http://clang.llvm.org/doxygen/classclang_1_1ento_1_1ExplodedGraph__coll__graph.png)
 
+>ExplodedNode，包括ProgramPoint和ProgramState
+
+>ProgramPoint表示程序所在位置
+![ProgramPoint](http://clang.llvm.org/doxygen/classclang_1_1ProgramPoint__inherit__graph.png)
+
+>ProgramState表示程序所在状态
+
+>CheckerManager
+
+- CheckerContext上下文
+	- addTransition方法，改变状态
+	- generateSink
+
+>CallEvent
+
+   Program     | 说明 
+------------- | ------------- 
+checkPreCall | 函数调用之前
+
+#####如何编写Checker
+>两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载。
+
+######方式一
+- 在lib/StaticAnalyzer/Checkers目录下，创建xxxxChecker.cpp
+- xxxxChecker.cpp编写Checke子类和注册函数：
+		using namespace clang;
+	    using namespace ento;
+	
+	    namespace {
+	    	class NewChecker: public Checker< check::PreStmt<CallExpr> > {
+	    		public:
+	      			void checkPreStmt(const CallExpr *CE, CheckerContext &Ctx) const {}
+	    		}
+	    }
+						
+		void ento::registerxxxx(CheckerManager &mgr) {
+  				mgr.registerChecker<xxxx>();
+		}
+- clang/lib/StaticAnalyzer/Checkers/Checkers.td注册Checker归属关系，例如alpha.core.yyyy
+		
+		let ParentPackage = CoreAlpha in {
+		...
+		def xxxxChecker : Checker<"yyyy">,    //注意yyyy，任意名字
+		  HelpText<"Checker功能表述">,
+		  DescFile<"xxxxChecker.cpp">;
+		...
+		} // end "alpha.core"
+
+注册状态宏
+REGISTER_TRAIT_WITH_PROGRAMSTATE
+REGISTER_MAP_WITH_PROGRAMSTATE
+REGISTER_SET_WITH_PROGRAMSTATE
+REGISTER_LIST_WITH_PROGRAMSTATE
+
+######方式二
 
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
@@ -389,3 +454,7 @@
 	- Kaleidoscope，展示了如何在LLVM之上构建一个支持一门自己定义的编程语言的编译器
 	- OCaml-Kaleidoscope
 	- ParallelJIT
+
+![driver_tool](http://clang.llvm.org/doxygen/inherit_graph_443.png)
+
+![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
