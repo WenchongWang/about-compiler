@@ -102,8 +102,8 @@
 
 		输入AST输出LLVM IR
 
-###2、clang编译器
-####21、编译器选项（clang -cc1 -help，CC1Options.td中定义）	
+###clang编译器
+####编译器选项（clang -cc1 -help，CC1Options.td中定义）	
    选项     | 说明 | FrontendAction子类 | Consumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
@@ -118,7 +118,7 @@
 
 ![](http://clang.llvm.org/doxygen/inherit_graph_119.png)
 
-####22、架构图
+####架构图
 ![clang编译器](clang编译器.gif)
 
 #####编译Compile
@@ -179,7 +179,7 @@
 ######语法分析Parser
 - ParseTopLevelDecl
 	- ParseExternalDeclaration
-	    - ParseDeclaration
+	    - Parser::ParseDeclaration
 	    	- 获取token类型
 		    	- **case 模板、导出：**
 		    		- ParseDeclarationStartingWithTemplate
@@ -213,12 +213,12 @@
 										- **case 其他语句**
 											- Pasese_XX_Statement
 												
-- **代码生成，**HandleTopLevelDecl
+- HandleTopLevelDecl
 
 ![Decl](http://clang.llvm.org/doxygen/classclang_1_1Decl__inherit__graph.png)
 ![Stmt](http://clang.llvm.org/doxygen/classStmt__inherit__graph.png)
 
-####流程分析
+####clang流程分析
 - 入口cc1_main
 
 	> 创建编译器对象Clang（CompilerInstance类）
@@ -254,8 +254,8 @@
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 
-
-####29、静态分析Clang Static Analyzer
+####clang插件
+####Clang静态分析
 #####Analyzer框架机制
 >ExplodedGraph CFG路径
 ![ExplodedGraph](http://clang.llvm.org/doxygen/classclang_1_1ento_1_1ExplodedGraph__coll__graph.png)
@@ -458,3 +458,7 @@ REGISTER_LIST_WITH_PROGRAMSTATE
 ![driver_tool](http://clang.llvm.org/doxygen/inherit_graph_443.png)
 
 ![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
+
+
+##引用
+[C11标准中文翻译](http://www.clang.pub/wiki/C11)
