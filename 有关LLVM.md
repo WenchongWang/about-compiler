@@ -104,7 +104,7 @@
 
 ###clang编译器
 ####编译器选项（clang -cc1 -help，CC1Options.td中定义）	
-   选项     | 说明 | FrontendAction子类 | Consumer子类 | 备注
+   选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
@@ -225,30 +225,34 @@
 	>
 	> CompilerInvocation::CreateFromArgs
 	- 从clang/Driver/Options.inc读取选项，构建选项表
-	- ParseFrontendArgs解析出前端选项，例如选项-analyze，对应frontend::RunAnalysis
+	- **ParseFrontendArgs解析出前端选项**，例如选项-analyze，对应frontend::RunAnalysis；-plugin，对应frontend::PluginActionfrontend::PluginAction；
 	- ParseAnalyzerArgs解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker
 	> 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics
 	> 
 	> ExecuteCompilerInvocation↓
     
-	- 创建FrontendAction子类对象，CreateFrontendAction工厂模式
+	- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
 		- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
 			- 如果frontend::RunAnalysis，创建AnalysisAction类对象
 			- 其他类型创建其他FrontendAction子类对象
-			- 如果选项为frontend::PluginAction（选项-plugin），
+			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
 	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
 		> FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
-		- CreateWrappedASTConsumer，返回Consumer子类对象
-			- CreateASTConsumer
-			- 创建clang插件Consumer
+		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
+			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
+			- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
 
 		> FrontendAction::Execute()
 		- ASTFrontendAction::ExecuteAction()
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
-			- 创建语义对象，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成（Sema类）
-			- ParseAST
-				- 语法分析（词法分析）ParseTopLevelDecl
-				- HandleTopLevelDecl（由具体ASTConsumer子类对象决定，如果是CodeGenerator就生成二进制文件）
+			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
+			- **ParseAST**
+				- Parser::Initialize
+					- Sema::Initialize
+					- **ASTConsumer子类::Initialize初始化，例如AnalysisConsumer::Initialize中创建CheckerManager和AnalysisManager对象，用于管理checkers**
+				- Parser::ParseTopLevelDecl，语法分析（词法分析）
+				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
+			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 		 
 		> Act.EndSourceFile（FrontendAction::EndSourceFile）
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
@@ -257,6 +261,23 @@
 ####clang插件
 ####Clang静态分析
 #####Analyzer框架机制
+- ExplodedGraph
+	- ExplodedNode
+		- ProgramPoint
+		- ProgramState
+			- Environment 
+			- Store
+			- GenericDataMap 
+
+- 主要流程
+	- cc1_main
+	    - ...
+		- CreateWrappedASTConsumer
+			- **AnalysisAction::CreateASTConsumer**
+				- **创建AnalysisASTConsumer对象** 	
+		- ...
+		- clang::ParseAST
+			- 
 >ExplodedGraph CFG路径
 ![ExplodedGraph](http://clang.llvm.org/doxygen/classclang_1_1ento_1_1ExplodedGraph__coll__graph.png)
 
@@ -280,7 +301,7 @@
 checkPreCall | 函数调用之前
 
 #####如何编写Checker
->两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载。
+	两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载
 
 ######方式一
 - 在lib/StaticAnalyzer/Checkers目录下，创建xxxxChecker.cpp
