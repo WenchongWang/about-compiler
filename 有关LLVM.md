@@ -249,7 +249,13 @@
 			- **ParseAST**
 				- Parser::Initialize
 					- Sema::Initialize
-						- **ASTConsumer子类::Initialize初始化，例如AnalysisConsumer::Initialize中创建CheckerManager和AnalysisManager对象，用于管理checkers**
+						- **ASTConsumer子类::Initialize初始化，例如
+							- createCheckerManager
+								-  创建checkerMgr对象（CheckerManager类）
+								-  创建allCheckers对象（ClangCheckerRegistry类）
+									- 构造函数中 
+							- AnalysisManager对象
+							
 				- Parser::ParseTopLevelDecl，语法分析（词法分析）
 				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
 			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
@@ -491,6 +497,7 @@ REGISTER_LIST_WITH_PROGRAMSTATE
 
 ![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
 
+##llvm编程手册，参考["LLVM Programmer’s Manual](http://llvm.org/docs/ProgrammersManual.html)
 
 ##引用
 [C11标准中文翻译](http://www.clang.pub/wiki/C11)
