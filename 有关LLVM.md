@@ -259,6 +259,9 @@
 				- Parser::ParseTopLevelDecl，语法分析（词法分析）
 				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
 			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
+				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
+				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
+				- ... ...
 		 
 		> Act.EndSourceFile（FrontendAction::EndSourceFile）
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
@@ -285,13 +288,24 @@
 		- clang::ParseAST
 			- Parser::Initialize
 				- Sema::Initialize
-					- **AnalysisConsumer::Initialize初始化**
-						1. 创建CheckerManager 
-						2. 创建allcheckers对象(ClangCheckerRegistry类)
-							- 构造函数中，调用addChecker函数添加Checkers.inc中所有的信息，例如：checker的注册函数、名字、描述生成CheckerInfo结构，放入vector中
-						3. 根据选项再次选择checker
-						4. 遍历调用checker的注册函数
-							- **register##name，每个checker必须定义注册函数**
+					- **AnalysisConsumer::Initialize,静态分析器初始化**
+						- ento::createCheckerManager 
+							1. 创建CheckerManager 
+							2. 创建allcheckers对象(ClangCheckerRegistry类)
+							    - registerBuiltinCheckers，调用addChecker函数添加Checkers.inc中所有的信息，例如：checker的注册函数、名字、描述生成CheckerInfo结构，放入vector中**（参考如何编写Checker，方式一）**
+							    - 如果有共享库方式存在的checker(选项-load 共享库路径)，则使用DynamicLibrary类，加载共享库，找到clang_registerCheckers和clang_analyzerAPIVersionString符号，并调用clang_registerCheckers函数**（参考如何编写Checker，方式二）**
+							3. CheckerRegistry::initializeManager
+								- 根据选项再次选择checker
+								- 遍历调用checker的注册函数
+									- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
+			- **AnalysisConsumer::HandleTranslationUnit,静态分析器分析入口**
+				- AnalysisConsumer::HandleDeclsCallGraph
+					- AnalysisConsumer::HandleCode
+						- AnalysisConsumer::RunPathSensitiveChecks
+							- AnalysisConsumer::ActionExprEngine
+								- ExprEngine::ExecuteWorkList
+									- CoreEngine::ExecuteWorkList
+										- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理 
 							
 						
 
