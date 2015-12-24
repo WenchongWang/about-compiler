@@ -464,7 +464,12 @@ REGISTER_LIST_WITH_PROGRAMSTATE
 
 									
 ##三、LLVM
-###PASS内容
+###PASS概念
+	在LLVM中，优化器被组织成优化pass的管道，常见的pass有内联化、表达式重组、循环不变量移动等。每个pass都作为继承Pass类的C++类，并定义在一个私有的匿名namespace中，同时提供一个让外界获得到pass的函数。
+	PassInfo类的每一个对象都对应着一个实际存在的Pass，并且保存着这个Pass的信息。
+	RegisterPass这个类是一个模板类，这个模板类的类型就是Pass的名字。它是PassInfo的子类，主要用来注册Pass。完成注册之后，在PassManager管理的内部数据库里才能找到这个Pass。需要注意的是，这个模板类的使用必须是在全局范围之内的。可以从最简单的Pass例子--Hello（http://llvm.org/docs/doxygen/html/Hello_8cpp_source.html）中去看这个模板类的使用方法。
+	RegisterAGBase是RegisterAnalysisGroup类的基类，而RegisterAGBase类又是PassInfo类的子类。其中RegisterAGBase类名字中的AG就是AnalysisGroup的缩写，这种命名方式在LLVM的源码中被大量的应用，比如MetaData在一些类的名字里就被缩写为MD。RegisterAnalysisGroup这个类的作用主要是将一个Pass注册成为一个分析组的成员，当然在进行此操作之前，这个Pass必须被首先注册Pass成功。一个Pass可以被注册到多个分析组中。同一个Pass在多个分析组中，依然是根据这个Pass的名字进行标识的。
+	PassRegistrationListener这个类主要负责在运行时时候Pass的注册与否，并且会在Pass被load和remove的时候，去调用回调函数。
 ####内置pass
 	CodegenAction::Execuetion
 		clang::ParseAST
@@ -478,7 +483,20 @@ REGISTER_LIST_WITH_PROGRAMSTATE
 
 ####pass相关类
 	PassManagerBuilderWrapper
+	The ImmutablePass class
+	The ModulePass class
+	The CallGraphSCCPass class
+	The FunctionPass class
+	The LoopPass class
+	The RegionPass class
+	The BasicBlockPass class
+	The MachineFunctionPass class
+
+![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
+
 ####编写一个pass
+
+####opt和bugpoint工具
 
 - bytecode
 - Three-address code
