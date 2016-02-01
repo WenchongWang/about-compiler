@@ -109,8 +109,8 @@
 -init-only | | InitOnlyAction | | 只做前端初始化
 -Eonly | | PreprocessOnlyAction | | 只做预处理，不输出
 -dump-tokens | 打印token | DumpTokensAction |  | 与-Eonly类似，但输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
--dump-raw-tokens | 打印token | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符；DumpTokensAction和DumpRawTokensAction都继承于PreprocessorFrontendAction，说明在预处理阶段就处理token
--rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | 
+-dump-raw-tokens | 打印token | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符
+-rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | ![-rewrite-macros](clang_example/-rewrite-macros.PNG)
 -rewrite-test | 测试宏定义处理 | RewriteTestAction |  | 类似-rewrite-macros，仅测试用
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
