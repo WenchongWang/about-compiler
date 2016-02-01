@@ -106,13 +106,21 @@
 ####编译器选项（clang -cc1 -help，CC1Options.td中定义）	
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
+-init-only | | InitOnlyAction | | 只做前端初始化
+-Eonly | | PreprocessOnlyAction | | 只做预处理，不输出
+-dump-tokens | 打印token | DumpTokensAction |  | 与-Eonly类似，但输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
+-dump-raw-tokens | 打印token | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符；DumpTokensAction和DumpRawTokensAction都继承于PreprocessorFrontendAction，说明在预处理阶段就处理token
+-rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | 
+-rewrite-test | 测试宏定义处理 | RewriteTestAction |  | 类似-rewrite-macros，仅测试用
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
--dump-tokens | 打印token | DumpTokensAction | ASTViewer | ![-dump-tokens](clang_example/-dump-tokens.PNG)
--dump-raw-tokens | 打印token | DumpRawTokensAction | ASTViewer | 打印包括空格符；DumpTokensAction和DumpRawTokensAction都继承于PreprocessorFrontendAction，说明在预处理阶段就处理token
-，-emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
+-emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
+-print-decl-contexts | 打印声明 | DeclContextPrintAction | DeclContextPrinter | 
+-analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | 后续重点介绍
+-emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
+-migrate | 代码迁移 | MigrateSourceAction | ObjCMigrateASTConsumer | 
 
 ![FrontendAction](http://clang.llvm.org/doxygen/inherit_graph_601.png)
 
@@ -121,11 +129,7 @@
 ####架构图
 ![clang编译器](clang编译器.gif)
 
-#####编译Compile
-
-######词法分析Lex
-
-#######预处理Preprocessor
+####预处理Preprocessor
 	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
  	1、文件包含，例如：#include
 	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
@@ -146,7 +150,7 @@
 
 	二、TokenKinds.def，关键字定义	 
 
-#######Lexer
+####词法分析Lexer
 	CXToken类
  		int_data[0]: a CXTokenKind
  		int_data[1]: starting token location
@@ -178,7 +182,7 @@
 				Lex
 					LexTokenInternal
 
-######语法分析Parser
+####语法分析Parser
 - ParseTopLevelDecl
 	- ParseExternalDeclaration
 	    - Parser::ParseDeclaration
