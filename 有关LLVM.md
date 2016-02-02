@@ -110,21 +110,21 @@
 -Eonly | | PreprocessOnlyAction | | 只做预处理，不输出
 -dump-tokens | 打印token | DumpTokensAction |  | 与-Eonly类似，但输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
 -dump-raw-tokens | 打印token | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符
--rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | ![-rewrite-macros](clang_example/-rewrite-macros.PNG)
 -rewrite-test | 测试宏定义处理 | RewriteTestAction |  | 类似-rewrite-macros，仅测试用
+-rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | ![-rewrite-macros](clang_example/-rewrite-macros.PNG)
+-print-decl-contexts | 打印声明 | DeclContextPrintAction | DeclContextPrinter | ![-print-decl-contexts](clang_example/-print-decl-contexts.PNG)
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
 -emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
--print-decl-contexts | 打印声明 | DeclContextPrintAction | DeclContextPrinter | ![-print-decl-contexts](clang_example/-print-decl-contexts.PNG)
 -analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | 后续重点介绍
 -emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 -migrate | 代码迁移 | MigrateSourceAction | ObjCMigrateASTConsumer | 
 
-![FrontendAction](http://clang.llvm.org/doxygen/inherit_graph_601.png)
+![](clang_example/classclang_1_1FrontendAction__inherit__graph.png)
 
-![](http://clang.llvm.org/doxygen/inherit_graph_119.png)
+![](clang_example/inherit_graph_119.png)
 
 ####架构图
 ![clang编译器](clang编译器.gif)
