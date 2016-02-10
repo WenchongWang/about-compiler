@@ -126,6 +126,68 @@
 
 ![](clang_example/inherit_graph_119.png)
 
+*备注：*
+
+1. FrontendAction及其子类主要是前端功能的集合，不同的子类包含的功能不同；
+2. ASTConsumer及其子类主要是后端功能的集合，不同的子类包含的功能不同；
+3. 编译器选项表格中基本上按功能从小到大排列；
+
+####clang流程分析
+- 入口cc1_main
+
+	> 创建编译器对象Clang（CompilerInstance类）
+	>
+	> CompilerInvocation::CreateFromArgs
+	- 从clang/Driver/Options.inc读取选项，构建选项表
+	- **ParseFrontendArgs解析出前端选项**，例如选项-analyze，对应frontend::RunAnalysis；-plugin，对应frontend::PluginActionfrontend::PluginAction；
+	- ParseAnalyzerArgs解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker
+	> 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics
+	> 
+	> ExecuteCompilerInvocation↓
+    
+	- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
+		- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
+			- 如果frontend::RunAnalysis，创建AnalysisAction类对象
+			- 其他类型创建其他FrontendAction子类对象
+			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
+	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
+		> FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
+		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
+			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
+			- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
+
+		> **FrontendAction::Execute()，该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
+		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数，下面流程只是个例
+			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
+			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
+			- **ParseAST解析抽象语法树**
+				- Parser::Initialize
+					- Sema::Initialize
+						- **ASTConsumer子类::Initialize初始化，例如
+							- createCheckerManager
+								-  创建checkerMgr对象（CheckerManager类）
+								-  创建allCheckers对象（ClangCheckerRegistry类）
+									- 构造函数中 
+							- AnalysisManager对象
+							
+				- Parser::ParseTopLevelDecl，语法分析（词法分析）
+				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
+			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
+				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
+				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
+				- ... ...
+		 
+		> Act.EndSourceFile（FrontendAction::EndSourceFile）
+		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
+		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
+
+*备注：*
+
+1. 通过clang编译器选项，来选择创建不同的FrontendAction，具体在createFrontendBaseAction函数中，创建不同的FrontendAction对象
+2. FrontendAction::CreateASTConsumer用于创建不同ASTConsumer对象，因此需实现该函数；
+3. FrontendAction::ExecuteAction用于衔接后端，例如ASTFrontendAction::ExecuteAction调用ParseAST解析语法树并传递给后端，而DumpRawTokensAction只打印tokens；
+4. 需要抽象语法树的后端，需要调用ParseAST函数；
+
 ####架构图
 ![clang编译器](clang编译器.gif)
 
@@ -222,58 +284,10 @@
 ![Decl](http://clang.llvm.org/doxygen/classclang_1_1Decl__inherit__graph.png)
 ![Stmt](http://clang.llvm.org/doxygen/classStmt__inherit__graph.png)
 
-####clang流程分析
-- 入口cc1_main
-
-	> 创建编译器对象Clang（CompilerInstance类）
-	>
-	> CompilerInvocation::CreateFromArgs
-	- 从clang/Driver/Options.inc读取选项，构建选项表
-	- **ParseFrontendArgs解析出前端选项**，例如选项-analyze，对应frontend::RunAnalysis；-plugin，对应frontend::PluginActionfrontend::PluginAction；
-	- ParseAnalyzerArgs解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker
-	> 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics
-	> 
-	> ExecuteCompilerInvocation↓
-    
-	- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
-		- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
-			- 如果frontend::RunAnalysis，创建AnalysisAction类对象
-			- 其他类型创建其他FrontendAction子类对象
-			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
-	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
-		> FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
-		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
-			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
-			- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
-
-		> FrontendAction::Execute()
-		- ASTFrontendAction::ExecuteAction()
-			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
-			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
-			- **ParseAST**
-				- Parser::Initialize
-					- Sema::Initialize
-						- **ASTConsumer子类::Initialize初始化，例如
-							- createCheckerManager
-								-  创建checkerMgr对象（CheckerManager类）
-								-  创建allCheckers对象（ClangCheckerRegistry类）
-									- 构造函数中 
-							- AnalysisManager对象
-							
-				- Parser::ParseTopLevelDecl，语法分析（词法分析）
-				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
-			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
-				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
-				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
-				- ... ...
-		 
-		> Act.EndSourceFile（FrontendAction::EndSourceFile）
-		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
-		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
-
 ####clang插件
+
 ####Clang静态分析
-#####Analyzer框架机制
+
 - ExplodedGraph
 	- ExplodedNode
 		- ProgramPoint
