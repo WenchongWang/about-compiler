@@ -117,7 +117,7 @@
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
 -emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
--analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | 后续重点介绍
+-analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | clang -cc1 -analyzer-checker-help显示所有checkers；![-analyze](clang_example/-analyze.PNG)
 -emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 -migrate | 代码迁移 | MigrateSourceAction | ObjCMigrateASTConsumer | 
