@@ -109,7 +109,7 @@
 -init-only | | InitOnlyAction | | 只做前端初始化
 -Eonly | | PreprocessOnlyAction | | 只做预处理，不输出
 -dump-tokens | 打印token | DumpTokensAction |  | 与-Eonly类似，但输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
--dump-raw-tokens | 打印token | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符
+-dump-raw-tokens | 打印tokens | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符
 -rewrite-test | 测试宏定义处理 | RewriteTestAction |  | 类似-rewrite-macros，仅测试用
 -rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | ![-rewrite-macros](clang_example/-rewrite-macros.PNG)
 -print-decl-contexts | 打印声明 | DeclContextPrintAction | DeclContextPrinter | ![-print-decl-contexts](clang_example/-print-decl-contexts.PNG)
@@ -160,9 +160,15 @@
 
 		> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
 
-		`并行流程↓`
+		`流程之一↓无需抽象语法树AST，只解析并打印tokens`
+	
+		- Lexer::LexFromRawLexer
+		- Preprocessor::DumpToken
 
-		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数，下面流程只是个例
+		`流程之一↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
+
+		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数
+
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
 			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
 			- **ParseAST解析抽象语法树**
@@ -179,7 +185,12 @@
 				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
 			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
+				
+				`流程之一↓静态分析器后端处理流程`
+
 				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
+				
+				`流程之一↓其他流程`
 				- ... ...
 		 
 
