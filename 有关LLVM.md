@@ -174,12 +174,12 @@
 			- **ParseAST解析抽象语法树**
 				- Parser::Initialize
 					- Sema::Initialize
-						- **ASTConsumer子类::Initialize初始化，例如
-							- createCheckerManager
-								-  创建checkerMgr对象（CheckerManager类）
-								-  创建allCheckers对象（ClangCheckerRegistry类）
-									- 构造函数中 
-							- AnalysisManager对象
+						- **Consumer.Initialize ASTConsumer子类的初始化函数**
+						
+						`流程之一↓静态分析器后端初始化`
+
+						- **AnalysisConsumer::Initialize初始化
+							- 具体流程请看《clang静态分析器》部分
 							
 				- Parser::ParseTopLevelDecl，语法分析（词法分析）
 				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
@@ -188,7 +188,7 @@
 				
 				`流程之一↓静态分析器后端处理流程`
 
-				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
+				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit，具体流程请看《clang静态分析器》部分；
 				
 				`流程之一↓其他流程`
 				- ... ...
@@ -307,16 +307,27 @@
 ####clang插件
 
 ####Clang静态分析
+1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
+	
+2. 静态分析器会默认使用6类checkers(default checker)：
 
-- ExplodedGraph
-	- ExplodedNode
-		- ProgramPoint
-		- ProgramState
-			- Environment 
-			- Store
-			- GenericDataMap 
+	- Core Checkers：提供一些一般性的检查，比如是否被0除、是否使用空指针和使用未初始化参数等。
+	- C++ Checkers：提供C++检查。
+	- Dead Code Checkers：检查没有使用的代码。
+	- OS X Checkers：检查Objective-C和Apple's SDKs的使用情况。
+	- Security Checkers:检查不安全API的使用和基于CERT Secure Coding Standards的检查。
+	- Unix Checkers：检查Unix和POSIX API的使用情况。
 
-- 主要流程
+3. 
+	- ExplodedGraph
+		- ExplodedNode
+			- ProgramPoint
+			- ProgramState
+				- Environment 
+				- Store
+				- GenericDataMap 
+
+4. 主要流程
 	- cc1_main
 	    - ...
 		- CreateWrappedASTConsumer
@@ -326,7 +337,7 @@
 		- clang::ParseAST
 			- Parser::Initialize
 				- Sema::Initialize
-					- **AnalysisConsumer::Initialize,静态分析器初始化**
+					- **AnalysisConsumer::Initialize初始化**
 						- ento::createCheckerManager 
 							1. 创建CheckerManager 
 							2. 创建allcheckers对象(ClangCheckerRegistry类)
@@ -347,27 +358,31 @@
 							
 						
 
->ExplodedGraph CFG路径
+5. ExplodedGraph CFG路径
 ![ExplodedGraph](http://clang.llvm.org/doxygen/classclang_1_1ento_1_1ExplodedGraph__coll__graph.png)
 
->ExplodedNode，包括ProgramPoint和ProgramState
+8. CheckerManager
 
->ProgramPoint表示程序所在位置
-![ProgramPoint](http://clang.llvm.org/doxygen/classclang_1_1ProgramPoint__inherit__graph.png)
-
->ProgramState表示程序所在状态
-
->CheckerManager
-
-- CheckerContext上下文
+9. CheckerContext上下文
 	- addTransition方法，改变状态
 	- generateSink
 
->CallEvent
+10. ProgramPoint程序关键点（等同checker类成员函数、回调函数）
+![ProgramPoint](clang_example/classclang_1_1ProgramPoint__inherit__graph.png)
+	- [check::PreStmt<xxx>] - 在statement xxx发生之前调用这个checker
+	- [check::PostStmt<xxx>] - 在statement xxx发生之后调用这个checker
+	- [check::PreCall] - 在函数调用之前调用这个checker
+	- [check::EndFunction] - 在函数结束时调用这个checker
+	- [check::BranchCondition] - 在分支出现时调用这个checker
+	- [check::DeadSymbols] - 当参数超出生命周期时调用这个checker
+	- **checker的回调函数要么修改程序状态，要么报告bug。**
 
-   Program     | 说明 
-------------- | ------------- 
-checkPreCall | 函数调用之前
+7. ProgramState表示程序所在状态
+	- Clang Static Analyzer就像其他静态分析工具一样，并不会执行源代码，而是象征性的执行代码(symbolic excution)，并且会执行代码中的每一个分支(Path Sensitive)。
+	- 在“执行”过程中，Analyzer会实时的根据运行情况追踪和改变程序状态(Program State)。
+	- 注册状态宏：REGISTER_TRAIT_WITH_PROGRAMSTATE、REGISTER_MAP_WITH_PROGRAMSTATE、REGISTER_SET_WITH_PROGRAMSTATE、REGISTER_LIST_WITH_PROGRAMSTATE
+	- CheckerContext类包含了一些操作状态的函数，例如获取状态getState()，更改状态addTransition(State)、产生sink节点generateSink()，上报BUG EmitReport(BUG)
+	- 节点类ExplodedNode、BUG类BugReport、状态类ProgramState
 
 #####如何编写Checker
 	两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载
@@ -398,11 +413,6 @@ checkPreCall | 函数调用之前
 		...
 		} // end "alpha.core"
 
-注册状态宏
-REGISTER_TRAIT_WITH_PROGRAMSTATE
-REGISTER_MAP_WITH_PROGRAMSTATE
-REGISTER_SET_WITH_PROGRAMSTATE
-REGISTER_LIST_WITH_PROGRAMSTATE
 
 ######方式二
 
