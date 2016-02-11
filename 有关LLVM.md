@@ -151,12 +151,15 @@
 			- 其他类型创建其他FrontendAction子类对象
 			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
 	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
-		> FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
+		> Act.BeginSourceFile（FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
+
 		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
 			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
 			- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
 
-		> **FrontendAction::Execute()，该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
+
+		> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
+
 		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数，下面流程只是个例
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
 			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
@@ -177,9 +180,12 @@
 				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit；
 				- ... ...
 		 
+
 		> Act.EndSourceFile（FrontendAction::EndSourceFile）
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
+	
+	- 诊断输出结果
 
 *备注：*
 
