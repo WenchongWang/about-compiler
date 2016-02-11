@@ -182,6 +182,7 @@
 		 
 
 		> Act.EndSourceFile（FrontendAction::EndSourceFile）
+
 		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
 		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 	
