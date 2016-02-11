@@ -160,6 +160,8 @@
 
 		> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
 
+		`并行流程↓`
+
 		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数，下面流程只是个例
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
 			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
