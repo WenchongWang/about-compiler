@@ -305,8 +305,11 @@
 ![Stmt](http://clang.llvm.org/doxygen/classStmt__inherit__graph.png)
 
 ####clang插件
+- 具体参考“PrintFunctionNames”例子
+	clang -cc1 -load printFunctionNames.dll -plugin print-fns a.c    	 #替换默认的FrontendAction
+	clang -cc1 -load printFunctionNames.dll -add-plugin print-fns a.c    #添加FrontendAction
 
-####Clang静态分析
+####clang静态分析器
 1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
 	
 2. 静态分析器会默认使用6类checkers(default checker)：
@@ -415,6 +418,7 @@
 
 
 ######方式二
+- 具体参考“SampleAnalyzerPlugin”例子
 
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
