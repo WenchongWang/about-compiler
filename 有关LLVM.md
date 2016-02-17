@@ -102,6 +102,37 @@
 
 		输入AST输出LLVM IR
 
+- **libclang库**
+
+`libclang库是什么？`libclang提供了一系列的C语言的接口，可是这些接口并不能全然提供存储在Clang C++ AST中的全部信息，仅仅能提供部分基本信息，可是这些基本信息已经能够满足普通情况下的使用。主要目的是为了稳定，而且能够支持开发工具的基本功能。
+	
+	  	
+`依赖库`
+
+	clangAST
+	clangBasic
+	clangFrontend
+	clangIndex
+	clangLex
+	clangSema
+	clangTooling
+
+`主要接口(BuildSystem.h、CXString.h、Index.h、CXCompilationDatabase.h、Documentation.h)`
+	![group__CINDEX](clang_example/group__CINDEX.png)
+
+- **libtooling库**
+
+`依赖库`
+
+	clangAST
+	clangASTMatchers
+	clangBasic
+	clangDriver
+	clangFrontend
+	clangLex
+	clangRewrite
+	clangToolingCore
+
 ###clang编译器
 ####编译器选项（clang -cc1 -help，CC1Options.td中定义）	
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
@@ -117,7 +148,7 @@
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
 -emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
--analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | clang -cc1 -analyzer-checker-help显示所有checkers；![-analyze](clang_example/-analyze.PNG)
+-analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | clang -cc1 -analyzer-checker-help显示所有checkers；![-analyze](clang_example/-analyze.PNG)，具体请看《clang静态分析器》
 -emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
 -migrate | 代码迁移 | MigrateSourceAction | ObjCMigrateASTConsumer | 
@@ -310,6 +341,11 @@
 	clang -cc1 -load printFunctionNames.dll -add-plugin print-fns a.c    #添加FrontendAction
 
 ####clang静态分析器
+#####按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
+
+   选项     | 说明 | 备注
+-analyzer-checker=debug | |
+
 1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
 	
 2. 静态分析器会默认使用6类checkers(default checker)：
