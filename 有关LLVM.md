@@ -138,16 +138,18 @@
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -init-only | | InitOnlyAction | | 只做前端初始化
--Eonly | | PreprocessOnlyAction | | 只做预处理，不输出
--dump-tokens | 打印token | DumpTokensAction |  | 与-Eonly类似，但输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
--dump-raw-tokens | 打印tokens | DumpRawTokensAction |  | 与-Eonly类似，但输出原始tokens，包括空格符
+-Eonly | 预处理 | PreprocessOnlyAction | | 只做预处理，不输出
+-E | 预处理 | PrintPreprocessedAction | | 子选项还包括-C、-具体查看PreprocessorOutputOptions类
+ | 预处理 | RewriteIncludesAction | | 
+-dump-tokens | 打印token | DumpTokensAction |  | 输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
+-dump-raw-tokens | 打印tokens | DumpRawTokensAction |  | 输出原始tokens，包括空格符
 -rewrite-test | 测试宏定义处理 | RewriteTestAction |  | 类似-rewrite-macros，仅测试用
 -rewrite-macros | 处理并扩展宏定义 | RewriteMacrosAction |  | ![-rewrite-macros](clang_example/-rewrite-macros.PNG)
+-emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
 -print-decl-contexts | 打印声明 | DeclContextPrintAction | DeclContextPrinter | ![-print-decl-contexts](clang_example/-print-decl-contexts.PNG)
 -ast-list | 打印ast节点 | ASTDeclListAction | ASTDeclNodeLister | clang -S -D_WIN32 -Xclang **-ast-list** hello.c
 -ast-dump | 打印ast详细信息 | ASTDumpAction | ASTPrinter | ![-ast-dump](clang_example/-ast-dump.PNG)
 -ast-view | 生成ast dot | ASTViewAction | ASTViewer | ![-ast-view](clang_example/-ast-view.PNG)
--emit-html | 生成高亮的代码网页 | HTMLPrintAction | HTMLPrinter | ![-emit-html](clang_example/-emit-html.PNG)
 -analyze | 运行静态分析引擎 | AnalysisAction | AnalysisConsumer | clang -cc1 -analyzer-checker-help显示所有checkers；![-analyze](clang_example/-analyze.PNG)，具体请看《clang静态分析器》
 -emit-llvm | 生成.ll IR汇编文件 | EmitLLVMAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm** hello.c -o hello.ll
 -emit-llvm-bc | 生成.bc IR二进制文件 | EmitBCAction | BackendConsumer | clang -S -D_WIN32 -Xclang **-emit-llvm-bc** hello.c -o hello.bc
@@ -182,7 +184,9 @@
 			- 其他类型创建其他FrontendAction子类对象
 			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
 	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
-		> Act.BeginSourceFile（FrontendAction::BeginSourceFile，创建具体的Consumer并插入到Consumers
+		> Act.BeginSourceFile（FrontendAction::BeginSourceFile），创建具体的Consumer并插入到Consumers
+			- createPreprocessor::createPreprocessor创建PTH管理对象(PTHManager)、头文件搜索对象(HeaderSearch)等来构建预处理对象(Preprocessor)
+				- InitializePreprocessor中会预设一些内置宏，例如<built-in>、#__include_macros、__llvm__、__clang_major__等
 
 		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
 			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
@@ -202,18 +206,56 @@
 
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
 			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
-			- **ParseAST解析抽象语法树**
+			- **ParseAST构建抽象语法树，从预处理->词法分析->语法分析->语义分析->AST**
 				- Parser::Initialize
-					- Sema::Initialize
+					- Sema::Initialize语义对象初始化
 						- **Consumer.Initialize ASTConsumer子类的初始化函数**
 						
-						`流程之一↓静态分析器后端初始化`
+							`流程之一↓静态分析器后端初始化`
 
-						- **AnalysisConsumer::Initialize初始化
-							- 具体流程请看《clang静态分析器》部分
-							
-				- Parser::ParseTopLevelDecl，语法分析（词法分析）
-				- **ASTConsumer子类::HandleTopLevelDecl，每个ASTConsumer子类需要重写**
+							- **AnalysisConsumer::Initialize初始化**
+								- 具体流程请看《clang静态分析器》部分
+				
+					- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
+						- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
+							- CLK_Lexer：
+
+				- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
+					- ParseExternalDeclaration
+					    - Parser::ParseDeclaration
+					    	- 获取token类型
+						    	- case 模板、导出：
+						    		- ParseDeclarationStartingWithTemplate
+						    	- case 内联：
+						    		- ParseSimpleDeclaration
+						    	- case 名字空间：
+						    		- ParseNamespace
+						    	- case using：
+						    		- ParseUsingDirectiveOrDeclaration
+						    	- case assert：
+						    		- ParseStaticAssertDeclaration
+								- case 其他：
+						    		- ParseSimpleDeclaration
+							- ConvertDeclToDeclGroup			    		
+					    		
+						- case 未知： ParseDeclarationOrFunctionDefinition
+							- ParseDeclOrFunctionDefInternal
+								- ParseDeclGroup			
+									- ActOnDeclarator
+										- HandleDeclarator
+											- or ActOnTypedefDeclarator
+											- or ActOnFunctionDeclarator
+											- or ActOnVariableDeclarator
+									- 函数定义ParseFunctionDefinition
+										- ParseFunctionDefinition
+											- ParseCompoundStatementBody
+												- ParseStatementOrDeclaration
+													- ParseStatementOrDeclarationAfterAttributes
+														- case if语句
+															- ParseIfStatement
+														- case 其他语句
+															- Pasese_XX_Statement				
+
 			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
 				
@@ -294,46 +336,6 @@
 			成员函数:
 				Lex
 					LexTokenInternal
-
-####语法分析Parser
-- ParseTopLevelDecl
-	- ParseExternalDeclaration
-	    - Parser::ParseDeclaration
-	    	- 获取token类型
-		    	- **case 模板、导出：**
-		    		- ParseDeclarationStartingWithTemplate
-		    	- **case 内联：**
-		    		- ParseSimpleDeclaration
-		    	- **case 名字空间：**
-		    		- ParseNamespace
-		    	- **case using：**
-		    		- ParseUsingDirectiveOrDeclaration
-		    	- **case assert：**
-		    		- ParseStaticAssertDeclaration
-				- **case 其他：**
-		    		- ParseSimpleDeclaration
-			- ConvertDeclToDeclGroup			    		
-	    		
-		- **case 未知：** ParseDeclarationOrFunctionDefinition
-			- ParseDeclOrFunctionDefInternal
-				- ParseDeclGroup			
-					- ActOnDeclarator
-						- HandleDeclarator
-							- or ActOnTypedefDeclarator
-							- or ActOnFunctionDeclarator
-							- or ActOnVariableDeclarator
-					- **函数定义**ParseFunctionDefinition
-						- ParseFunctionDefinition
-							- ParseCompoundStatementBody
-								- ParseStatementOrDeclaration
-									- ParseStatementOrDeclarationAfterAttributes
-										- **case if语句**
-											- ParseIfStatement
-										- **case 其他语句**
-											- Pasese_XX_Statement
-
-![Decl](http://clang.llvm.org/doxygen/classclang_1_1Decl__inherit__graph.png)
-![Stmt](http://clang.llvm.org/doxygen/classStmt__inherit__graph.png)
 
 ####clang插件
 - 具体参考“PrintFunctionNames”例子
