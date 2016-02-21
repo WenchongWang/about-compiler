@@ -195,12 +195,17 @@
 
 		> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
 
+		`-E选项流程↓只做预处理部分`
+
+		- PrintPreprocessedAction::ExecuteAction()
+			- clang::DoPrintPreprocessedInput,传入预编译对象、输出流、预编译选项对象（只需要这三样即可） 
+
 		`流程之一↓无需抽象语法树AST，只解析并打印tokens`
 	
 		- Lexer::LexFromRawLexer
 		- Preprocessor::DumpToken
 
-		`流程之一↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
+		`-analyze选项流程↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
 
 		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数
 
@@ -211,7 +216,7 @@
 					- Sema::Initialize语义对象初始化
 						- **Consumer.Initialize ASTConsumer子类的初始化函数**
 						
-							`流程之一↓静态分析器后端初始化`
+							`-analyze选项流程↓静态分析器后端初始化`
 
 							- **AnalysisConsumer::Initialize初始化**
 								- 具体流程请看《clang静态分析器》部分
@@ -259,7 +264,7 @@
 			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
 				
-				`流程之一↓静态分析器后端处理流程`
+				`-analyze选项流程↓静态分析器后端处理流程`
 
 				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit，具体流程请看《clang静态分析器》部分；
 				
