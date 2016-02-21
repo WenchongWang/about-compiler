@@ -200,14 +200,16 @@
 		- PrintPreprocessedAction::ExecuteAction()
 			- clang::DoPrintPreprocessedInput,传入预编译对象、输出流、预编译选项对象（只需要这三样即可） 
 
-		`流程之一↓无需抽象语法树AST，只解析并打印tokens`
+		`-dump-tokens选项流程↓词法分析`
 	
-		- Lexer::LexFromRawLexer
-		- Preprocessor::DumpToken
+		- DumpTokensAction::ExecuteAction
+			- Preprocessor::EnterMainSourceFile预处理过程
+			- Preprocessor::Lex词法分析
+			- Preprocessor::DumpToken输出tokens
 
 		`-analyze选项流程↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
 
-		- ASTFrontendAction::ExecuteAction()每个FrontendAction子类必须实现自己的函数
+		- ASTFrontendAction::ExecuteAction
 
 			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
 			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
@@ -289,58 +291,59 @@
 ####架构图
 ![clang编译器](clang编译器.gif)
 
-####预处理Preprocessor
-	一、常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
- 	1、文件包含，例如：#include
-	2、条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
-	3、布局控制，例如：#progma
-	4、宏替换，例如：#define
+####预处理Preprocessor与词法分析Lexer
+#####常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
 
-	三、Preprocessor类
-		成员变量:
-			DiagnosticsEngine诊断引擎
-			LangOptions编译选项
-			TargetInfo存储目标信息
-			FileManager文件管理器
-			SourceManager源码管理器
-			ModuleLoader module加载器
-		成员函数:
-			Lex,根据CurLexerKind类型调用具体的PreprocessorLexer子类的成员函数Lex去生成Tokens
-	
+1. 文件包含，例如：#include
+2. 条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
+3. 布局控制，例如：#progma
+4. 宏替换，例如：#define
 
-	二、TokenKinds.def，关键字定义	 
+*clang除上面标准预处理(CLK_Lexer)外，还支持自身扩展的预处理CLK_PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport*
 
-####词法分析Lexer
-	CXToken类
- 		int_data[0]: a CXTokenKind
- 		int_data[1]: starting token location
- 		int_data[2]: token length
- 		int_data[3]: reserved
- 		ptr_data: for identifiers and keywords, an IdentifierInfo*. otherwise unused.
-	
-	CXTokenKind枚举
-		CXToken_Punctuation: 标点符号
-		CXToken_Keyword: 关键字或保留字
-		CXToken_Identifier: 标识符
-		CXToken_Literal: 数字、字符、字符串
-		CXToken_Comment: 注释
 
-	CurLexerKind枚举
-		CLK_Lexer:	
-    	CLK_PTHLexer:
-    	CLK_TokenLexer: 对应TokenLexer类，用于处理macro宏
-    	CLK_CachingLexer:
-    	CLK_LexAfterModuleImport:
+#####TokenKinds.def，关键字定义	 
 
-	PreprocessorLexer类
-		成员变量LexingRawMode，模式
 
-		Lexer类↑
-			成员变量:
-				ExtendedTokenMode,根据它的值的不同：0、1、2，分别对应只返回正常的token，返回comments和正常的token，返回空格、comments和正常的token
-			成员函数:
-				Lex
-					LexTokenInternal
+#####Preprocessor类
+
+	成员变量:
+		DiagnosticsEngine诊断引擎
+		LangOptions编译选项
+		TargetInfo存储目标信息
+		FileManager文件管理器
+		SourceManager源码管理器
+		ModuleLoader module加载器
+	成员函数:
+		Preprocessor::Lex
+
+#####处理流程
+
+- Preprocessor::Lex根据CurLexerKind来切换不同Lexer
+	-  标准预处理CLK_Lexer，Lexer::Lex
+		- Lexer::LexTokenInternal按字符流逐个处理
+			-  如果是文件结尾，调用LexEndOfFile
+				- Preprocessor::RemoveTopOfLexerStack
+					- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来的CurLexerKind的值  
+			-  如果是预处理标识符，调用Preprocessor::HandleDirective
+				- Preprocessor::HandleDirective由预处理对象处理
+					- 如果标识符是‘#define’，HandleDefineDirective
+						- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
+					- 如果Ident是'#include',HandleIncludeDirective
+						- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
+							- 如果是普通的.文件，EnterSourceFileWithLexer
+								- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
+ 
+			-  如果是标识符，调用Preprocessor::HandleIdentifier
+				- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
+					- 内置宏？
+					- 其他？ 
+
+	-  CLK_PTHLexer
+	-  CLK_TokenLexer
+	-  CLK_CachingLexer
+	-  CLK_LexAfterModuleImport
+
 
 ####clang插件
 - 具体参考“PrintFunctionNames”例子
@@ -463,6 +466,39 @@
 ######方式二
 - 具体参考“SampleAnalyzerPlugin”例子
 
+####PASS遍
+	在LLVM中，优化器被组织成优化pass的管道，常见的pass有内联化、表达式重组、循环不变量移动等。每个pass都作为继承Pass类的C++类，并定义在一个私有的匿名namespace中，同时提供一个让外界获得到pass的函数。
+	PassInfo类的每一个对象都对应着一个实际存在的Pass，并且保存着这个Pass的信息。
+	RegisterPass这个类是一个模板类，这个模板类的类型就是Pass的名字。它是PassInfo的子类，主要用来注册Pass。完成注册之后，在PassManager管理的内部数据库里才能找到这个Pass。需要注意的是，这个模板类的使用必须是在全局范围之内的。可以从最简单的Pass例子--Hello（http://llvm.org/docs/doxygen/html/Hello_8cpp_source.html）中去看这个模板类的使用方法。
+	RegisterAGBase是RegisterAnalysisGroup类的基类，而RegisterAGBase类又是PassInfo类的子类。其中RegisterAGBase类名字中的AG就是AnalysisGroup的缩写，这种命名方式在LLVM的源码中被大量的应用，比如MetaData在一些类的名字里就被缩写为MD。RegisterAnalysisGroup这个类的作用主要是将一个Pass注册成为一个分析组的成员，当然在进行此操作之前，这个Pass必须被首先注册Pass成功。一个Pass可以被注册到多个分析组中。同一个Pass在多个分析组中，依然是根据这个Pass的名字进行标识的。
+	PassRegistrationListener这个类主要负责在运行时时候Pass的注册与否，并且会在Pass被load和remove的时候，去调用回调函数。
+#####内置pass
+	CodegenAction::Execuetion
+		clang::ParseAST
+	BackendConsumer::HandleTranslationUnit
+		clang::EmitBackendOutput
+			EmitAssemblyHelper::EmitAssembly,根据参数选项添加不同的pass
+				case Backend_EmitNothing： 不创建，对应-emit-llvm-only
+				case Backend_EmitBC： 创建WriteBitcodePass，对应选项-emit-llvm-bc
+				case Backend_EmitLL:  创建PrintModulePassWrapper，对应-emit-llvm
+				case 其他：			创建TargetLibraryInfoWrapperPass，FunctionPass，对应-emit-obj、-emit-codegen-only
+
+#####pass相关类
+	PassManagerBuilderWrapper
+	The ImmutablePass class
+	The ModulePass class
+	The CallGraphSCCPass class
+	The FunctionPass class
+	The LoopPass class
+	The RegionPass class
+	The BasicBlockPass class
+	The MachineFunctionPass class
+
+![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
+
+#####编写一个pass
+
+
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
 - -cc1，clang编译器
@@ -539,78 +575,23 @@
 				创建子进程执行命令，例如clang -cc1 xxxx; link.exe xxxx★
 	7、Driver.generateCompilationDiagnostics,产生诊断信息
 	8、llvm::llvm_shutdown()
-        
-####33、其他
-- 多语言前端（multiple language front-ends）
-- 语言级别静态优化（Static Optimizer）
-- 虚拟指令集（virtual instruction set）
-	- 虚拟寄存器Static Single Assignment（SSA）
-- 抽象语法树（AST）
-- 用例
-- extras工具
+
+![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
+      
+									
+##工具与例子
+###extras工具
+####PPTrace: C++预编译跟踪 
+
 	- Clang Check：语法检查，输出AST
 	- Clang Format: 代码格式化
 	- Clang Modernizer: C++11风格
 	- Clang Tidy: Google代码风格检查
 	- Modularize: 模块化
-	- PPTrace: C++预编译跟踪 
 
-- 流程分析
+###opt和bugpoint工具
 
-									
-##三、LLVM
-###PASS概念
-	在LLVM中，优化器被组织成优化pass的管道，常见的pass有内联化、表达式重组、循环不变量移动等。每个pass都作为继承Pass类的C++类，并定义在一个私有的匿名namespace中，同时提供一个让外界获得到pass的函数。
-	PassInfo类的每一个对象都对应着一个实际存在的Pass，并且保存着这个Pass的信息。
-	RegisterPass这个类是一个模板类，这个模板类的类型就是Pass的名字。它是PassInfo的子类，主要用来注册Pass。完成注册之后，在PassManager管理的内部数据库里才能找到这个Pass。需要注意的是，这个模板类的使用必须是在全局范围之内的。可以从最简单的Pass例子--Hello（http://llvm.org/docs/doxygen/html/Hello_8cpp_source.html）中去看这个模板类的使用方法。
-	RegisterAGBase是RegisterAnalysisGroup类的基类，而RegisterAGBase类又是PassInfo类的子类。其中RegisterAGBase类名字中的AG就是AnalysisGroup的缩写，这种命名方式在LLVM的源码中被大量的应用，比如MetaData在一些类的名字里就被缩写为MD。RegisterAnalysisGroup这个类的作用主要是将一个Pass注册成为一个分析组的成员，当然在进行此操作之前，这个Pass必须被首先注册Pass成功。一个Pass可以被注册到多个分析组中。同一个Pass在多个分析组中，依然是根据这个Pass的名字进行标识的。
-	PassRegistrationListener这个类主要负责在运行时时候Pass的注册与否，并且会在Pass被load和remove的时候，去调用回调函数。
-####内置pass
-	CodegenAction::Execuetion
-		clang::ParseAST
-	BackendConsumer::HandleTranslationUnit
-		clang::EmitBackendOutput
-			EmitAssemblyHelper::EmitAssembly,根据参数选项添加不同的pass
-				case Backend_EmitNothing： 不创建，对应-emit-llvm-only
-				case Backend_EmitBC： 创建WriteBitcodePass，对应选项-emit-llvm-bc
-				case Backend_EmitLL:  创建PrintModulePassWrapper，对应-emit-llvm
-				case 其他：			创建TargetLibraryInfoWrapperPass，FunctionPass，对应-emit-obj、-emit-codegen-only
-
-####pass相关类
-	PassManagerBuilderWrapper
-	The ImmutablePass class
-	The ModulePass class
-	The CallGraphSCCPass class
-	The FunctionPass class
-	The LoopPass class
-	The RegionPass class
-	The BasicBlockPass class
-	The MachineFunctionPass class
-
-![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
-
-####编写一个pass
-
-####opt和bugpoint工具
-
-- bytecode
-- Three-address code
-	- 算术操作arithmetic
-	- 逻辑操作logical
-- Run-time optimization
-- Just-In-Time (JIT)
-- Multi-stage Optimization
-- native code
-
-- Run Time
-   - Profile
-   		- 热点函数（hot functions）
-   		- 循环（loops）
-   		- 关键路径（hot paths）
-   - Reoptimization
-   		- offline reoptimizer
-
-- examples例子
+###examples例子
 	- BrainF
 	- ExceptionDemo
 	- Fibonacci
@@ -619,10 +600,6 @@
 	- Kaleidoscope，展示了如何在LLVM之上构建一个支持一门自己定义的编程语言的编译器
 	- OCaml-Kaleidoscope
 	- ParallelJIT
-
-![driver_tool](http://clang.llvm.org/doxygen/inherit_graph_443.png)
-
-![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
 
 ##llvm编程手册，参考["LLVM Programmer’s Manual](http://llvm.org/docs/ProgrammersManual.html)
 
