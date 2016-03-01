@@ -139,7 +139,7 @@
 ------------- | ------------- | ------------- | ------------- | -------------
 -init-only | | InitOnlyAction | | 只做前端初始化
 -Eonly | 预处理 | PreprocessOnlyAction | | 只做预处理，不输出
--E | 预处理 | PrintPreprocessedAction | | 子选项还包括-C、-具体查看PreprocessorOutputOptions类
+-E | 预处理 | PrintPreprocessedAction | | 子选项还包括-P、-C、-dM、-dD具体查看PreprocessorOutputOptions类
  | 预处理 | RewriteIncludesAction | | 
 -dump-tokens | 打印token | DumpTokensAction |  | 输出tokens![-dump-tokens](clang_example/-dump-tokens.PNG)
 -dump-raw-tokens | 打印tokens | DumpRawTokensAction |  | 输出原始tokens，包括空格符
@@ -319,7 +319,7 @@
 
 #####处理流程
 
-- Preprocessor::Lex根据CurLexerKind来切换不同Lexer
+- Preprocessor::Lex识别到一个token才返回，具体根据CurLexerKind调用不同的Lexer子类对象及函数去处理
 	-  标准预处理CLK_Lexer，Lexer::Lex
 		- Lexer::LexTokenInternal按字符流逐个处理
 			-  如果是文件结尾，调用LexEndOfFile
