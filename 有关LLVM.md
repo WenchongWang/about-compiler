@@ -168,118 +168,131 @@
 ####clang流程分析
 - 入口cc1_main
 
-	> 创建编译器对象Clang（CompilerInstance类）
-	>
-	> CompilerInvocation::CreateFromArgs
-	- 从clang/Driver/Options.inc读取选项，构建选项表
-	- **ParseFrontendArgs解析出前端选项**，例如选项-analyze，对应frontend::RunAnalysis；-plugin，对应frontend::PluginActionfrontend::PluginAction；
-	- ParseAnalyzerArgs解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker
-	> 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics
-	> 
-	> ExecuteCompilerInvocation↓
-    
-	- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
-		- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
-			- 如果frontend::RunAnalysis，创建AnalysisAction类对象
-			- 其他类型创建其他FrontendAction子类对象
-			- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
-	- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
-		> Act.BeginSourceFile（FrontendAction::BeginSourceFile），创建具体的Consumer并插入到Consumers
-			- createPreprocessor::createPreprocessor创建PTH管理对象(PTHManager)、头文件搜索对象(HeaderSearch)等来构建预处理对象(Preprocessor)
-				- InitializePreprocessor中会预设一些内置宏，例如<built-in>、#__include_macros、__llvm__、__clang_major__等
+	- 创建编译器对象Clang（CompilerInstance类）
+	- CompilerInvocation::CreateFromArgs↓
+		- 从clang/Driver/Options.inc读取选项，构建选项表
+		- **ParseAnalyzerArgs解析出静态分析器选项**，解析出静态分析analyze有关的参数与子选项，例如-analyzer-checker、-analyzer-checker-help
+		- **ParseMigratorArgs解析出**，
+		- **ParseDependencyOutputArgs解析出**，
+		- **ParseCommentArgs解析出**，
+		- **ParseFileSystemArgs解析出**，
+		- **ParseFrontendArgs解析出前端选项**，例如选项-analyze，对应frontend::RunAnalysis；-plugin，对应frontend::PluginActionfrontend::PluginAction；
+		- **ParseTargetArgs解析出**，
+		- **ParseCodeGenArgs解析出**，
+		- **ParseHeaderSearchArgs解析出**，
+		- **parseSanitizerKinds解析出**，
+		- **ParseLangArgs解析出**，
+		- **ParsePreprocessorArgs解析出**，
+		- **ParsePreprocessorOutputArgs解析出**，
 
-		- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
-			- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
-			- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
-
-
-		> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
-
-		`-E选项流程↓只做预处理部分`
-
-		- PrintPreprocessedAction::ExecuteAction()
-			- clang::DoPrintPreprocessedInput,传入预编译对象、输出流、预编译选项对象（只需要这三样即可） 
-
-		`-dump-tokens选项流程↓词法分析`
+	- 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics 
+	- ExecuteCompilerInvocation↓
+		- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
+			- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
+				- 如果frontend::RunAnalysis，创建AnalysisAction类对象
+				- 其他类型创建其他FrontendAction子类对象
+				- 如果选项为frontend::PluginAction（选项-plugin），创建PluginASTAction类对象
+		- CompilerInstance::ExecuteAction，传入ACT（AnalysisAction类）
+			> Act.BeginSourceFile（FrontendAction::BeginSourceFile），创建具体的Consumer并插入到Consumers
+				- createPreprocessor::createPreprocessor创建PTH管理对象(PTHManager)、头文件搜索对象(HeaderSearch)等来构建预处理对象(Preprocessor)
+					- InitializePreprocessor中会预设一些内置宏，例如<built-in>、#__include_macros、__llvm__、__clang_major__等
 	
-		- DumpTokensAction::ExecuteAction
-			- Preprocessor::EnterMainSourceFile预处理过程
-			- Preprocessor::Lex词法分析
-			- Preprocessor::DumpToken输出tokens
-
-		`-analyze选项流程↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
-
-		- ASTFrontendAction::ExecuteAction
-
-			- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
-			- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
-			- **ParseAST构建抽象语法树，从预处理->词法分析->语法分析->语义分析->AST**
-				- Parser::Initialize
-					- Sema::Initialize语义对象初始化
-						- **Consumer.Initialize ASTConsumer子类的初始化函数**
-						
-							`-analyze选项流程↓静态分析器后端初始化`
-
-							- **AnalysisConsumer::Initialize初始化**
-								- 具体流程请看《clang静态分析器》部分
-				
-					- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
-						- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
-							- CLK_Lexer：
-
-				- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
-					- ParseExternalDeclaration
-					    - Parser::ParseDeclaration
-					    	- 获取token类型
-						    	- case 模板、导出：
-						    		- ParseDeclarationStartingWithTemplate
-						    	- case 内联：
-						    		- ParseSimpleDeclaration
-						    	- case 名字空间：
-						    		- ParseNamespace
-						    	- case using：
-						    		- ParseUsingDirectiveOrDeclaration
-						    	- case assert：
-						    		- ParseStaticAssertDeclaration
-								- case 其他：
-						    		- ParseSimpleDeclaration
-							- ConvertDeclToDeclGroup			    		
-					    		
-						- case 未知： ParseDeclarationOrFunctionDefinition
-							- ParseDeclOrFunctionDefInternal
-								- ParseDeclGroup			
-									- ActOnDeclarator
-										- HandleDeclarator
-											- or ActOnTypedefDeclarator
-											- or ActOnFunctionDeclarator
-											- or ActOnVariableDeclarator
-									- 函数定义ParseFunctionDefinition
-										- ParseFunctionDefinition
-											- ParseCompoundStatementBody
-												- ParseStatementOrDeclaration
-													- ParseStatementOrDeclarationAfterAttributes
-														- case if语句
-															- ParseIfStatement
-														- case 其他语句
-															- Pasese_XX_Statement				
-
-			- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
-				- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
-				
-				`-analyze选项流程↓静态分析器后端处理流程`
-
-				- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit，具体流程请看《clang静态分析器》部分；
-				
-				`流程之一↓其他流程`
-				- ... ...
-		 
-
-		> Act.EndSourceFile（FrontendAction::EndSourceFile）
-
-		- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
-		- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
+			- **CreateWrappedASTConsumer，集中创建Consumer子类对象**
+				- **调用FrontendAction子类对象的CreateASTConsumer函数，创建Consumer子类对象，因此每个FrontendAction子类必须重写该函数**
+				- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
 	
-	- 诊断输出结果
+	
+			> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
+	
+			`-E选项流程↓只做预处理部分`
+	
+			- PrintPreprocessedAction::ExecuteAction()
+				- clang::DoPrintPreprocessedInput,传入预编译对象、输出流、预编译选项对象（只需要这三样即可） 
+	
+			`-dump-tokens选项流程↓词法分析`
+		
+			- DumpTokensAction::ExecuteAction
+				- Preprocessor::EnterMainSourceFile预处理的准备工作
+					- SourceManager::getMainFileID为当前处理的第一个文件(主文件)产生一个MainFileID(FileID类)
+					- Preprocessor::EnterSourceFile
+					- 为built-in创建FileID对象
+					- Preprocessor::EnterSourceFile
+				- Preprocessor::Lex词法分析
+				- Preprocessor::DumpToken输出tokens
+	
+			`-analyze选项流程↓需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
+	
+			- ASTFrontendAction::ExecuteAction
+	
+				- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
+				- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
+				- **ParseAST构建抽象语法树，从预处理->词法分析->语法分析->语义分析->AST**
+					- Parser::Initialize
+						- Sema::Initialize语义对象初始化
+							- **Consumer.Initialize ASTConsumer子类的初始化函数**
+							
+								`-analyze选项流程↓静态分析器后端初始化`
+	
+								- **AnalysisConsumer::Initialize初始化**
+									- 具体流程请看《clang静态分析器》部分
+					
+						- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
+							- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
+								- CLK_Lexer：
+	
+					- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
+						- ParseExternalDeclaration
+						    - Parser::ParseDeclaration
+						    	- 获取token类型
+							    	- case 模板、导出：
+							    		- ParseDeclarationStartingWithTemplate
+							    	- case 内联：
+							    		- ParseSimpleDeclaration
+							    	- case 名字空间：
+							    		- ParseNamespace
+							    	- case using：
+							    		- ParseUsingDirectiveOrDeclaration
+							    	- case assert：
+							    		- ParseStaticAssertDeclaration
+									- case 其他：
+							    		- ParseSimpleDeclaration
+								- ConvertDeclToDeclGroup			    		
+						    		
+							- case 未知： ParseDeclarationOrFunctionDefinition
+								- ParseDeclOrFunctionDefInternal
+									- ParseDeclGroup			
+										- ActOnDeclarator
+											- HandleDeclarator
+												- or ActOnTypedefDeclarator
+												- or ActOnFunctionDeclarator
+												- or ActOnVariableDeclarator
+										- 函数定义ParseFunctionDefinition
+											- ParseFunctionDefinition
+												- ParseCompoundStatementBody
+													- ParseStatementOrDeclaration
+														- ParseStatementOrDeclarationAfterAttributes
+															- case if语句
+																- ParseIfStatement
+															- case 其他语句
+																- Pasese_XX_Statement				
+	
+				- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
+					- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
+					
+					`-analyze选项流程↓静态分析器后端处理流程`
+	
+					- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit，具体流程请看《clang静态分析器》部分；
+					
+					`流程之一↓其他流程`
+					- ... ...
+			 
+	
+			> Act.EndSourceFile（FrontendAction::EndSourceFile）
+	
+			- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
+			- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
+		
+		- 诊断输出结果
 
 *备注：*
 
@@ -320,7 +333,7 @@
 #####处理流程
 
 - Preprocessor::Lex识别到一个token才返回，具体根据CurLexerKind调用不同的Lexer子类对象及函数去处理
-	-  标准预处理CLK_Lexer，Lexer::Lex
+	-  标准预处理CLK_Lexer，Lexer::Lex C/C++标准
 		- Lexer::LexTokenInternal按字符流逐个处理
 			-  如果是文件结尾，调用LexEndOfFile
 				- Preprocessor::RemoveTopOfLexerStack
@@ -339,10 +352,10 @@
 					- 内置宏？
 					- 其他？ 
 
-	-  CLK_PTHLexer
+	-  CLK_PTHLexer针对PTH文件
 	-  CLK_TokenLexer
 	-  CLK_CachingLexer
-	-  CLK_LexAfterModuleImport
+	-  CLK_LexAfterModuleImport针对import
 
 
 ####clang插件
