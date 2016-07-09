@@ -85,6 +85,8 @@
 .note.abi.tag   |SHT_NOTE	     |				  |	![elf_note_abi_tag](gcc_example/elf_note_abi_tag.PNG)
 .note.gnu.build-id|SHT_NOTE	     |				  |	![elf_note_gnu_buildid](gcc_example/elf_note_gnu_buildid.PNG)
 .rela.[name]    |SHT_RELA	     |				  |	readelf -r obj![elf_rela](gcc_example/elf_rela.PNG)
+.dynsym         |SHT_DYNSYM	     |				  |	包含动态链接符号表![elf_dynsym](gcc_example/elf_dynsym.PNG)
+.symtab			|SHT_SYMTAB	     |				  |	包含一个符号表，strip会删除该区![elf_dynsym](gcc_example/elf_dynsym.PNG)
 
 ###实验
 ####readelf -all(strip处理后、没有-g选项，-g选项)
