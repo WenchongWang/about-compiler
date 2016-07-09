@@ -82,6 +82,7 @@
 .shstrtab       |SHT_STRTAB		 |				  |	包含节区名称![elf_shstrtab](gcc_example/elf_shstrtab.PNG)
 .initerp        |SHT_PROGBITS	 |				  |	目标文件运行时，用于搜索依赖的glibc共享库![elf_interp](gcc_example/elf_interp.PNG)
 .comment        |SHT_PROGBITS	 |				  |	OS和GCC版本信息![elf_comment](gcc_example/elf_comment.PNG)
+.note.abi.tag   |SHT_NOTE	     |				  |	![elf_note_abi_tag](gcc_example/elf_note_abi_tag.PNG)
 
 ###实验
 ####readelf -all(strip处理后、没有-g选项，-g选项)
