@@ -54,8 +54,10 @@
 	}Elf32_Shdr;
 
 ###特殊节区
-	名称 			类型 				属性 			含义
-	.bss			
+名称 			|类型 				|属性 			|含义
+----------------|----------------|----------------|----------------
+.bss            |                |                |   
+.shstrtab       |SHT_STRTAB		 |				  |	包含节区名称，![elf_shstrtab](gcc_example/elf_shstrtab.PNG)
 
 ###实验
 ####readelf -all(strip处理后、没有-g选项，-g选项)
@@ -66,3 +68,7 @@
 ![readelf3](gcc_example/readelf3.PNG)
 
 ![readelf4](gcc_example/readelf4.PNG)
+
+####gcc选项，对目标文件节区的影响
+
+##参考资料
