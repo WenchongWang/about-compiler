@@ -1,5 +1,21 @@
 #有关GCC
 
+##GCC源码编译
+
+##GCC参数选项
+	-D，定义命令宏
+		//-DDEBUG相当于#define DEBUG
+		#ifdef DEBUG
+			printf("this code is for debugging\n");
+		#endif
+
+	-S，输出汇编文件
+	-std，指定标准，例如-std=c99
+	-O，指定优化级别，例如-O2,-Os
+	-l，链接静态库，例如myprintf.a静态库，-lmyprintf
+	-L, 指定库搜索路径
+	-static, 静态库和共享库同名时，优先使用静态库
+
 ##词法分析
 
 ##语法分析
@@ -19,6 +35,12 @@
 ###共享库链接
 
 ##ELF
+###ELF类型
+	readelf -h 目标文件 | grep Type
+	relocatable（可重定位）：.o文件、.a文件
+	executable（可执行）：
+	shared libarary（共享库）：.so文件
+	
 ###ELF文件的链接视图和执行视图
 ![elf1](gcc_example/elf1.png)
 
