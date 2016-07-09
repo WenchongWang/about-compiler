@@ -57,7 +57,10 @@
 名称 			|类型 				|属性 			|含义
 ----------------|----------------|----------------|----------------
 .bss            |                |                |   
-.shstrtab       |SHT_STRTAB		 |				  |	包含节区名称，![elf_shstrtab](gcc_example/elf_shstrtab.PNG)
+.shstrtab       |SHT_STRTAB		 |				  |	包含节区名称
+![elf_shstrtab](gcc_example/elf_shstrtab.PNG)
+.initerp        |SHT_PROGBITS	 |				  |	目标文件运行时，用于搜索依赖的glibc共享库
+![elf_interp](gcc_example/elf_interp.PNG)
 
 ###实验
 ####readelf -all(strip处理后、没有-g选项，-g选项)
