@@ -36,10 +36,11 @@
 
 ##ELF
 ###ELF类型
-	readelf -h 目标文件 | grep Type
+	readelf -h 目标文件 | grep Type  #查看ELF类型
 	relocatable（可重定位）：.o文件、.a文件
 	executable（可执行）：
-	shared libarary（共享库）：.so文件
+	shared libarary（共享库）：.so
+    core dump（核心转储文件）
 	
 ###ELF文件的链接视图和执行视图
 ![elf1](gcc_example/elf1.png)
