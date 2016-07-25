@@ -14,6 +14,20 @@
 	$ cd ../llvm/tools
 	$ git clone http://llvm.org/git/llvm-project/lldb.git #低级别调试器，可选
 	---------------------------------------------
+	llvm										<-git
+		|tools
+			|clang										<-git
+				tools
+					|extra or clang-tools-extra				<-git
+			|lld										<-git
+			|dragonegg									<-git
+		|lldb										<-git
+		|project
+			|compliler-rt								<-git
+			|test-suite									<-git
+			|libcxxabi									<-git
+			|libcxx										<-git
+	---------------------------------------------
     $ mkdir where-you-want-to-build		#编译输出目录
 	$ cd where-you-want-to-build
 	$ /PATH_TO_SOURCE/configure --disable-optimized --prefix=../where-youwant-to-install  #--enable-optimized(off),--enable-assertions(on),--enable-shared(off),--enable-jit(on),--enable-targets(all)
@@ -30,7 +44,7 @@
       -DBUILD_SHARED_LIBS=ON                \
       -DLLVM_TARGETS_TO_BUILD="host" 		\
       -Wno-dev ..                           &&
-	make
+	make -j4
     ---------------------------------------------
     $ echo $?    #返回0.表明编译成功
 	$ export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
