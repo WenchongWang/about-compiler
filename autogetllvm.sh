@@ -13,9 +13,7 @@ fi
 
 ##git库信息
 llvm_git="http://llvm.org/git/llvm.git"
-
 clang_git="http://llvm.org/git/clang.git"
-
 tools_extra_git="http://llvm.org/git/clang-tools-extra.git"
 compiler_rt_git="http://llvm.org/git/compiler-rt.git"
 lldb_git="http://llvm.org/git/llvm-project/lldb.git"
@@ -48,12 +46,16 @@ echo "cd $PWD"
 #			|libcxx								  <-git
 
 
-
-##克隆llvm git
-git clone $llvm_git
-
-
+##并发克隆git库
 for i in $modules
 do
+{
 	echo "git clone $i"
+	git clone $i
+}&
 done
+wait
+echo "finish clone!"
+
+##调整目录层次
+exit 0
