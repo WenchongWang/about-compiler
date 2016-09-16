@@ -35,17 +35,17 @@ echo "cd $PWD"
 #                  目录层次                                                            git依赖关系
 #	llvm										<-git
 #		|tools
-#			|clang								  \<-git
+#			|clang								  <-git
 #				tools
-#					|extra or clang-tools-extra			     \<-git
-#			|lld									\<-git
-#			|dragonegg							     \<-git
-#		|lldb									  \<-git
+#					|extra or clang-tools-extra			    <-git
+#			|lld								  <-git
+#			|dragonegg							  <-git
+#		|lldb									  <-git
 #		|project
-#			|compliler-rt							  \<-git
-#			|test-suite							  \<-git
-#			|libcxxabi							  \<-git
-#			|libcxx								  \<-git
+#			|compliler-rt							  <-git
+#			|test-suite							  <-git
+#			|libcxxabi							  <-git
+#			|libcxx								  <-git
 
 
 
