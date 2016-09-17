@@ -38,16 +38,13 @@ echo "cd $PWD"
 #			|clang								  <-git
 #				tools
 #					|extra or clang-tools-extra			    <-git
-#			|lld								  <-git
-#			|dragonegg							  <-git
-#               |project
-#                       |compiler-rt                                                      <-git
 #		|projects
 #			|lldb							          <-git
 #			|test-suite							  <-git
 #			|libcxxabi							  <-git
 #			|libcxx								  <-git
 #                       |dragonegg                                                        <-git
+#                       |compiler-rt                                                      <-git
 
 ##并发克隆git库
 for i in $modules
@@ -66,6 +63,6 @@ cp -r ./clang-tools-extra ./llvm/tools/clang/tools/
 cp -r ./lldb ./llvm/projects/
 cp -r ./dragonegg ./llvm/projects/
 cp -r ./libcxx ./llvm/projects/
-cp -r ./compiler-rt ./llvm/project/
+cp -r ./compiler-rt ./llvm/projects/
 
 exit 0
