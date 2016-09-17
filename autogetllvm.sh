@@ -12,8 +12,8 @@ else
 fi 
 
 ##git库信息
-llvm_git="http://llvm.org/git/llvm.git"
-clang_git="http://llvm.org/git/clang.git"
+llvm_git="https://github.com/llvm-mirror/llvm.git"
+clang_git="https://github.com/llvm-mirror/clang.git"
 tools_extra_git="http://llvm.org/git/clang-tools-extra.git"
 compiler_rt_git="http://llvm.org/git/compiler-rt.git"
 lldb_git="https://github.com/llvm-mirror/lldb.git"
