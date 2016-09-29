@@ -13,12 +13,40 @@
 	$ git clone [http://llvm.org/git/llvm-project/test-suite.git](http://llvm.org/git/llvm-project/test-suite.git)   #测试套，可选
 	$ cd ../llvm/tools
 	$ git clone http://llvm.org/git/llvm-project/lldb.git #低级别调试器，可选
-	$ mkdir where-you-want-to-install	#安装目录
-	$ mkdir where-you-want-to-build		#编译目录
+	---------------------------------------------
+	llvm										<-git
+		|tools
+			|clang										<-git
+				tools
+					|extra or clang-tools-extra				<-git
+			|lld										<-git
+			|dragonegg									<-git
+		|lldb										<-git
+		|project
+			|compliler-rt								<-git
+			|test-suite									<-git
+			|libcxxabi									<-git
+			|libcxx										<-git
+	---------------------------------------------
+    $ mkdir where-you-want-to-build		#编译输出目录
 	$ cd where-you-want-to-build
 	$ /PATH_TO_SOURCE/configure --disable-optimized --prefix=../where-youwant-to-install  #--enable-optimized(off),--enable-assertions(on),--enable-shared(off),--enable-jit(on),--enable-targets(all)
 	$ make && make install				#开始编译
-	$ echo $?    #返回0.表明编译成功
+	---------------------------------------------
+    #新版本需要这样编译
+    mkdir -v build &&
+	cd       build &&
+
+	CC=gcc CXX=g++                              \
+	cmake -DCMAKE_INSTALL_PREFIX=/usr           \
+      -DLLVM_ENABLE_FFI=ON                  \
+      -DCMAKE_BUILD_TYPE=Release            \
+      -DBUILD_SHARED_LIBS=ON                \
+      -DLLVM_TARGETS_TO_BUILD="host" 		\
+      -Wno-dev ..                           &&
+	make -j4
+    ---------------------------------------------
+    $ echo $?    #返回0.表明编译成功
 	$ export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
 	$ clang –v
 
