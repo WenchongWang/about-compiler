@@ -507,6 +507,19 @@
 ######方式二
 - 具体参考“SampleAnalyzerPlugin”例子
 
+####LLVM IR
+
+1. IR层次
+
+	- 模块
+		- 全局变量
+		- 函数
+			- 块
+				- 指令
+2. 模块(Module类)
+
+ 
+
 ####PASS遍
 	在LLVM中，优化器被组织成优化pass的管道，常见的pass有内联化、表达式重组、循环不变量移动等。每个pass都作为继承Pass类的C++类，并定义在一个私有的匿名namespace中，同时提供一个让外界获得到pass的函数。
 	PassInfo类的每一个对象都对应着一个实际存在的Pass，并且保存着这个Pass的信息。
@@ -644,5 +657,11 @@
 
 ##llvm编程手册，参考["LLVM Programmer’s Manual](http://llvm.org/docs/ProgrammersManual.html)
 
-##引用
-[C11标准中文翻译](http://www.clang.pub/wiki/C11)
+##资料
+
+1. [C11标准中文翻译](http://www.clang.pub/wiki/C11)
+2. [www.cs.cmu.edu's SCS](http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15745-s14/public/lectures/)
+3. [LLVM: AN INFRASTRUCTURE FOR MULTI-STAGE OPTIMIZATION BY CHRIS ARTHUR LATTNER](http://llvm.org/pubs/2002-12-LattnerMSThesis.pdf)
+4. [https://cciast.codeplex.com](https://cciast.codeplex.com)
+5. [http://rosecompiler.org](http://rosecompiler.org)
+6. [LLVM's WIKI](https://zh.wikipedia.org/wiki/LLVM)
