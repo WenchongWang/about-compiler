@@ -633,29 +633,33 @@
 ![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
       
 									
-##工具与例子
-###extras工具
-####PPTrace: C++预编译跟踪 
-
-	- Clang Check：语法检查，输出AST
-	- Clang Format: 代码格式化
-	- Clang Modernizer: C++11风格
-	- Clang Tidy: Google代码风格检查
-	- Modularize: 模块化
+##基于Clang/LLVM的工具
+###扩展工具
+- PPTrace: C++预编译跟踪 
+- Clang Check：语法检查，输出AST
+- Clang Format: 代码风格调整工具
+	- .clang-format选项说明
+	- 工具实现分析 
+- Clang Modernizer: C++11风格
+- Clang Tidy: 基于LibTooling（[How To Setup Clang Tooling For LLVM](http://clang.llvm.org/docs/HowToSetupToolingForLLVM.html)）的代码检测工具,她可以使用“clang静态分析器”的checks，也有自己的checks
+	- [与"clang静态分析器"区别](http://lists.llvm.org/pipermail/cfe-dev/2015-September/044966.html)
+	- [Clang Tidy文档](http://clang.llvm.org/extra/clang-tidy/)
+	- [The list of clang-tidy checks](http://clang.llvm.org/extra/clang-tidy/checks/list.html)
+	- 工具实现分析
+	- 编写Tidy自己的checks
+- Modularize: 模块化
 
 ###opt和bugpoint工具
 
-###examples例子
-	- BrainF
-	- ExceptionDemo
-	- Fibonacci
-	- HowToUseJIT
-	- ModuleMaker
-	- Kaleidoscope，展示了如何在LLVM之上构建一个支持一门自己定义的编程语言的编译器
-	- OCaml-Kaleidoscope
-	- ParallelJIT
-
-##llvm编程手册，参考["LLVM Programmer’s Manual](http://llvm.org/docs/ProgrammersManual.html)
+###其他例子
+- BrainF
+- ExceptionDemo
+- Fibonacci
+- HowToUseJIT
+- ModuleMaker
+- Kaleidoscope，展示了如何在LLVM之上构建一个支持一门自己定义的编程语言的编译器
+- OCaml-Kaleidoscope
+- ParallelJIT
 
 ##资料
 
@@ -665,3 +669,4 @@
 4. [https://cciast.codeplex.com](https://cciast.codeplex.com)
 5. [http://rosecompiler.org](http://rosecompiler.org)
 6. [LLVM's WIKI](https://zh.wikipedia.org/wiki/LLVM)
+7. [LLVM编程手册](http://llvm.org/docs/ProgrammersManual.html)
