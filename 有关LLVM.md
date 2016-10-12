@@ -161,6 +161,8 @@
 	clangRewrite
 	clangToolingCore
 
+----------
+
 ###clang编译器
 
 ####架构图（以编译器流水线角度）
@@ -333,6 +335,8 @@
 2. FrontendAction::CreateASTConsumer用于创建不同ASTConsumer对象（消费者），因此需实现该函数；
 3. FrontendAction::ExecuteAction用于衔接生产者和消费者，例如ASTFrontendAction::ExecuteAction调用ParseAST解析语法树并传递给后面的消费者，而DumpRawTokensAction只打印tokens；
 4. 需要抽象语法树的后端，需要调用ParseAST函数；
+
+----------
 
 ####预处理Preprocessor与词法分析Lexer
 #####常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
@@ -513,6 +517,8 @@
 
 ![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
 
+----------
+
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
 - -cc1，clang编译器
@@ -592,6 +598,7 @@
 
 ![dirver_action](http://clang.llvm.org/doxygen/classclang_1_1driver_1_1Action__inherit__graph.png)
       
+----------
 									
 ##基于Clang/LLVM的工具
 ###扩展工具
