@@ -162,7 +162,11 @@
 	clangToolingCore
 
 ###clang编译器
-####编译器选项（clang -cc1 -help，CC1Options.td中定义）	
+
+####c架构图（以编译器流水线角度）
+![clang编译器](clang编译器.gif)
+
+####编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）	
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -init-only | | InitOnlyAction | | 只做前端初始化
@@ -189,8 +193,8 @@
 
 *备注：*
 
-1. FrontendAction及其子类主要是前端功能的集合，不同的子类包含的功能不同；
-2. ASTConsumer及其子类主要是后端功能的集合，不同的子类包含的功能不同；
+1. FrontendAction及其子类主要是生成者功能的集合，不同的子类包含的功能不同；
+2. ASTConsumer及其子类主要是消费者功能的集合，不同的子类包含的功能不同；
 3. 编译器选项表格中基本上按功能从小到大排列；
 
 ####clang流程分析
@@ -215,6 +219,7 @@
 
 	- 创建诊断引擎对象（DiagnosticsEngine类）， CompilerInstance::createDiagnostics 
 	- ExecuteCompilerInvocation↓
+		- **循环导入动态或共享库(选项-load)**,llvm::sys::DynamicLibrary::LoadLibraryPermanently
 		- **创建FrontendAction子类对象，CreateFrontendAction工厂模式**
 			- 调用CreateFrontendBaseAction，根据FrontendAction相关类型，创建FrontendAction子类对象
 				- 如果frontend::RunAnalysis，创建AnalysisAction类对象
@@ -324,13 +329,10 @@
 
 *备注：*
 
-1. 通过clang编译器选项，来选择创建不同的FrontendAction，具体在createFrontendBaseAction函数中，创建不同的FrontendAction对象
-2. FrontendAction::CreateASTConsumer用于创建不同ASTConsumer对象，因此需实现该函数；
-3. FrontendAction::ExecuteAction用于衔接后端，例如ASTFrontendAction::ExecuteAction调用ParseAST解析语法树并传递给后端，而DumpRawTokensAction只打印tokens；
+1. 通过clang编译器选项，来选择创建不同的FrontendAction（生产者），具体在createFrontendBaseAction函数中，创建不同的FrontendAction对象
+2. FrontendAction::CreateASTConsumer用于创建不同ASTConsumer对象（消费者），因此需实现该函数；
+3. FrontendAction::ExecuteAction用于衔接生产者和消费者，例如ASTFrontendAction::ExecuteAction调用ParseAST解析语法树并传递给后面的消费者，而DumpRawTokensAction只打印tokens；
 4. 需要抽象语法树的后端，需要调用ParseAST函数；
-
-####架构图
-![clang编译器](clang编译器.gif)
 
 ####预处理Preprocessor与词法分析Lexer
 #####常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
@@ -609,7 +611,7 @@
 
 ###opt和bugpoint工具
 
-###编写clang插件
+###编写clang插件（生产者和消费者模式，动态加载到clang编译器）
 - 具体参考“PrintFunctionNames”例子
 	- clang -cc1 -load printFunctionNames.dll **-plugin** print-fns a.c    	 #替换默认的FrontendAction
 
