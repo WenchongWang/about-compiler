@@ -385,12 +385,6 @@
 	-  CLK_CachingLexer
 	-  CLK_LexAfterModuleImport针对import
 
-
-####clang插件
-- 具体参考“PrintFunctionNames”例子
-	clang -cc1 -load printFunctionNames.dll -plugin print-fns a.c    	 #替换默认的FrontendAction
-	clang -cc1 -load printFunctionNames.dll -add-plugin print-fns a.c    #添加FrontendAction
-
 ####clang静态分析器
 #####按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
 
@@ -474,39 +468,6 @@
 	- CheckerContext类包含了一些操作状态的函数，例如获取状态getState()，更改状态addTransition(State)、产生sink节点generateSink()，上报BUG EmitReport(BUG)
 	- 节点类ExplodedNode、BUG类BugReport、状态类ProgramState
 
-#####如何编写Checker
-	两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载
-
-######方式一
-- 在lib/StaticAnalyzer/Checkers目录下，创建xxxxChecker.cpp
-- xxxxChecker.cpp编写Checke子类和注册函数：
-		using namespace clang;
-	    using namespace ento;
-	
-	    namespace {
-	    	class NewChecker: public Checker< check::PreStmt<CallExpr> > {
-	    		public:
-	      			void checkPreStmt(const CallExpr *CE, CheckerContext &Ctx) const {}
-	    		}
-	    }
-						
-		void ento::registerxxxx(CheckerManager &mgr) {
-  				mgr.registerChecker<xxxx>();
-		}
-- clang/lib/StaticAnalyzer/Checkers/Checkers.td注册Checker归属关系，例如alpha.core.yyyy
-		
-		let ParentPackage = CoreAlpha in {
-		...
-		def xxxxChecker : Checker<"yyyy">,    //注意yyyy，任意名字
-		  HelpText<"Checker功能表述">,
-		  DescFile<"xxxxChecker.cpp">;
-		...
-		} // end "alpha.core"
-
-
-######方式二
-- 具体参考“SampleAnalyzerPlugin”例子
-
 ####LLVM IR
 
 1. IR层次
@@ -549,9 +510,6 @@
 	The MachineFunctionPass class
 
 ![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
-
-#####编写一个pass
-
 
 ###3、clang驱动
 ####31、 驱动选项（clang -help，Options.td定义）
@@ -641,7 +599,7 @@
 	- .clang-format选项说明
 	- 工具实现分析 
 - Clang Modernizer: C++11风格
-- Clang Tidy: 基于LibTooling（[How To Setup Clang Tooling For LLVM](http://clang.llvm.org/docs/HowToSetupToolingForLLVM.html)）的代码检测工具,她可以使用“clang静态分析器”的checks，也有自己的checks
+- Clang Tidy: 基于LibTooling（[LibTooling文档](http://clang.llvm.org/docs/LibTooling.html)）的代码检测工具,她可以使用“clang静态分析器”的checks，也有自己的checks
 	- [与"clang静态分析器"区别](http://lists.llvm.org/pipermail/cfe-dev/2015-September/044966.html)
 	- [Clang Tidy文档](http://clang.llvm.org/extra/clang-tidy/)
 	- [The list of clang-tidy checks](http://clang.llvm.org/extra/clang-tidy/checks/list.html)
@@ -650,6 +608,51 @@
 - Modularize: 模块化
 
 ###opt和bugpoint工具
+
+###编写clang插件
+- 具体参考“PrintFunctionNames”例子
+	- clang -cc1 -load printFunctionNames.dll **-plugin** print-fns a.c    	 #替换默认的FrontendAction
+
+	- clang -cc1 -load printFunctionNames.dll **-add-plugin** print-fns a.c    #添加FrontendAction
+
+###编写clang静态分析器的checker
+	两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载
+
+####方式一
+- 在lib/StaticAnalyzer/Checkers目录下，创建xxxxChecker.cpp
+- xxxxChecker.cpp编写Checke子类和注册函数：
+		using namespace clang;
+	    using namespace ento;
+	
+	    namespace {
+	    	class NewChecker: public Checker< check::PreStmt<CallExpr> > {
+	    		public:
+	      			void checkPreStmt(const CallExpr *CE, CheckerContext &Ctx) const {}
+	    		}
+	    }
+						
+		void ento::registerxxxx(CheckerManager &mgr) {
+  				mgr.registerChecker<xxxx>();
+		}
+- clang/lib/StaticAnalyzer/Checkers/Checkers.td注册Checker归属关系，例如alpha.core.yyyy
+		
+		let ParentPackage = CoreAlpha in {
+		...
+		def xxxxChecker : Checker<"yyyy">,    //注意yyyy，任意名字
+		  HelpText<"Checker功能表述">,
+		  DescFile<"xxxxChecker.cpp">;
+		...
+		} // end "alpha.core"
+
+
+####方式二
+- 具体参考“SampleAnalyzerPlugin”例子
+
+###编写一个pass
+
+###编写基于libclang库的工具
+
+###编写基于libTooling库的工具
 
 ###其他例子
 - BrainF
