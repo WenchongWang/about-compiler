@@ -132,34 +132,19 @@
 
 - **libclang库**
 
-`libclang库是什么？`libclang提供了一系列的C语言的接口，可是这些接口并不能全然提供存储在Clang C++ AST中的全部信息，仅仅能提供部分基本信息，可是这些基本信息已经能够满足普通情况下的使用。主要目的是为了稳定，而且能够支持开发工具的基本功能。
+	- `libclang库是什么？`libclang提供了一系列的C语言的接口，可是这些接口并不能全然提供存储在Clang C++ AST中的全部信息，仅仅能提供部分基本信息，可是这些基本信息已经能够满足普通情况下的使用。主要目的是为了稳定，而且能够支持开发工具的基本功能。![Gregor-libclang](http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf)
 	
 	  	
-`依赖库`
+	- `依赖库,`clangAST、clangBasic、clangFrontend、	clangIndex、clangLex、clangSema、clangTooling
 
-	clangAST
-	clangBasic
-	clangFrontend
-	clangIndex
-	clangLex
-	clangSema
-	clangTooling
-
-`主要接口(BuildSystem.h、CXString.h、Index.h、CXCompilationDatabase.h、Documentation.h)`
+	- `对外接口`
 	![group__CINDEX](clang_example/group__CINDEX.png)
+
+    - `libclang python binding,`
 
 - **libtooling库**
 
-`依赖库`
-
-	clangAST
-	clangASTMatchers
-	clangBasic
-	clangDriver
-	clangFrontend
-	clangLex
-	clangRewrite
-	clangToolingCore
+	- `依赖库`clangAST、clangASTMatchers、	clangBasic、clangDriver、clangFrontend、clangLex、clangRewrite、clangToolingCore
 
 ----------
 
@@ -660,8 +645,19 @@
 ###编写一个pass
 
 ###编写基于libclang库的工具
+- c-index-test
+- c-arcmt-test
+- cindex-dump.py
+- cindex-includes.py
 
 ###编写基于libTooling库的工具
+- clang-tidy
+- clang-fuzzer
+- clang-rename
+- clang-modernize
+- clang-query
+- clang-check
+- pp-trace
 
 ###其他例子
 - BrainF
