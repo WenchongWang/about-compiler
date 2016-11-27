@@ -140,8 +140,40 @@
 	- `对外接口`
 	![group__CINDEX](clang_example/group__CINDEX.png)
 
+    - `libclang封装了什么？`
+	    - 重要数据结构
+			- CIndexer，用于管理库的全局状态的顶层对象；
+		    - CXTranslationUnit，用于封装单独的翻译单元的抽象语法树AST的高级对象，该对象包含了CIndexer、ASTUnit、Diagnostics等对象；
+		    - ASTUnit，用于转换AST的工具类；
+		    - CXCursor，用于呈现AST的节点Node；
+		    - SourceRange、SourceLocation，用于表示输入源文件相关信息；
+		    - Diagnostics，诊断信息；
+
+		- 主要函数
+			- clang_createIndex函数
+			- clang_parseTranslationUnit函数
+				- 创建CXTranslationUnit TU对象
+				- clang_parseTranslationUnit_Impl
+					- 调用CompilerInstance::createDiagnostics创建诊断对象
+					- 调用ASTUnit::LoadFromCommandLine
+						- 创建CompilerInvocation CI对象（类似clang流程）
+						- 创建ASTUnit AST对象
+						- 创建createVFSFromCompilerInvocation VFS虚拟文件对象
+						- 调用AST对象方法LoadFromCompilerInvocation
+							- 调用ASTUnit::Parse，整个过程有点类似CompilerInstance::ExecuteAction函数
+								- 创建CompilerInstance Clang编译器对象
+								- 创建SourceManager对象
+								- 创建生产者TopLevelDeclTrackerAction Act对象
+								- 调用Act->BeginSourceFile，最终创建消费者TopLevelDeclTrackerConsumer对象
+								- 调用Act->Execute，TopLevelDeclTrackerAction没有重写ExecuteAction，实际调用ASTFrontendAction::ExecuteAction
+									- 调用clang::ParseAST解析AST
+									- 调用消费者对象HandleTranslationUnit.HandleTranslationUnit
+								- 调用Act->EndSourceFile，实际调用FrontendAction::EndSourceFile
+					- 调用MakeCXTranslationUnit返回装满解析后的CXTranslationUnit对象
+			- clang_getInclusions函数
+
     - `libclang python binding,`
-    
+
 	- `libclang相关资料`
 		- http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf
 
