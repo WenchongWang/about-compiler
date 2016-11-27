@@ -175,6 +175,10 @@
     - `libclang python binding,`
     ![](clang_example/libclang_python_binding.PNG)
 
+    - `libclang如何使用？`
+
+    参考《编写基于libclang库的工具》
+
 	- `libclang相关资料`
 		- http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf
 
