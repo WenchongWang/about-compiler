@@ -173,6 +173,7 @@
 			- clang_getInclusions函数
 
     - `libclang python binding,`
+    ![](clang_example/libclang_python_binding.PNG)
 
 	- `libclang相关资料`
 		- http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf
