@@ -149,9 +149,9 @@
 		    - SourceRange、SourceLocation，用于表示输入源文件相关信息；
 		    - Diagnostics，诊断信息；
 
-		- 主要函数
-			- clang_createIndex函数
-			- clang_parseTranslationUnit函数
+		- 主要函数流程
+			- clang_createIndex函数，创建CIndexer管理对象
+			- clang_parseTranslationUnit函数，创建CXTranslationUnit翻译单元对象，该对象中又包含Diagnostics诊断对象，AST对象等有用对象信息
 				- 创建CXTranslationUnit TU对象
 				- clang_parseTranslationUnit_Impl
 					- 调用CompilerInstance::createDiagnostics创建诊断对象
@@ -163,14 +163,15 @@
 							- 调用ASTUnit::Parse，整个过程有点类似CompilerInstance::ExecuteAction函数
 								- 创建CompilerInstance Clang编译器对象
 								- 创建SourceManager对象
-								- 创建生产者TopLevelDeclTrackerAction Act对象
-								- 调用Act->BeginSourceFile，最终创建消费者TopLevelDeclTrackerConsumer对象
+								- 创建**生产者TopLevelDeclTrackerAction** Act对象
+								- 调用Act->BeginSourceFile，最终创建**消费者TopLevelDeclTrackerConsumer**对象
 								- 调用Act->Execute，TopLevelDeclTrackerAction没有重写ExecuteAction，实际调用ASTFrontendAction::ExecuteAction
 									- 调用clang::ParseAST解析AST
 									- 调用消费者对象HandleTranslationUnit.HandleTranslationUnit
 								- 调用Act->EndSourceFile，实际调用FrontendAction::EndSourceFile
 					- 调用MakeCXTranslationUnit返回装满解析后的CXTranslationUnit对象
-			- clang_getInclusions函数
+			
+ 		*从clang\_createIndex，clang\_parseTranslationUnit函数流程可知，libclang库底层也是按照生产者和消费者模式来封装各自的功能集合（clang编译器大量使用这种模式来划分编译选项）；要使用libclang库，首先要调用这两个函数，之后基本完成了源文件到AST的提取*
 
     - `libclang python binding,`
     ![](clang_example/libclang_python_binding.PNG)
