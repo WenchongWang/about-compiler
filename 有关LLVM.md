@@ -38,20 +38,14 @@
 	cd       build &&
 
 	CC=gcc CXX=g++                              \
-	cmake -DCMAKE_INSTALL_PREFIX=/usr           \
-      -DLLVM_ENABLE_FFI=ON                  \
-      -DCMAKE_BUILD_TYPE=Release            \
-      -DBUILD_SHARED_LIBS=ON                \
-      -DLLVM_TARGETS_TO_BUILD="host" 		\
-      -Wno-dev ..                           &&
-	make -j4
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	cmake -DCMAKE_INSTALL_PREFIX=/usr -DLLVM_ENABLE_FFI=ON - DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="host" -Wno-dev .. && make -j4
     ---------------------------------------------
     $ echo $?    #返回0.表明编译成功
 	$ export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
 	$ clang –v
 
 ###2、Windows下源码编译
-	下载源码，同上
+	下载源码，同上    
 	下载[cmake-3.3.1-win32-x86.exe](http://www.cmake.org/files/v3.3/cmake-3.3.1-win32-x86.exe)，安装cmake
 	打开cmake GUI， ADD Entry。 CMAKE_INSTALL_PREFIX等同于--prefix；LLVM_TARGETS_TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 
@@ -719,3 +713,4 @@
 5. [http://rosecompiler.org](http://rosecompiler.org)
 6. [LLVM's WIKI](https://zh.wikipedia.org/wiki/LLVM)
 7. [LLVM编程手册](http://llvm.org/docs/ProgrammersManual.html)
+8.[Clang Static Analyzer](https://github.com/llvm-mirror/clang/tree/master/lib/StaticAnalyzer)
