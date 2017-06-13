@@ -414,9 +414,6 @@
 ####clang静态分析器
 #####按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
 
-   选项     | 说明 | 备注
--analyzer-checker=debug | |
-
 1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
 	
 2. 静态分析器会默认使用6类checkers(default checker)：
@@ -458,14 +455,20 @@
 								- 遍历调用checker的注册函数
 									- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
 			- **AnalysisConsumer::HandleTranslationUnit,静态分析器分析入口**
-				- AnalysisConsumer::HandleDeclsCallGraph
-					- AnalysisConsumer::HandleCode
+				- Diags.hasErrorOccurred() || Diags.hasFatalErrorOccurred()，获取诊断情况，没有错误继续分析
+				- **checkerMgr->runCheckersOnASTDecl(TU, *Mgr, BR)，Checker核心作用于TU进行规则检查，TU为翻译单元Decl**
+				- RecVisitorMode = AM_Syntax，设置遍历模式，AM_Syntax语法层级，AM_Path路径敏感
+				- ExprEngine::shouldInlineCall,根据是否要InlineCall预设条件，再次设置RecVisitorMode遍历模式
+				- TraverseDecl，遍历LocalTUDecls顶层Decl
+				- **InlineCall？yes AnalysisConsumer::HandleDeclsCallGraph**
+					- 创建并构建调用图CallGraph对象，把所有顶层Decl声明加入其中
+					- AnalysisConsumer::HandleCode，路径敏感分析
 						- AnalysisConsumer::RunPathSensitiveChecks
 							- AnalysisConsumer::ActionExprEngine
 								- ExprEngine::ExecuteWorkList
 									- CoreEngine::ExecuteWorkList
-										- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理 
-							
+										- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
+				- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**						
 						
 
 5. ExplodedGraph CFG路径
