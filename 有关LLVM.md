@@ -462,8 +462,10 @@
 				- TraverseDecl，遍历LocalTUDecls顶层Decl
 				- **InlineCall？yes AnalysisConsumer::HandleDeclsCallGraph**
 					- 创建并构建调用图CallGraph对象，把所有顶层Decl声明加入其中
-					- AnalysisConsumer::HandleCode，路径敏感分析
-						- AnalysisConsumer::RunPathSensitiveChecks
+					- AnalysisConsumer::HandleCode
+						- getModeForDecl，根据Decl的具体信息，再次刷新遍历模式
+						- **AM_Syntax？checkerMgr->runCheckersOnASTBody(D, *Mgr, BR)，如果遍历模式为语法层级，则进行规则检查**
+						- **AM_Path && checkerMgr->hasPathSensitiveCheckers()** AnalysisConsumer::RunPathSensitiveChecks，如果遍历模式本身为路径敏感分析，同时注册的Checkers规则检查时要基于路径敏感分析，则调用本函数**
 							- AnalysisConsumer::ActionExprEngine
 								- ExprEngine::ExecuteWorkList
 									- CoreEngine::ExecuteWorkList
