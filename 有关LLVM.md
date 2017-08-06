@@ -330,7 +330,7 @@
 																- ParseIfStatement
 															- case 其他语句
 																- Pasese_XX_Statement				
-	
+	                ![](clang_example/C99与Clang.png) 
 				- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 					- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
 					
