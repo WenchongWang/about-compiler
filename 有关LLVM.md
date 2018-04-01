@@ -36,7 +36,7 @@
 	$ /PATH_TO_SOURCE/configure --disable-optimized --prefix=../where-youwant-to-install  #--enable-optimized(off),--enable-assertions(on),--enable-shared(off),--enable-jit(on),--enable-targets(all)
 	$ make && make install				#开始编译
 	---------------------------------------------
-    #新版本需要这样编译
+    新版本需要这样编译
     mkdir -v build &&
 	cd       build &&
 
@@ -62,7 +62,7 @@
 		clang编译器：利用clang前端组件及库打造的编译器，其入口为cc1_main; 参数为clang -cc1 或者 -Xclang；
         clang前端组件及库：包括Support、Basic、Diagnostics、Preprocessor、Lexer、Sema、CodeGen等；
 
-###1、clang前端组件及库，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
+### 1、clang前端组件及库，参考["Clang" CFE Internals Manual](http://clang.llvm.org/docs/InternalsManual.html#basic-blocks)
 
 - **LLVM Support Library**
 
@@ -186,11 +186,11 @@
 
 ----------
 
-###clang编译器
+### clang编译器
 
-####架构图（以编译器流水线角度）
+#### 架构图（以编译器流水线角度）
 
-####编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）
+#### 编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）
 	
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
@@ -222,7 +222,7 @@
 2. ASTConsumer及其子类主要是消费者功能的集合，不同的子类包含的功能不同；
 3. 编译器选项表格中基本上按功能从小到大排列；
 
-####clang流程分析
+#### clang流程分析
 - 入口cc1_main
 
 	- 创建编译器对象Clang（CompilerInstance类）
@@ -327,8 +327,8 @@
 
 ----------
 
-####预处理Preprocessor与词法分析Lexer
-#####常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
+#### 预处理Preprocessor与词法分析Lexer
+##### 常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：
 
 1. 文件包含，例如：#include
 2. 条件编译，例如：#if,#ifndef,#ifdef,#endif,#undef等
@@ -338,10 +338,10 @@
 *clang除上面标准预处理(CLK_Lexer)外，还支持自身扩展的预处理CLK_PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport*
 
 
-#####TokenKinds.def，关键字定义	 
+##### TokenKinds.def，关键字定义	 
 
 
-#####Preprocessor类
+##### Preprocessor类
 
 	成员变量:
 		DiagnosticsEngine诊断引擎
@@ -353,7 +353,7 @@
 	成员函数:
 		Preprocessor::Lex
 
-#####处理流程
+##### 处理流程
 
 - Preprocessor::Lex识别到一个token才返回，具体根据CurLexerKind调用不同的Lexer子类对象及函数去处理
 	-  标准预处理CLK_Lexer，Lexer::Lex C/C++标准
@@ -380,8 +380,8 @@
 	-  CLK_CachingLexer
 	-  CLK_LexAfterModuleImport针对import
 
-####clang静态分析器
-#####按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
+#### clang静态分析器
+##### 按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
 
 1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
 	
@@ -468,7 +468,7 @@
 	- CheckerContext类包含了一些操作状态的函数，例如获取状态getState()，更改状态addTransition(State)、产生sink节点generateSink()，上报BUG EmitReport(BUG)
 	- 节点类ExplodedNode、BUG类BugReport、状态类ProgramState
 
-####LLVM IR
+#### LLVM IR
 
 1. IR层次
 
@@ -481,13 +481,13 @@
 
  
 
-####PASS遍
+#### PASS遍
 	在LLVM中，优化器被组织成优化pass的管道，常见的pass有内联化、表达式重组、循环不变量移动等。每个pass都作为继承Pass类的C++类，并定义在一个私有的匿名namespace中，同时提供一个让外界获得到pass的函数。
 	PassInfo类的每一个对象都对应着一个实际存在的Pass，并且保存着这个Pass的信息。
 	RegisterPass这个类是一个模板类，这个模板类的类型就是Pass的名字。它是PassInfo的子类，主要用来注册Pass。完成注册之后，在PassManager管理的内部数据库里才能找到这个Pass。需要注意的是，这个模板类的使用必须是在全局范围之内的。可以从最简单的Pass例子--Hello（http://llvm.org/docs/doxygen/html/Hello_8cpp_source.html）中去看这个模板类的使用方法。
 	RegisterAGBase是RegisterAnalysisGroup类的基类，而RegisterAGBase类又是PassInfo类的子类。其中RegisterAGBase类名字中的AG就是AnalysisGroup的缩写，这种命名方式在LLVM的源码中被大量的应用，比如MetaData在一些类的名字里就被缩写为MD。RegisterAnalysisGroup这个类的作用主要是将一个Pass注册成为一个分析组的成员，当然在进行此操作之前，这个Pass必须被首先注册Pass成功。一个Pass可以被注册到多个分析组中。同一个Pass在多个分析组中，依然是根据这个Pass的名字进行标识的。
 	PassRegistrationListener这个类主要负责在运行时时候Pass的注册与否，并且会在Pass被load和remove的时候，去调用回调函数。
-#####内置pass
+##### 内置pass
 	CodegenAction::Execuetion
 		clang::ParseAST
 	BackendConsumer::HandleTranslationUnit
@@ -498,7 +498,7 @@
 				case Backend_EmitLL:  创建PrintModulePassWrapper，对应-emit-llvm
 				case 其他：			创建TargetLibraryInfoWrapperPass，FunctionPass，对应-emit-obj、-emit-codegen-only
 
-#####pass相关类
+##### pass相关类
 	PassManagerBuilderWrapper
 	The ImmutablePass class
 	The ModulePass class
@@ -513,8 +513,8 @@
 
 ----------
 
-###3、clang驱动
-####31、 驱动选项（clang -help，Options.td定义）
+### 3、clang驱动
+#### 31、 驱动选项（clang -help，Options.td定义）
 - -cc1，clang编译器
 
 - -###，打印clang driver Parse阶段命令行参数，参考：[Driver Design & Internals](http://clang.llvm.org/docs/DriverInternals.html)
@@ -559,8 +559,8 @@
 
 ![unused-variable](clang_example/unused-variable.PNG)
 
-####32、架构图
-####33、流程分析
+#### 32、架构图
+#### 33、流程分析
 	1、解析参数选项
 	2.1、如果有-cc1，走clang编译器流程
 	2.2、创建Driver对象，传入Triple（编译clang时已指定）
@@ -594,8 +594,8 @@
       
 ----------
 									
-##基于Clang/LLVM的工具
-###扩展工具
+## 基于Clang/LLVM的工具
+### 扩展工具
 - PPTrace: C++预编译跟踪 
 - Clang Check：语法检查，输出AST
 - Clang Format: 代码风格调整工具
@@ -610,18 +610,18 @@
 	- 编写Tidy自己的checks
 - Modularize: 模块化
 
-###opt和bugpoint工具
+### opt和bugpoint工具
 
-###编写clang插件（生产者和消费者模式，动态加载到clang编译器）
+### 编写clang插件（生产者和消费者模式，动态加载到clang编译器）
 - 具体参考“PrintFunctionNames”例子
 	- clang -cc1 -load printFunctionNames.dll **-plugin** print-fns a.c    	 #替换默认的FrontendAction
 
 	- clang -cc1 -load printFunctionNames.dll **-add-plugin** print-fns a.c    #添加FrontendAction
 
-###编写clang静态分析器的checker
+### 编写clang静态分析器的checker
 	两种编写Checker方式：一、一种直接编译进clang编译器中；二、生成共享库,由clang编译器动态加载
 
-####方式一
+#### 方式一
 - 在lib/StaticAnalyzer/Checkers目录下，创建xxxxChecker.cpp
 - xxxxChecker.cpp编写Checke子类和注册函数：
 		using namespace clang;
@@ -648,18 +648,18 @@
 		} // end "alpha.core"
 
 
-####方式二
+#### 方式二
 - 具体参考“SampleAnalyzerPlugin”例子
 
-###编写一个pass
+### 编写一个pass
 
-###编写基于libclang库的工具
+### 编写基于libclang库的工具
 - c-index-test
 - c-arcmt-test
 - cindex-dump.py
 - cindex-includes.py
 
-###编写基于libTooling库的工具
+### 编写基于libTooling库的工具
 - clang-tidy
 - clang-fuzzer
 - clang-rename
@@ -668,7 +668,7 @@
 - clang-check
 - pp-trace
 
-###其他例子
+### 其他例子
 - BrainF
 - ExceptionDemo
 - Fibonacci
@@ -678,7 +678,7 @@
 - OCaml-Kaleidoscope
 - ParallelJIT
 
-##资料
+## 资料
 
 1. [C11标准中文翻译](http://www.clang.pub/wiki/C11)
 2. [www.cs.cmu.edu's SCS](http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15745-s14/public/lectures/)
