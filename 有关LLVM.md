@@ -4,7 +4,7 @@
 ![clang/llvm组件](有关LLVM模块.png)
 ![C99](clang_example/C99与Clang.png) 
 
-[Toc]
+[toc]
 
 ## 一、编译与安装
 ### 1、Linux下源码编译
