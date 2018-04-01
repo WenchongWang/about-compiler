@@ -2,6 +2,7 @@
 
 ![clang编译器](clang编译器.gif)
 ![clang/llvm组件](有关LLVM模块.png)
+![C99](clang_example/C99与Clang.png) 
 
 ## 一、编译与安装
 ### 1、Linux下源码编译
@@ -299,7 +300,6 @@
 								- CLK_Lexer：
 	
 					- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
-					    ![](clang_example/C99与Clang.png) 
 				- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
 					- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
 					
