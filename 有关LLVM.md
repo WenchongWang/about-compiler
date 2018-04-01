@@ -1,7 +1,7 @@
-#有关LLVM
+# 有关LLVM
 
-##一、编译与安装
-###1、Linux下源码编译
+## 一、编译与安装
+### 1、Linux下源码编译
 
 	$ git clone [http://llvm.org/git/llvm.git](http://llvm.org/git/llvm.git)
 	$ cd llvm/tools
@@ -44,18 +44,19 @@
 	$ export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
 	$ clang –v
 
-###2、Windows下源码编译
+### 2、Windows下源码编译
 	下载源码，同上    
 	下载[cmake-3.3.1-win32-x86.exe](http://www.cmake.org/files/v3.3/cmake-3.3.1-win32-x86.exe)，安装cmake
 	打开cmake GUI， ADD Entry。 CMAKE_INSTALL_PREFIX等同于--prefix；LLVM_TARGETS_TO_BUILD("ARM;Mips;X86")等同于--enable-targets
 
-###3、Mac OS X下源码编译
+### 3、Mac OS X下源码编译
 	比windows,cmake多一个变量LLVM_ENABLE_PIC
 
 
 ![clang/llvm组件](有关LLVM模块.png)
 
-##二、Clang
+
+## 二、Clang
 	clang分三个实体概念：
 		clang驱动：利用现有OS、编译环境以及参数选项来驱动整个编译过程的工具。
 		clang编译器：利用clang前端组件及库打造的编译器，其入口为cc1_main; 参数为clang -cc1 或者 -Xclang；
