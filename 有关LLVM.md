@@ -687,4 +687,4 @@
 5. [http://rosecompiler.org](http://rosecompiler.org)
 6. [LLVM's WIKI](https://zh.wikipedia.org/wiki/LLVM)
 7. [LLVM编程手册](http://llvm.org/docs/ProgrammersManual.html)
-8.[Clang Static Analyzer](https://github.com/llvm-mirror/clang/tree/master/lib/StaticAnalyzer)
+8. [Clang Static Analyzer](https://github.com/llvm-mirror/clang/tree/master/lib/StaticAnalyzer)
