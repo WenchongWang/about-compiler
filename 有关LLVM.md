@@ -42,8 +42,13 @@
 ----------
 
 ![clang编译器](clang编译器.gif)
+			clang编译器结构图
+
 ![clang/llvm组件](有关LLVM模块.png)
+			clang/llvm模块及类（补充）			
+
 ![C99](clang_example/C99与Clang.png) 
+    		C99语法图
 
 ----------
 
