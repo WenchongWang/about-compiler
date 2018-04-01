@@ -1,5 +1,8 @@
 # 有关LLVM
 
+![clang编译器](clang编译器.gif)
+![clang/llvm组件](有关LLVM模块.png)
+
 ## 一、编译与安装
 ### 1、Linux下源码编译
 
@@ -51,9 +54,6 @@
 
 ### 3、Mac OS X下源码编译
 	比windows,cmake多一个变量LLVM_ENABLE_PIC
-
-
-![clang/llvm组件](有关LLVM模块.png)
 
 
 ## 二、Clang
@@ -189,7 +189,6 @@
 ###clang编译器
 
 ####架构图（以编译器流水线角度）
-![clang编译器](clang编译器.gif)
 
 ####编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）
 	
