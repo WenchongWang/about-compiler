@@ -277,11 +277,11 @@
 															- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
 									- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
 
-1. 声明、语句、操作符区别
+1. 声明、语句、表达式、操作符
 
-![](http://clang.llvm.org/doxygen/classclang_1_1ImportDecl.html)
+![Decl](clang_example//classclang_1_1Decl__inherit__graph.png)
 
-![](http://clang.llvm.org/doxygen/classclang_1_1CXXTryStmt.html)
+![Stmt](clang_example/classclang_1_1Stmt__inherit__graph.png)
 
 2. ppcallbacks预处理回调机制
 
