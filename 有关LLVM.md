@@ -259,22 +259,22 @@
 										- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
 											- CLK_Lexer
 	
-												- Lexer::LexTokenInternal按字符流逐个处理
-													-  如果是文件结尾，调用LexEndOfFile
-														- Preprocessor::RemoveTopOfLexerStack
-															- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来CurLexerKind的值  
-													-  如果是预处理标识符，调用Preprocessor::HandleDirective
-														- Preprocessor::HandleDirective由预处理对象处理
-															- 如果标识符是‘#define’，HandleDefineDirective
-																- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
-															- 如果Ident是'#include',HandleIncludeDirective
-																- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
-																	- 如果是普通的.文件，EnterSourceFileWithLexer
-																		- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
-													-  如果是标识符，调用Preprocessor::HandleIdentifier
-														- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
-															- 内置宏？
-															- 其他？ 
+												    - Lexer::LexTokenInternal按字符流逐个处理
+    													-  如果是文件结尾，调用LexEndOfFile
+    														- Preprocessor::RemoveTopOfLexerStack
+    															- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来CurLexerKind的值  
+    													-  如果是预处理标识符，调用Preprocessor::HandleDirective
+    														- Preprocessor::HandleDirective由预处理对象处理
+    															- 如果标识符是‘#define’，HandleDefineDirective
+    																- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
+    															- 如果Ident是'#include',HandleIncludeDirective
+    																- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
+    																	- 如果是普通的.文件，EnterSourceFileWithLexer
+    																		- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
+    													-  如果是标识符，调用Preprocessor::HandleIdentifier
+    														- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
+    															- 内置宏？
+    															- 其他？ 
 
 											-  CLK_PTHLexer针对PTH文件
 											-  CLK_TokenLexer
