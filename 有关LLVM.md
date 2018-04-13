@@ -146,7 +146,7 @@
 
 1. FrontendAction及其子类主要是生成者功能的集合，不同的子类包含的功能不同；
 2. ASTConsumer及其子类主要是消费者功能的集合，不同的子类包含的功能不同；
-3. 编译器选项表格中基本上按功能从小到大排列；
+3. FrontendAction和ASTConsumer之间采用相同的接口；
 
 #### clang流程分析
 - 入口cc1_main
@@ -186,57 +186,7 @@
 				- 如果有clang插件(-plugin)，遍历调用所有Consumer子类对象CreateASTConsumer函数，最后创建MultiplexConsumer，封装所有的Consumer子类对象
 	
 	
-			> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)**
-	
-##### -E选项流程↓只做预处理部分
-	
-- PrintPreprocessedAction::ExecuteAction()
-	- clang::DoPrintPreprocessedInput,传入预编译对象、输出流、预编译选项对象（只需要这三样即可） 
-	
-##### -dump-tokens选项流程↓词法分析
-		
-- DumpTokensAction::ExecuteAction
-	- Preprocessor::EnterMainSourceFile预处理的准备工作
-		- SourceManager::getMainFileID为当前处理的第一个文件(主文件)产生一个MainFileID(FileID类)
-		- Preprocessor::EnterSourceFile
-		- 为built-in创建FileID对象
-		- Preprocessor::EnterSourceFile
-	- Preprocessor::Lex词法分析
-	- Preprocessor::DumpToken输出tokens
-	
-##### -analyze选项流程↓静态分析器，简称CSA
-
-需要抽象语法树AST作为后端输入，例如选项-analyze对应的AnalysisAction和-emit-llvm对应的EmitLLVMAction都直接继承ASTFrontendAction，并调用ParseAST`
-
-- ASTFrontendAction::ExecuteAction
-
-	- 如果支持代码补全，则创建代码补全Consumer（PrintingCodeCompleteConsumer类）
-	- 创建语义对象Sema，由Preprocessor、ASTConsumer、ASTContextCodeCompleteConsumer等对象传入构成
-	- **ParseAST构建抽象语法树，从预处理->词法分析->语法分析->语义分析->AST**
-		- Parser::Initialize
-			- Sema::Initialize语义对象初始化
-				- **Consumer.Initialize ASTConsumer子类的初始化函数**
-				
-					`-analyze选项流程↓静态分析器后端初始化`
-
-					- **AnalysisConsumer::Initialize初始化**
-						- 具体流程请看《clang静态分析器》部分
-		
-			- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
-				- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
-					- CLK_Lexer：
-	
-					- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
-				- **ASTConsumer子类::HandleTranslationUnit，每个ASTConsumer子类需要重写**
-					- 如果是组合ASTConsumer，调用MultiplexConsumer::HandleTranslationUnit，然后遍历调用每个子类HandleTranslationUnit；
-					
-					`-analyze选项流程↓静态分析器后端处理流程`
-	
-					- 如果是静态分析器，调用AnalysisConsumer::HandleTranslationUnit，具体流程请看《clang静态分析器》部分；
-					
-					`流程之一↓其他流程`
-					- ... ...
-			 
+			> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)** 
 	
 			> Act.EndSourceFile（FrontendAction::EndSourceFile）
 	
@@ -280,42 +230,55 @@
 	    - ...
 		- CreateWrappedASTConsumer
 			- **AnalysisAction::CreateASTConsumer**
-				- **创建AnalysisASTConsumer对象** 	
-		- ...
-		- clang::ParseAST
-			- Parser::Initialize
-				- Sema::Initialize
-					- **AnalysisConsumer::Initialize初始化**
-						- ento::createCheckerManager 
-							1. 创建CheckerManager 
-							2. 创建allcheckers对象(ClangCheckerRegistry类)
-							    - registerBuiltinCheckers，调用addChecker函数添加Checkers.inc中所有的信息，例如：checker的注册函数、名字、描述生成CheckerInfo结构，放入vector中**（参考如何编写Checker，方式一）**
-							    - 如果有共享库方式存在的checker(选项-load 共享库路径)，则使用DynamicLibrary类，加载共享库，找到clang_registerCheckers和clang_analyzerAPIVersionString符号，并调用clang_registerCheckers函数**（参考如何编写Checker，方式二）**
-							3. CheckerRegistry::initializeManager
-								- 根据选项再次选择checker
-								- 遍历调用checker的注册函数
-									- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
-			- **AnalysisConsumer::HandleTranslationUnit,静态分析器分析入口**
-				- Diags.hasErrorOccurred() || Diags.hasFatalErrorOccurred()，获取诊断情况，没有错误继续分析
-				- **checkerMgr->runCheckersOnASTDecl(TU, *Mgr, BR)，Checker核心作用于TU进行规则检查，TU为翻译单元Decl**
-				- RecVisitorMode = AM_Syntax，设置遍历模式，AM_Syntax语法层级，AM_Path路径敏感
-				- ExprEngine::shouldInlineCall,根据是否要InlineCall预设条件，再次设置RecVisitorMode遍历模式
-				- TraverseDecl，遍历LocalTUDecls顶层Decl
-				- **InlineCall？yes AnalysisConsumer::HandleDeclsCallGraph**
-					- 创建并构建调用图CallGraph对象，把所有顶层Decl声明加入其中
-					- AnalysisConsumer::HandleCode
-						- getModeForDecl，根据Decl的具体信息，再次刷新遍历模式
-						- **AM_Syntax？checkerMgr->runCheckersOnASTBody(D, *Mgr, BR)，如果遍历模式为语法层级，则进行规则检查**
-						- **AM_Path && checkerMgr->hasPathSensitiveCheckers()** AnalysisConsumer::RunPathSensitiveChecks，如果遍历模式本身为路径敏感分析，同时注册的Checkers规则检查时要基于路径敏感分析，则调用本函数**
-							- AnalysisConsumer::ActionExprEngine
-								- ExprEngine::ExecuteWorkList
-									- CoreEngine::ExecuteWorkList
-										- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
-				- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**						
-						
+				- AnalysisAction::CreateAnalysisConsumer
+					- **创建AnalysisASTConsumer对象** 
 
-5. ExplodedGraph CFG路径
-![ExplodedGraph](http://clang.llvm.org/doxygen/classclang_1_1ento_1_1ExplodedGraph__coll__graph.png)
+				- FrontendAction::Execute	
+					- **ASTFrontendAction::ExecuteAction**
+						- clang::ParseAST
+							- new Sema创建语义对象
+								- Sema::Sema
+									- **Preprocessor::addPPCallbacks添加预处理回调钩子SemaPPCallbacks对象有，后面会有专题介绍**
+							- clang::ParseAST
+								- new Parser创建解析对象，解析对象用来组织预处理对象、语义对象等
+									- Parser::Parser构造函数
+										- initializePragmaHandlers，设置“Pragma”的专门处理函数来处理tokens
+								- Parser::Initialize初始化函数
+									- Sema::Initialize语义对象初始化
+										- **AnalysisConsumer::Initialize初始化**
+											- ento::createCheckerManager 
+												1. 创建CheckerManager 
+												2. 创建allcheckers对象(ClangCheckerRegistry类)
+												    - registerBuiltinCheckers，调用addChecker函数添加Checkers.inc中所有的信息，例如：checker的注册函数、名字、描述生成CheckerInfo结构，放入vector中**（参考如何编写Checker，方式一）**
+												    - 如果有共享库方式存在的checker(选项-load 共享库路径)，则使用DynamicLibrary类，加载共享库，找到clang_registerCheckers和clang_analyzerAPIVersionString符号，并调用clang_registerCheckers函数**（参考如何编写Checker，方式二）**
+												3. CheckerRegistry::initializeManager
+													- 根据选项再次选择checker
+													- 遍历调用checker的注册函数
+														- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
+									- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
+										- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
+											- CLK_Lexer：
+
+							- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
+								- AnalysisConsumer::HandleTopLevelDecl，把Decl放入LocalTUDecls队列中后续构建CFG有用
+								- **AnalysisConsumer::HandleTranslationUnit,静态分析器分析入口**
+									- Diags.hasErrorOccurred() || Diags.hasFatalErrorOccurred()，获取诊断情况，没有错误继续分析
+									- **checkerMgr->runCheckersOnASTDecl(TU, *Mgr, BR)，Checker核心作用于TU进行规则检查，TU为翻译单元Decl**
+									- RecVisitorMode = AM_Syntax，设置遍历模式，AM_Syntax语法层级，AM_Path路径敏感
+									- ExprEngine::shouldInlineCall,根据是否要InlineCall预设条件，再次设置RecVisitorMode遍历模式
+									- TraverseDecl，遍历LocalTUDecls顶层Decl
+									- **InlineCall？yes AnalysisConsumer::HandleDeclsCallGraph**
+										- 创建并构建调用图CallGraph对象，把所有顶层Decl声明加入其中
+										- AnalysisConsumer::HandleCode
+											- getModeForDecl，根据Decl的具体信息，再次刷新遍历模式
+											- **AM_Syntax？checkerMgr->runCheckersOnASTBody(D, *Mgr, BR)，如果遍历模式为语法层级，则进行规则检查**
+											- **AM_Path && checkerMgr->hasPathSensitiveCheckers()** AnalysisConsumer::RunPathSensitiveChecks，如果遍历模式本身为路径敏感分析，同时注册的Checkers规则检查时要基于路径敏感分析，则调用本函数**
+												- AnalysisConsumer::ActionExprEngine
+													- ExprEngine::ExecuteWorkList
+														- CoreEngine::ExecuteWorkList
+															- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
+									- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
+						
 
 8. CheckerManager
 
