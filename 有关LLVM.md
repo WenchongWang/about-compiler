@@ -278,10 +278,13 @@
 									- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
 
 1. 声明、语句、操作符区别
+
 ![](http://clang.llvm.org/doxygen/classclang_1_1ImportDecl.html)
+
 ![](http://clang.llvm.org/doxygen/classclang_1_1CXXTryStmt.html)
 
 2. ppcallbacks预处理回调机制
+
 ![](http://clang.llvm.org/doxygen/classclang_1_1PPChainedCallbacks.html)
 
 3. AST matchers语法匹配机制，![文档](http://clang.llvm.org/docs/LibASTMatchersReference.html)
