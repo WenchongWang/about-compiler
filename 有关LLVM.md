@@ -257,11 +257,12 @@
 														- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
 									- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
 										- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
-											- CLK_Lexer：
+											- CLK_Lexer
+	
 												- Lexer::LexTokenInternal按字符流逐个处理
 													-  如果是文件结尾，调用LexEndOfFile
 														- Preprocessor::RemoveTopOfLexerStack
-															- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来的CurLexerKind的值  
+															- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来CurLexerKind的值  
 													-  如果是预处理标识符，调用Preprocessor::HandleDirective
 														- Preprocessor::HandleDirective由预处理对象处理
 															- 如果标识符是‘#define’，HandleDefineDirective
@@ -270,7 +271,6 @@
 																- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
 																	- 如果是普通的.文件，EnterSourceFileWithLexer
 																		- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
-										 
 													-  如果是标识符，调用Preprocessor::HandleIdentifier
 														- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
 															- 内置宏？
