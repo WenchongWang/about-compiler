@@ -9,15 +9,11 @@
         - [架构图（以编译器流水线角度）](#架构图（以编译器流水线角度）)
         - [编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）](#编译器选项（clang--cc1--help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）)
         - [clang流程分析](#clang流程分析)
-            - [-E选项流程↓只做预处理部分](#-E选项流程↓只做预处理部分)
-            - [-dump-tokens选项流程↓词法分析](#-dump-tokens选项流程↓词法分析)
-            - [-analyze选项流程↓静态分析器，简称CSA](#-analyze选项流程↓静态分析器，简称CSA)
         - [clang静态分析器](#clang静态分析器)
             - [按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）](#按功能区分的选项（clang--cc1--analyzer-checker-help，Checkers.td中定义）)
         - [预处理Preprocessor与词法分析Lexer](#预处理Preprocessor与词法分析Lexer)
             - [常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：](#常见的预处理有：文件包含，条件编译、布局控制和宏替换4种：)
             - [Preprocessor类](#Preprocessor类)
-            - [处理流程](#处理流程)
     - [2、clang驱动](#2、clang驱动)
         - [1、 驱动选项（clang -help，Options.td定义）](#1、-驱动选项（clang--help，Options.td定义）)
         - [2、架构图](#2、架构图)
@@ -205,27 +201,7 @@
 #### clang静态分析器
 ##### 按功能区分的选项（clang -cc1 -analyzer-checker-help，Checkers.td中定义）
 
-1. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
-	
-2. 静态分析器会默认使用6类checkers(default checker)：
-
-	- Core Checkers：提供一些一般性的检查，比如是否被0除、是否使用空指针和使用未初始化参数等。
-	- C++ Checkers：提供C++检查。
-	- Dead Code Checkers：检查没有使用的代码。
-	- OS X Checkers：检查Objective-C和Apple's SDKs的使用情况。
-	- Security Checkers:检查不安全API的使用和基于CERT Secure Coding Standards的检查。
-	- Unix Checkers：检查Unix和POSIX API的使用情况。
-
-3. 
-	- ExplodedGraph
-		- ExplodedNode
-			- ProgramPoint
-			- ProgramState
-				- Environment 
-				- Store
-				- GenericDataMap 
-
-4. 主要流程
+1. 主要流程
 	- cc1_main
 	    - ...
 		- CreateWrappedASTConsumer
@@ -300,15 +276,35 @@
 														- CoreEngine::ExecuteWorkList
 															- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
 									- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
+
 						
+2. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
+	
+3. 静态分析器会默认使用6类checkers(default checker)：
 
-8. CheckerManager
+	- Core Checkers：提供一些一般性的检查，比如是否被0除、是否使用空指针和使用未初始化参数等。
+	- C++ Checkers：提供C++检查。
+	- Dead Code Checkers：检查没有使用的代码。
+	- OS X Checkers：检查Objective-C和Apple's SDKs的使用情况。
+	- Security Checkers:检查不安全API的使用和基于CERT Secure Coding Standards的检查。
+	- Unix Checkers：检查Unix和POSIX API的使用情况。
 
-9. CheckerContext上下文
+4. 
+	- ExplodedGraph
+		- ExplodedNode
+			- ProgramPoint
+			- ProgramState
+				- Environment 
+				- Store
+				- GenericDataMap
+				- 
+5. CheckerManager
+
+6. CheckerContext上下文
 	- addTransition方法，改变状态
 	- generateSink
 
-10. ProgramPoint程序关键点（等同checker类成员函数、回调函数）
+7. ProgramPoint程序关键点（等同checker类成员函数、回调函数）
 ![ProgramPoint](clang_example/classclang_1_1ProgramPoint__inherit__graph.png)
 	- [check::PreStmt<xxx>] - 在statement xxx发生之前调用这个checker
 	- [check::PostStmt<xxx>] - 在statement xxx发生之后调用这个checker
@@ -318,7 +314,7 @@
 	- [check::DeadSymbols] - 当参数超出生命周期时调用这个checker
 	- **checker的回调函数要么修改程序状态，要么报告bug。**
 
-7. ProgramState表示程序所在状态
+8. ProgramState表示程序所在状态
 	- Clang Static Analyzer就像其他静态分析工具一样，并不会执行源代码，而是象征性的执行代码(symbolic excution)，并且会执行代码中的每一个分支(Path Sensitive)。
 	- 在“执行”过程中，Analyzer会实时的根据运行情况追踪和改变程序状态(Program State)。
 	- 注册状态宏：REGISTER_TRAIT_WITH_PROGRAMSTATE、REGISTER_MAP_WITH_PROGRAMSTATE、REGISTER_SET_WITH_PROGRAMSTATE、REGISTER_LIST_WITH_PROGRAMSTATE
@@ -348,33 +344,6 @@
 		ModuleLoader module加载器
 	成员函数:
 		Preprocessor::Lex
-
-##### 处理流程
-
-- Preprocessor::Lex识别到一个token才返回，具体根据CurLexerKind调用不同的Lexer子类对象及函数去处理
-	-  标准预处理CLK_Lexer，Lexer::Lex C/C++标准
-		- Lexer::LexTokenInternal按字符流逐个处理
-			-  如果是文件结尾，调用LexEndOfFile
-				- Preprocessor::RemoveTopOfLexerStack
-					- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来的CurLexerKind的值  
-			-  如果是预处理标识符，调用Preprocessor::HandleDirective
-				- Preprocessor::HandleDirective由预处理对象处理
-					- 如果标识符是‘#define’，HandleDefineDirective
-						- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
-					- 如果Ident是'#include',HandleIncludeDirective
-						- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
-							- 如果是普通的.文件，EnterSourceFileWithLexer
-								- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
- 
-			-  如果是标识符，调用Preprocessor::HandleIdentifier
-				- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
-					- 内置宏？
-					- 其他？ 
-
-	-  CLK_PTHLexer针对PTH文件
-	-  CLK_TokenLexer
-	-  CLK_CachingLexer
-	-  CLK_LexAfterModuleImport针对import
  
 
 ### 2、clang驱动
@@ -704,6 +673,12 @@
 6. [LLVM's WIKI](https://zh.wikipedia.org/wiki/LLVM)
 7. [LLVM编程手册](http://llvm.org/docs/ProgrammersManual.html)
 8. [Clang Static Analyzer](https://github.com/llvm-mirror/clang/tree/master/lib/StaticAnalyzer)
+
+
+
+
+
+
 
 
 
