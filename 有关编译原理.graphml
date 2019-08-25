@@ -16,7 +16,6 @@
     <data key="d0"/>
     <node id="n0" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -45,7 +44,6 @@
       </data>
       <graph edgedefault="directed" id="n0:">
         <node id="n0::n0">
-          <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="109.0" x="331.0" y="247.188232421875"/>
@@ -62,7 +60,6 @@
           </data>
         </node>
         <node id="n0::n1">
-          <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="109.0" x="331.0" y="315.688232421875"/>
@@ -79,7 +76,6 @@
           </data>
         </node>
         <node id="n0::n2">
-          <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="109.0" x="331.0" y="384.188232421875"/>
@@ -98,7 +94,6 @@
       </graph>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.flowchart.document">
           <y:Geometry height="177.0" width="155.66666666666666" x="29.333333333333343" y="236.0"/>
@@ -116,7 +111,6 @@
     </node>
     <node id="n2" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -145,7 +139,6 @@
       </data>
       <graph edgedefault="directed" id="n2:">
         <node id="n2::n0">
-          <data key="d5"/>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="30.0" x="549.0000000000002" y="317.5941162109375"/>
@@ -164,7 +157,6 @@
           </data>
         </node>
         <node id="n2::n1">
-          <data key="d5"/>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="30.0" x="591.5000000000002" y="317.5941162109375"/>
@@ -183,7 +175,6 @@
           </data>
         </node>
         <node id="n2::n2">
-          <data key="d5"/>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="30.0" x="634.0000000000003" y="317.5941162109375"/>
@@ -202,7 +193,6 @@
           </data>
         </node>
         <node id="n2::n3">
-          <data key="d5"/>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="30.0" x="676.5000000000005" y="317.5941162109375"/>
@@ -221,7 +211,6 @@
           </data>
         </node>
         <node id="n2::n4">
-          <data key="d5"/>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="30.0" x="718.0" y="317.5941162109375"/>
@@ -243,7 +232,6 @@
     </node>
     <node id="n3" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -273,7 +261,6 @@
       <graph edgedefault="directed" id="n3:">
         <node id="n3::n0" yfiles.foldertype="group">
           <data key="d4"/>
-          <data key="d5"/>
           <data key="d6">
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
@@ -304,7 +291,6 @@
         </node>
         <node id="n3::n1" yfiles.foldertype="group">
           <data key="d4"/>
-          <data key="d5"/>
           <data key="d6">
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
@@ -335,7 +321,6 @@
         </node>
         <node id="n3::n2" yfiles.foldertype="group">
           <data key="d4"/>
-          <data key="d5"/>
           <data key="d6">
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
@@ -368,7 +353,6 @@
     </node>
     <node id="n4" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -397,7 +381,6 @@
       </data>
       <graph edgedefault="directed" id="n4:">
         <node id="n4::n0">
-          <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="109.0" x="917.9166666666666" y="312.5941162109375"/>
@@ -418,7 +401,6 @@
     </node>
     <node id="n5" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -448,7 +430,6 @@
       <graph edgedefault="directed" id="n5:">
         <node id="n5::n0" yfiles.foldertype="group">
           <data key="d4"/>
-          <data key="d5"/>
           <data key="d6">
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
@@ -477,14 +458,16 @@
           </data>
           <graph edgedefault="directed" id="n5::n0:">
             <node id="n5::n0::n0">
-              <data key="d5"/>
               <data key="d6">
                 <y:GenericNode configuration="com.yworks.flowchart.document">
                   <y:Geometry height="111.0" width="109.00000000000003" x="820.1666666666666" y="609.5"/>
                   <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
                   <y:BorderStyle color="#000000" type="line" width="1.0"/>
-                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="52.5" y="53.5">
-                    <y:LabelModel>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" modelName="custom" textColor="#000000" visible="true" width="70.662109375" x="19.1689453125" y="16.7470703125">G(T,NT,S,P)
+T,
+NT,
+S,
+P<y:LabelModel>
                       <y:SmartNodeLabelModel distance="4.0"/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -500,7 +483,6 @@
     </node>
     <node id="n6" yfiles.foldertype="group">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -530,7 +512,6 @@
       <graph edgedefault="directed" id="n6:">
         <node id="n6::n0" yfiles.foldertype="group">
           <data key="d4"/>
-          <data key="d5"/>
           <data key="d6">
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
@@ -560,7 +541,6 @@
           <graph edgedefault="directed" id="n6::n0:">
             <node id="n6::n0::n0" yfiles.foldertype="group">
               <data key="d4"/>
-              <data key="d5"/>
               <data key="d6">
                 <y:ProxyAutoBoundsNode>
                   <y:Realizers active="0">
@@ -590,7 +570,6 @@
               <graph edgedefault="directed" id="n6::n0::n0:">
                 <node id="n6::n0::n0::n0" yfiles.foldertype="folder">
                   <data key="d4"/>
-                  <data key="d5"/>
                   <data key="d6">
                     <y:ProxyAutoBoundsNode>
                       <y:Realizers active="1">
@@ -626,7 +605,6 @@
       </graph>
     </node>
     <edge id="e0" source="n1" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="-84.7105712890625" ty="0.0"/>
@@ -644,7 +622,6 @@
       </data>
     </edge>
     <edge id="e1" source="n0" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -663,7 +640,6 @@
       </data>
     </edge>
     <edge id="n3::e0" source="n3::n1" target="n3::n0">
-      <data key="d9"/>
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -683,7 +659,6 @@
       </data>
     </edge>
     <edge id="n3::e1" source="n3::n0" target="n3::n2">
-      <data key="d9"/>
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -703,7 +678,6 @@
       </data>
     </edge>
     <edge id="n3::e2" source="n3::n2" target="n3::n2">
-      <data key="d9"/>
       <data key="d10">
         <y:SplineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-69.33333333333337" ty="33.188232421875">
@@ -724,7 +698,6 @@
       </data>
     </edge>
     <edge id="n3::e3" source="n3::n2" target="n3::n1">
-      <data key="d9"/>
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -744,7 +717,6 @@
       </data>
     </edge>
     <edge id="e2" source="n3" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="186.5833333333333" sy="-169.62353515625" tx="0.0" ty="0.0"/>
@@ -754,7 +726,6 @@
       </data>
     </edge>
     <edge id="e3" source="n2" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -764,7 +735,6 @@
       </data>
     </edge>
     <edge id="e4" source="n6::n0::n0::n0" target="n3::n1">
-      <data key="d9"/>
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="-32.49999999999994" ty="21.188232421875">
@@ -784,7 +754,6 @@
       </data>
     </edge>
     <edge id="e5" source="n5" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
