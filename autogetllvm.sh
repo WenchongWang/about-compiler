@@ -12,14 +12,14 @@ else
 fi 
 
 ##git库信息
-llvm_git="https://github.com/llvm-mirror/llvm.git"
-clang_git="https://github.com/llvm-mirror/clang.git"
-tools_extra_git="http://llvm.org/git/clang-tools-extra.git"
-compiler_rt_git="http://llvm.org/git/compiler-rt.git"
-lldb_git="https://github.com/llvm-mirror/lldb.git"
-dragonegg_git="https://github.com/llvm-mirror/dragonegg.git"
-libcxx_git="https://github.com/llvm-mirror/libcxx.git"
-modules="$llvm_git $clang_git $tools_extra_git $compiler_rt_git $lldb_git $dragonegg_git $libcxx_git"
+llvm_git="https://gitee.com/yejinlei-mirror/llvm.git"
+clang_git="https://gitee.com/yejinlei-mirror/clang.git"
+tools_extra_git="http://gitee.com/yejinlei-mirror/clang-tools-extra.git"
+compiler_rt_git="http://gitee.com/yejinlei-mirror/compiler-rt.git"
+#lldb_git="https://gitee.com/yejinlei-mirror/lldb.git"
+#dragonegg_git="https://gitee.com/yejinlei-mirror/dragonegg.git"
+libcxx_git="https://gitee.com/yejinlei-mirror/libcxx.git"
+modules="$llvm_git $clang_git $tools_extra_git $compiler_rt_git $libcxx_git"
 
 ##当前目录下创建src
 if [ -e $PWD/src ]
@@ -52,17 +52,17 @@ do
 {
 	echo "git clone $i"
 	git clone $i
-}&
+}
 done
 wait
 echo "finish clone!"
 
 ##调整目录层次
-cp -r ./clang ./llvm/tools/
-cp -r ./clang-tools-extra ./llvm/tools/clang/tools/
-cp -r ./lldb ./llvm/projects/
-cp -r ./dragonegg ./llvm/projects/
-cp -r ./libcxx ./llvm/projects/
-cp -r ./compiler-rt ./llvm/projects/
+mv -f ./clang ./llvm/tools/
+mv -f ./clang-tools-extra ./llvm/tools/clang/tools/
+#mv -f ./lldb ./llvm/projects/
+#mv -f ./dragonegg ./llvm/projects/
+mv -f ./libcxx ./llvm/projects/
+mv -f ./compiler-rt ./llvm/projects/
 
 exit 0
