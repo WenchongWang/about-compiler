@@ -96,3 +96,4 @@
 1. [The Complete Reference GCC]()
 1. [The GNU C Library Reference Manual.pdf](http://www.gnu.org/software/libc/manual/pdf/libc.pdf)
 1. [GCC and Make Compiling, Linking and Building C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
+1. [GDB: The GNU Project Debugger](https://sourceware.org/gdb/current/onlinedocs/)
