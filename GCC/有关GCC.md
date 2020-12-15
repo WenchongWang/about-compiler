@@ -1,4 +1,3 @@
-![img](gcc_logo.png)
 #有关GCC
 
 ---
