@@ -1,4 +1,6 @@
-#<img src='gcc_logo.png' height='50' width='90'>有关GCC
+#有关GCC<img src='gcc_logo.png' height='50' width='90'></img>
+
+---
 
 ##GCC源码编译
 
