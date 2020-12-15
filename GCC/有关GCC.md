@@ -1,10 +1,11 @@
-#有关GCC<img src='gcc_logo.png' height='50' width='90'></img>
+![img](gcc_logo.png)
+#有关GCC
 
 ---
 
-##GCC源码编译
+##一. 编译GCC
 
-##GCC参数选项
+##二. 编译选项,
 	-D，定义命令宏
 		//-DDEBUG相当于#define DEBUG
 		#ifdef DEBUG
@@ -18,25 +19,9 @@
 	-L, 指定库搜索路径
 	-static, 静态库和共享库同名时，优先使用静态库
 
-##词法分析
+##三. 探索GCC
 
-##语法分析
-
-##语义分析
-
-##中间IR
-
-##优化
-
-##汇编器
-
-##连接器
-###单个.o文件
-###多个.o文件
-###静态库链接
-###共享库链接
-
-##ELF
+##四. 探索ELF
 ###ELF类型
 	readelf -h 目标文件 | grep Type  #查看ELF类型
 	relocatable（可重定位）：.o文件、.a文件
@@ -104,11 +89,12 @@
 ####gcc选项，对目标文件节区的影响
 
 ##参考资料
-1. [Using the GNU 
-Compiler Collection 
-(GCC)](https://gcc.gnu.org/onlinedocs/gcc/index.html#SEC_Contents)
+1. [GCC online documentation](https://gcc.gnu.org/onlinedocs/)
 1. [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
-1. [Introduction to GCC]()
+1. [Introduction to GCC, 中文名:GCC编程简介 作者:Brian Gough](https://share.weiyun.com/GFn5XIaC)
 1. [The Definitive Guide to GCC]()
 1. [The Complete Reference GCC]()
 1. [The GNU C Library Reference Manual.pdf](http://www.gnu.org/software/libc/manual/pdf/libc.pdf)
+1. [GCC and Make
+Compiling, Linking and Building
+C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
