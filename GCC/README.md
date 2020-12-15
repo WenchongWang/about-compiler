@@ -1,10 +1,10 @@
-#有关GCC
+# 有关GCC
 
 ---
 
-##一. 编译GCC
+## 一. 编译GCC
 
-##二. 编译选项, [详细参考:GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
+## 二. 编译选项, [详细参考:GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 	-D，定义命令宏
 		//-DDEBUG相当于#define DEBUG
 		#ifdef DEBUG
@@ -18,20 +18,20 @@
 	-L, 指定库搜索路径
 	-static, 静态库和共享库同名时，优先使用静态库
 
-##三. 探索GCC
+## 三. 探索GCC
 
-##四. 探索ELF
-###ELF类型
+## 四. 探索ELF
+### ELF类型
 	readelf -h 目标文件 | grep Type  #查看ELF类型
 	relocatable（可重定位）：.o文件、.a文件
 	executable（可执行）：
 	shared libarary（共享库）：.so
     core dump（核心转储文件）
 	
-###ELF文件的链接视图和执行视图
+### ELF文件的链接视图和执行视图
 ![elf1](elf1.png)
 
-###节区头部数据结构
+### 节区头部数据结构
 	typedef struct{
 		Elf32_Word sh_name;		//节区名,  .开头节区名称通常为系统保留
 		Elf32_Word sh_type;		//节区类型，↓
@@ -75,8 +75,8 @@
 .dynsym         |SHT_DYNSYM	     |				  |	包含动态链接符号表，readelf --dyn-syms/-s obj![elf_dynsym](gcc_example/elf_dynsym.PNG)
 .symtab			|SHT_SYMTAB	     |				  |	包含一个符号表，readelf -s obj，strip会删除该区![elf_dynsym](gcc_example/elf_dynsym.PNG)
 
-###实验
-####readelf -all(strip处理后、没有-g选项，-g选项)
+### 实验
+#### readelf -all(strip处理后、没有-g选项，-g选项)
 ![readelf1](readelf1.PNG)
 
 ![readelf2](readelf2.PNG)
@@ -85,9 +85,9 @@
 
 ![readelf4](readelf4.PNG)
 
-####gcc选项，对目标文件节区的影响
+#### gcc选项，对目标文件节区的影响
 
-##五. 参考资料
+## 五. 参考资料
 1. [GCC online documentation](https://gcc.gnu.org/onlinedocs/)
 1. [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 1. [Introduction to GCC, 中文名:GCC编程简介 作者:Brian Gough](https://share.weiyun.com/GFn5XIaC)
