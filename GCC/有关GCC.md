@@ -43,7 +43,7 @@
     core dump（核心转储文件）
 	
 ###ELF文件的链接视图和执行视图
-![elf1](gcc_example/elf1.png)
+![elf1](elf1.png)
 
 ###节区头部数据结构
 	typedef struct{
@@ -91,14 +91,21 @@
 
 ###实验
 ####readelf -all(strip处理后、没有-g选项，-g选项)
-![readelf1](gcc_example/readelf1.PNG)
+![readelf1](readelf1.PNG)
 
-![readelf2](gcc_example/readelf2.PNG)
+![readelf2](readelf2.PNG)
 
-![readelf3](gcc_example/readelf3.PNG)
+![readelf3](readelf3.PNG)
 
-![readelf4](gcc_example/readelf4.PNG)
+![readelf4](readelf4.PNG)
 
 ####gcc选项，对目标文件节区的影响
 
 ##参考资料
+1. [Using the GNU 
+Compiler Collection 
+(GCC)](https://gcc.gnu.org/onlinedocs/gcc/index.html#SEC_Contents)
+1. [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
+1. [The Definitive Guide to GCC]()
+1. [The Complete Reference GCC]()
+1. [The GNU C Library Reference Manual.pdf](http://www.gnu.org/software/libc/manual/pdf/libc.pdf)
