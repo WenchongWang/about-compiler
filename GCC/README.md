@@ -2,7 +2,7 @@
 
 ---
 
-## 一. 编译GCC
+## 一. 编译GCC, [gitee](https://gitee.com/mirrors/gcc)
 
 ## 二. 编译选项, [详细参考:GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 	-D，定义命令宏
