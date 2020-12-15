@@ -66,14 +66,14 @@
 名称 			|类型 				|属性 			|含义
 ----------------|----------------|----------------|----------------
 .bss            |                |                |   
-.shstrtab       |SHT_STRTAB		 |				  |	包含节区名称<br>![elf_shstrtab](elf_shstrtab.PNG)
+.shstrtab       |SHT_STRTAB		 |				  |	包含节区名称<br>![](elf_shstrtab.PNG)
 .initerp        |SHT_PROGBITS	 |				  |	目标文件运行时，用于搜索依赖的glibc共享库<br>![elf_interp](elf_interp.PNG)
-.comment        |SHT_PROGBITS	 |				  |	OS和GCC版本信息<br>![elf_comment](elf_comment.PNG)
-.note.abi.tag   |SHT_NOTE	     |				  |	readelf -n obj<br>![elf_note_abi_tag](elf_note_abi_tag.PNG)
-.note.gnu.build-id|SHT_NOTE	     |				  |	readelf -n obj<br>![elf_note_gnu_buildid](elf_note_gnu_buildid.PNG)
-.rela.[name]    |SHT_RELA	     |				  |	readelf -r obj<br>![elf_rela](elf_rela.PNG)
-.dynsym         |SHT_DYNSYM	     |				  |	包含动态链接符号表，readelf --dyn-syms/-s obj<br>![elf_dynsym](elf_dynsym.PNG)
-.symtab			|SHT_SYMTAB	     |				  |	包含一个符号表，readelf -s obj，strip会删除该区<br>![elf_dynsym](elf_dynsym.PNG)
+.comment        |SHT_PROGBITS	 |				  |	OS和GCC版本信息<br>![](elf_comment.PNG)
+.note.abi.tag   |SHT_NOTE	     |				  |	readelf -n obj<br>![](elf_note_abi_tag.PNG)
+.note.gnu.build-id|SHT_NOTE	     |				  |	readelf -n obj<br>![](elf_note_gnu_buildid.PNG)
+.rela.[name]    |SHT_RELA	     |				  |	readelf -r obj<br>![](elf_rela.PNG)
+.dynsym         |SHT_DYNSYM	     |				  |	包含动态链接符号表，readelf --dyn-syms/-s obj<br>![](elf_dynsym.PNG)
+.symtab			|SHT_SYMTAB	     |				  |	包含一个符号表，readelf -s obj，strip会删除该区<br>![](elf_dynsym.PNG)
 
 ### 实验
 #### readelf -all(strip处理后、没有-g选项，-g选项)
