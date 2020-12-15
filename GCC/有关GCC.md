@@ -5,7 +5,7 @@
 
 ##一. 编译GCC
 
-##二. 编译选项,
+##二. 编译选项, [详细参考:GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 	-D，定义命令宏
 		//-DDEBUG相当于#define DEBUG
 		#ifdef DEBUG
@@ -88,13 +88,11 @@
 
 ####gcc选项，对目标文件节区的影响
 
-##参考资料
+##五. 参考资料
 1. [GCC online documentation](https://gcc.gnu.org/onlinedocs/)
 1. [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 1. [Introduction to GCC, 中文名:GCC编程简介 作者:Brian Gough](https://share.weiyun.com/GFn5XIaC)
 1. [The Definitive Guide to GCC]()
 1. [The Complete Reference GCC]()
 1. [The GNU C Library Reference Manual.pdf](http://www.gnu.org/software/libc/manual/pdf/libc.pdf)
-1. [GCC and Make
-Compiling, Linking and Building
-C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
+1. [GCC and Make Compiling, Linking and Building C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
