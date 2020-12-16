@@ -74,12 +74,12 @@
 .note.gnu.build-id|SHT_NOTE	     |				  |	readelf -n obj<br>![](elf_note_gnu_buildid.PNG)
 .rela.[name]    |SHT_RELA	     |				  |	readelf -r obj<br>![](elf_rela.PNG)
 .dynsym         |SHT_DYNSYM	     |				  |	包含动态链接符号表，readelf --dyn-syms/-s obj<br>![](elf_dynsym.PNG)
+
 .symtab			|SHT_SYMTAB	     |				  |	包含一个符号表，readelf -s obj，strip会删除该区<br>![](elf_dynsym.PNG)
 
 ### 实验
 #### readelf -all(strip处理后、没有-g选项，-g选项)
 ![readelf1](readelf1.PNG)
-
 ![readelf2](readelf2.PNG)
 
 ![readelf3](readelf3.PNG)
@@ -90,6 +90,7 @@
 
 ## 五. 参考资料
 1. [GCC online documentation](https://gcc.gnu.org/onlinedocs/)
+1. [GNU Compiler Collection (GCC) Internals](https://gcc.gnu.org/onlinedocs/gccint/)
 1. [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html)
 1. [Introduction to GCC, 中文名:GCC编程简介 作者:Brian Gough](https://share.weiyun.com/GFn5XIaC)
 1. [The Definitive Guide to GCC]()
@@ -97,3 +98,4 @@
 1. [The GNU C Library Reference Manual.pdf](http://www.gnu.org/software/libc/manual/pdf/libc.pdf)
 1. [GCC and Make Compiling, Linking and Building C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
 1. [GDB: The GNU Project Debugger](https://sourceware.org/gdb/current/onlinedocs/)
+1. [compile cpp11 online](https://www.tutorialspoint.com/compile_cpp11_online.php)
