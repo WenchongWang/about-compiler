@@ -80,19 +80,19 @@
 			|libcxxabi									<-git
 			|libcxx										<-git
 	---------------------------------------------
-    $ mkdir where-you-want-to-build		#编译输出目录
+	$ mkdir where-you-want-to-build		#编译输出目录
 	$ cd where-you-want-to-build
 	$ /PATH_TO_SOURCE/configure --disable-optimized --prefix=../where-youwant-to-install  #--enable-optimized(off),--enable-assertions(on),--enable-shared(off),--enable-jit(on),--enable-targets(all)
 	$ make && make install				#开始编译
 	---------------------------------------------
-    新版本需要这样编译
-    mkdir -v build &&
+	新版本需要这样编译
+	mkdir -v build &&
 	cd       build &&
-
+	
 	CC=gcc CXX=g++                              \
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	cmake -DCMAKE_INSTALL_PREFIX=/usr -DLLVM_ENABLE_FFI=ON - DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="host" -Wno-dev .. && make -j4
-    ---------------------------------------------
-    $ echo $?    #返回0.表明编译成功
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	cmake -DCMAKE_INSTALL_PREFIX=/usr -DLLVM_ENABLE_FFI=ON - DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="host" -Wno-dev .. && make -j4
+	---------------------------------------------
+	$ echo $?    #返回0.表明编译成功
 	$ export PATH="$PATH:where-you-want-to-install/bin"		#加到PATH环境变量中
 	$ clang –v
 
@@ -109,14 +109,14 @@
 	clang分三个实体概念：
 		clang驱动：利用现有OS、编译环境以及参数选项来驱动整个编译过程的工具。
 		clang编译器：利用clang前端组件及库打造的编译器，其入口为cc1_main; 参数为clang -cc1 或者 -Xclang；
-        clang前端组件及库：包括Support、Basic、Diagnostics、Preprocessor、Lexer、Sema、CodeGen等；
+	    clang前端组件及库：包括Support、Basic、Diagnostics、Preprocessor、Lexer、Sema、CodeGen等；
 
 ### 1、clang编译器
 
 #### 架构图（以编译器流水线角度）
 
 #### 编译器选项（clang -cc1 -help，CC1Options.td中定义，以生产者和消费者角度来划分，不同选项划分的功能大小不同）
-	
+
    选项     | 说明 | FrontendAction子类 | ASTConsumer子类 | 备注
 ------------- | ------------- | ------------- | ------------- | -------------
 -init-only | | InitOnlyAction | | 只做前端初始化
@@ -186,9 +186,9 @@
 	
 	
 			> **Act.Execute(FrontendAction::Execute()），该函数会调用FrontendAction::ExecuteAction(纯虚函数，每个子类必须实现该函数)** 
-	
+		
 			> Act.EndSourceFile（FrontendAction::EndSourceFile）
-	
+		
 			- 如果DisableFree为1，保留Sema、ASTContext、ASTConsumer
 			- 否则，重置Sema、ASTContext、ASTConsumer为nullptr
 		
@@ -210,8 +210,9 @@
 		- CreateWrappedASTConsumer
 			- **AnalysisAction::CreateASTConsumer**
 				- AnalysisAction::CreateAnalysisConsumer
-					- **创建AnalysisASTConsumer对象** 
-
+					
+- **创建AnalysisASTConsumer对象** 
+					
 				- FrontendAction::Execute	
 					- **ASTFrontendAction::ExecuteAction**
 						- clang::ParseAST
@@ -236,30 +237,30 @@
 														- register##name，每个checker必须定义注册函数**（参考如何编写Checker，方式一）**
 									- **Parser::ConsumeToken，预处理和词法分析并生成tokens**
 										- Preprocessor::Lex，根据输入Lex类型（CLK_Lexer、PTHLexer、CLK_TokenLexer、CLK_CachingLexer、CLK_LexAfterModuleImport）分别进一步处理↓
-											- CLK_Lexer
-	
-												    - Lexer::LexTokenInternal按字符流逐个处理
-    													-  如果是文件结尾，调用LexEndOfFile
-    														- Preprocessor::RemoveTopOfLexerStack
-    															- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来CurLexerKind的值  
-    													-  如果是预处理标识符，调用Preprocessor::HandleDirective
-    														- Preprocessor::HandleDirective由预处理对象处理
-    															- 如果标识符是‘#define’，HandleDefineDirective
-    																- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
-    															- 如果Ident是'#include',HandleIncludeDirective
-    																- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
-    																	- 如果是普通的.文件，EnterSourceFileWithLexer
-    																		- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
-    													-  如果是标识符，调用Preprocessor::HandleIdentifier
-    														- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
-    															- 内置宏？
+								- CLK_Lexer
+				
+   								    - Lexer::LexTokenInternal按字符流逐个处理
+       	   												-  如果是文件结尾，调用LexEndOfFile
+       	   													- Preprocessor::RemoveTopOfLexerStack
+       	   														- Preprocessor::PopIncludeMacroStack，通过Pop操作，还原原来CurLexerKind的值  
+       	   												-  如果是预处理标识符，调用Preprocessor::HandleDirective
+       	   													- Preprocessor::HandleDirective由预处理对象处理
+       	   														- 如果标识符是‘#define’，HandleDefineDirective
+       	   															- 如果创建了Callbacks,并重载了Ident函数（例如-E -dD,PrintPPOutputPPCallbacks::Ident），则输出Ident值
+       	   														- 如果Ident是'#include',HandleIncludeDirective
+       	   															- EnterSourceFile包含新文件，根据文件类型创建不同的Lexer
+       	   																- 如果是普通的.文件，EnterSourceFileWithLexer
+       	   																	- 调用PushIncludeMacroStack，把原有的CurLexerKind压栈push，并设置当前的Lexer类型CurLexerKind
+       	   												-  如果是标识符，调用Preprocessor::HandleIdentifier
+       	   													- 如果该标识符是可扩展的，调用HandleMacroExpandedIdentifier继续处理
+       	   														- 内置宏？
     															- 其他？ 
-
+				
 											-  CLK_PTHLexer针对PTH文件
 											-  CLK_TokenLexer
 											-  CLK_CachingLexer
-											-  CLK_LexAfterModuleImport针对import
-
+							-  CLK_LexAfterModuleImport针对import
+				
 							- **Parser::ParseTopLevelDecl，从上(顶级声明)自下结合tokens(Parser::ConsumeToken已分析出所有tokens)，开始语法分析、语义分析，最终生成ASTNode；创建函数在Stmt.cpp和Decl.cpp中**
 								- AnalysisConsumer::HandleTopLevelDecl，把Decl放入LocalTUDecls队列中后续构建CFG有用
 								- **AnalysisConsumer::HandleTranslationUnit,静态分析器分析入口**
@@ -278,8 +279,8 @@
 													- ExprEngine::ExecuteWorkList
 														- CoreEngine::ExecuteWorkList
 															- CoreEngine::dispatchWorkItem,根据程序点类型进一步处理
-									- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
-
+								- **checkerMgr->runCheckersOnEndOfTranslationUnit，所有Decl处理完后再进行规则检查**	
+	
 1. 声明、语句、表达式、操作符
 
 ![Decl](clang_example//classclang_1_1Decl__inherit__graph.png)
@@ -291,7 +292,7 @@
 ![](http://clang.llvm.org/doxygen/classclang_1_1PPChainedCallbacks.html)
 
 3. AST matchers语法匹配机制，![文档](http://clang.llvm.org/docs/LibASTMatchersReference.html)
-						
+	
 2. Clang Static Analyzer就是利用不同的checker来检测源码不同类型的bug的。
 	
 3. 静态分析器会默认使用6类checkers(default checker)：
@@ -358,7 +359,7 @@
 		ModuleLoader module加载器
 	成员函数:
 		Preprocessor::Lex
- 
+
 
 ### 2、clang驱动
 #### 1、 驱动选项（clang -help，Options.td定义）
@@ -448,7 +449,7 @@
 - **The Clang “Basic” Library**
 	
 		这个“基本”库包含了跟踪和操作代码缓存，源码缓存区中的定位，诊断，序列，目标抽取，和被编译的编程语言的子集的相关信息这
-        一系列的底层公共操作。这个库的一部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语
+  	  一系列的底层公共操作。这个库的一部分是特别针对C语言的（比如TargetInfo类），剩下的部分可以被其他的不是基于C的编程语
 		言重用（SourceLocation, SourceManager, Diagnostics, FileManager）。
 
 - **诊断字系统（Diagnostics）**
@@ -474,6 +475,7 @@
 	- Lexer类
 	- MultipleIncludeOpt类
 	- The Parser Library
+		
 		- parser类
 	- The AST Library
 		- Type类及其子类
@@ -484,17 +486,19 @@
 		- CFG类
 		
 					源码级控制流图，专用于语句(Stmt\*),通常用于函数体CompoundStmt，通过查找“: public Stmt”可以找到所有
-					的子类语句
-
+				的子类语句
+	
 			- 基本块 
 			
 					是一个只能从它的第一条指令进入，并从最后一条指令离开的最长的指令序列。
-					基本块第一条指令（首领leader）：1、程序的入口点 2、分支的目标 3、分支下条指令
-
+				基本块第一条指令（首领leader）：1、程序的入口点 2、分支的目标 3、分支下条指令
+	
 				- CFGBlock
 			- 入口(entry)和出口节点(exit)
+				
 				- null
 			- 条件控制流
+				
 				- null   
 - **The Sema Library**
 
@@ -508,22 +512,21 @@
 
 	- `libclang库是什么？`libclang提供了一系列的C语言的接口，可是这些接口并不能全然提供存储在Clang C++ AST中的全部信息，仅仅能提供部分基本信息，可是这些基本信息已经能够满足普通情况下的使用。主要目的是为了稳定，而且能够支持开发工具的基本功能。
 	
-	  	
 	- `依赖库,`clangAST、clangBasic、clangFrontend、	clangIndex、clangLex、clangSema、clangTooling
-
-	- `对外接口`
+	
+- `对外接口`
 	![group__CINDEX](clang_example/group__CINDEX.png)
-
-    - `libclang封装了什么？`
-	    - 重要数据结构
+	
+  - `libclang封装了什么？`
+      - 重要数据结构
 			- CIndexer，用于管理库的全局状态的顶层对象；
 		    - CXTranslationUnit，用于封装单独的翻译单元的抽象语法树AST的高级对象，该对象包含了CIndexer、ASTUnit、Diagnostics等对象；
 		    - ASTUnit，用于转换AST的工具类；
 		    - CXCursor，用于呈现AST的节点Node；
 		    - SourceRange、SourceLocation，用于表示输入源文件相关信息；
 		    - Diagnostics，诊断信息；
-
-		- 主要函数流程
+	
+	- 主要函数流程
 			- clang_createIndex函数，创建CIndexer管理对象
 			- clang_parseTranslationUnit函数，创建CXTranslationUnit翻译单元对象，该对象中又包含Diagnostics诊断对象，AST对象等有用对象信息
 				- 创建CXTranslationUnit TU对象
@@ -545,17 +548,18 @@
 								- 调用Act->EndSourceFile，实际调用FrontendAction::EndSourceFile
 					- 调用MakeCXTranslationUnit返回装满解析后的CXTranslationUnit对象
 			
+
  		*从clang\_createIndex，clang\_parseTranslationUnit函数流程可知，libclang库底层也是按照生产者和消费者模式来封装各自的功能集合（clang编译器大量使用这种模式来划分编译选项）；要使用libclang库，首先要调用这两个函数，之后基本完成了源文件到AST的提取*
-
-    - `libclang python binding,`
-    ![](clang_example/libclang_python_binding.PNG)
-
-    - `libclang如何使用？`
-
-    参考《编写基于libclang库的工具》
-
-	- `libclang相关资料`
-		- http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf
+ 	
+ 	- `libclang python binding,`
+ 	![](clang_example/libclang_python_binding.PNG)
+ 	
+ 	- `libclang如何使用？`
+ 	
+ 	参考《编写基于libclang库的工具》
+ 	
+ 	- `libclang相关资料`
+ 		- http://llvm.org/devmtg/2010-11/Gregor-libclang.pdf
 
 - **libtooling库**
 
@@ -592,7 +596,7 @@
 
 ![PASS](http://llvm.org/doxygen/classllvm_1_1Pass__inherit__graph.png)
 
-								
+
 ## 四、基于Clang/LLVM的工具
 ### 扩展工具
 - PPTrace: C++预编译跟踪 
@@ -632,10 +636,10 @@
 	      			void checkPreStmt(const CallExpr *CE, CheckerContext &Ctx) const {}
 	    		}
 	    }
-						
-		void ento::registerxxxx(CheckerManager &mgr) {
-  				mgr.registerChecker<xxxx>();
-		}
+	    				
+	    void ento::registerxxxx(CheckerManager &mgr) {
+      			mgr.registerChecker<xxxx>();
+	    }
 - clang/lib/StaticAnalyzer/Checkers/Checkers.td注册Checker归属关系，例如alpha.core.yyyy
 		
 		let ParentPackage = CoreAlpha in {
