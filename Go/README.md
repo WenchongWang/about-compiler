@@ -1,4 +1,4 @@
-![](/home/yee/src/about-compiler/Go/有关Go.png)
+![](有关Go.png)
 
 # Go语言
 
