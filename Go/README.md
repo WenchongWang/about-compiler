@@ -50,7 +50,8 @@
 	collider子目录改造
 	```
 	go mod init yejinlei/collider //生成go.mod
-	go mod vendor				  //自动下载依赖包, 并放入同级vendor目录下													
+	go mod vendor	//自动下载依赖包, 并放入同级vendor目录下
+	
 	/*提示错误, 无法找到collidertest包位置*/
 	➜  collider git:(master) ✗ go mod vendor                    
 	go: finding golang.org/x/net latest
