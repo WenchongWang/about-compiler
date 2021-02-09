@@ -70,4 +70,12 @@
 
 ## 四. 参考资料
 
-1. [concurrency in go](https://www.kancloud.cn/mutouzhang/go/596804)
+1. [Go文档](https://go-zh.org/doc/)
+2. [concurrency in go](https://www.kancloud.cn/mutouzhang/go/596804), [src](https://github.com/kat-co/concurrency-in-go-src)
+3. [Go 语言设计与实现](https://draveness.me/golang/)
+4. [Go编程时光](http://golang.iswbm.com/en/latest/index.html)
+5. [高性能Golang研讨会](https://www.cnblogs.com/sunsky303/p/11077634.html)
+6. [Package Management Tools](https://github.com/golang/go/wiki/PackageManagementTools)
+7. [Golang⾼级讲义](http://xiaorui.cc/static/golang_advance.pdf)
+8. [Go Projects](https://github.com/golang/go/wiki/Projects)
+9. [awesome-go](https://github.com/avelino/awesome-go)
