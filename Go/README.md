@@ -34,13 +34,11 @@
 	  	│   └── room_test.go
 	  	├── collidermain //main包
 	  	│   └── main.go
-	  	├── collidertest
-	  	│   └── mockrwc.go
+	  	├── collidertestzsh
+	  	│   └── mockrwc.go安装go 1.13及配置代理
 	```
 	
-	安装go 1.13及配置代理
-	
-	```
+	```go
 	gvm install go1.13 
 	gvm use go1.13 
 	export GO111MODULE=on
@@ -48,7 +46,7 @@
 	```
 	
 	collider子目录改造
-	```
+	```go
 	go mod init yejinlei/collider //生成go.mod
 	go mod vendor	//自动下载依赖包, 并放入同级vendor目录下
 	
@@ -65,10 +63,11 @@
 	
 	collidermain子目录改造(步骤同上), 因为是package main, 可以生成可执行文件,命令如下:
 	
-	```
+	```go
 	go build -mod=vendor
 	```
 	
 
 ## 四. 参考资料
 
+1. [concurrency in go](https://www.kancloud.cn/mutouzhang/go/596804)
