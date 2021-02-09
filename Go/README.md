@@ -79,3 +79,7 @@
 7. [Golang⾼级讲义](http://xiaorui.cc/static/golang_advance.pdf)
 8. [Go Projects](https://github.com/golang/go/wiki/Projects)
 9. [awesome-go](https://github.com/avelino/awesome-go) /[awesome-go.com](https://awesome-go.com/)
+10. [Go2编程指南](https://chai2010.cn/go2-book/)
+11. [Go语法树入门](https://github.com/chai2010/go-ast-book)
+12. [Go语言高级编程](https://github.com/chai2010/advanced-go-programming-book)
+13. [Go语言圣经](https://github.com/golang-china/gopl-zh)/[The Go Programming Language](http://www.gopl.io/)
