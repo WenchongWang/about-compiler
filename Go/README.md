@@ -78,4 +78,4 @@
 6. [Package Management Tools](https://github.com/golang/go/wiki/PackageManagementTools)
 7. [Golang⾼级讲义](http://xiaorui.cc/static/golang_advance.pdf)
 8. [Go Projects](https://github.com/golang/go/wiki/Projects)
-9. [awesome-go](https://github.com/avelino/awesome-go)
+9. [awesome-go](https://github.com/avelino/awesome-go) /[awesome-go.com](https://awesome-go.com/)
