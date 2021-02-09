@@ -11,5 +11,5 @@
   - [ ] 有关Javascript
 - [ ] 深入语言
   - [ ] [有关LLVM](./有关LLVM.md)
-  - [ ] [有关GCC](./有关GCC.md)
+  - [ ] [有关GCC](GCC/README.md)
   - [ ] [有关Graalvm](./有关Graalvm.md)
