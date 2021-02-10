@@ -83,3 +83,4 @@
 11. [Go语法树入门](https://github.com/chai2010/go-ast-book)
 12. [Go语言高级编程](https://github.com/chai2010/advanced-go-programming-book)
 13. [Go语言圣经](https://github.com/golang-china/gopl-zh)/[The Go Programming Language](http://www.gopl.io/)
+14. [深入解析Go](https://www.cntofu.com/book/3/index.html)
