@@ -1,14 +1,46 @@
 ![](有关Go.png)
 
-# Go语言
+# Go语言™
 
 ---
 
-## 一. Go基础
+## 一. 专题学习
 
-## 二. Go深入
+### 字符串&正则表达式
 
-## 三. 实战案例
+- *正则规则*
+
+![正则](https://gitee.com/yejinlei/about-cs/raw/master/doc/%E6%9C%89%E5%85%B3%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.png)
+
+### 并发并行
+
+<!--先看几个反例-->
+
+- *数据竞争问题*
+
+```Go
+package main
+
+import (
+	"fmt"
+	_ "time"
+)
+
+func main() {
+	var data int
+	go func() {
+ 		data++
+	}()
+	//time.Sleep(10000)
+	fmt.Printf("data值 %v.\n", data)
+}
+```
+
+### 调试与跟踪
+
+go tool trace & pprof
+
+## 二. 实战案例
 
 1. **项目包管理改造 - apprtc/collider为例 (>go1.11, go module方式)**
 
@@ -68,7 +100,7 @@
 	```
 	
 
-## 四. 参考资料
+## 三. 参考资料
 
 1. [Go文档](https://go-zh.org/doc/)
 2. [concurrency in go](https://www.kancloud.cn/mutouzhang/go/596804), [src](https://github.com/kat-co/concurrency-in-go-src)
@@ -84,3 +116,4 @@
 12. [Go语言高级编程](https://github.com/chai2010/advanced-go-programming-book)
 13. [Go语言圣经](https://github.com/golang-china/gopl-zh)/[The Go Programming Language](http://www.gopl.io/)
 14. [深入解析Go](https://www.cntofu.com/book/3/index.html)
+15. [Go 101](https://go101.org/article/101.html)
