@@ -44,7 +44,13 @@ func main() {
 
 go tool trace & pprof
 
-### 测试
+### 测试框架
+
+### CGO编程
+
+### SWIG编程
+
+### 图形界面
 
 ## 二. 实战案例
 
@@ -127,3 +133,6 @@ go tool trace & pprof
 17. [Go by Example](https://gobyexample.com/)
 18. [Go.dev](https://pkg.go.dev/)
 19. [learnku Go版块](https://learnku.com/go)
+20. [Go内部实现](http://blog.studygolang.com/category/realize/), [Go包](http://blog.studygolang.com/category/package/), [Go基础](http://blog.studygolang.com/category/spec/), [Go实战](http://blog.studygolang.com/category/go实战/)
+21. [plan9 assembly完全解析](https://github.com/cch123/golang-notes/blob/master/assembly.md#plan9-assembly-完全解析)
+22. [Go Internals](https://go-internals-cn.gitbook.io/go-internals/)
