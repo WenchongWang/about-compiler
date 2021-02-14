@@ -2,6 +2,7 @@
 
 - [ ] 编程语言
   - [ ] 有关C/C++
+    - [ ] [C/C++学习](CC++/README.md)
   - [ ] 有关Rust
     - [ ] [Rust学习](Rust/README.md)
   - [ ] 有关Go
