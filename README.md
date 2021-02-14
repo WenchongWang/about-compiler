@@ -3,6 +3,7 @@
 - [ ] 编程语言
   - [ ] 有关C/C++
   - [ ] 有关Rust
+    - [ ] [Rust学习](Rust/README.md)
   - [ ] 有关Go
     - [ ] [Go学习](Go/README.md)
   - [ ] 有关Python
@@ -16,5 +17,5 @@
 - [ ] 编译器技术
   - [ ] [有关LLVM](./有关LLVM.md)
   - [ ] [有关GCC](GCC/README.md)
-- [ ] 其他
+- [ ] 实战
   - [ ] [OpenCppTest](https://gitee.com/yejinlei/OpenCppTest), 基于Clang的C++自动用例生成工具
