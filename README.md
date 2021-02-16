@@ -16,7 +16,7 @@
   - [ ] 有关WebAssembly
   - [ ] 有关Javascript
 - [ ] 编译器技术
-  - [ ] [有关LLVM](./有关LLVM.md)
+  - [ ] [有关LLVM](Clang/README.md)
   - [ ] [有关GCC](GCC/README.md)
 - [ ] 实战
   - [ ] [OpenCppTest](https://gitee.com/yejinlei/OpenCppTest), 基于Clang的C++自动用例生成工具
