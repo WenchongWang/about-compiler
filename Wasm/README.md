@@ -7,9 +7,9 @@
 * 参考资料
   
    1. [C/C++面向WebAssembly编程](https://www.cntofu.com/book/150/readme.html)
-  
+
 ------
-      
+
 
 ## 二. Rust Wasm
 
@@ -32,3 +32,5 @@
 ## 四. 参考资料
 
 1. [awesome-wasm](https://github.com/WebAssembly-cn/awesome-wasm)
+
+2. [pywasm: A WebAssembly interpreter written in pure Python](https://github.com/mohanson/pywasm)
