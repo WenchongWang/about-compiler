@@ -14,9 +14,10 @@
     - [ ] [统计学习/机器学习(R语言版)](https://gitee.com/yejinlei/about-ml/blob/master/R)
   - [ ] 有关Lua
   - [ ] 有关WebAssembly
+    - [ ] [WASM学习](Wasm/README.md)
   - [ ] 有关Javascript
 - [ ] 编译器技术
-  - [ ] [有关LLVM](Clang/README.md)
+  - [ ] [有关Clang&LLVM](Clang/README.md)
   - [ ] [有关GCC](GCC/README.md)
 - [ ] 实战
   - [ ] [OpenCppTest](https://gitee.com/yejinlei/OpenCppTest), 基于Clang的C++自动用例生成工具
