@@ -140,3 +140,4 @@ go tool trace & pprof
 20. [Go内部实现](http://blog.studygolang.com/category/realize/), [Go包](http://blog.studygolang.com/category/package/), [Go基础](http://blog.studygolang.com/category/spec/), [Go实战](http://blog.studygolang.com/category/go实战/)
 21. [plan9 assembly完全解析](https://github.com/cch123/golang-notes/blob/master/assembly.md#plan9-assembly-完全解析)
 22. [Go Internals](https://go-internals-cn.gitbook.io/go-internals/)
+23. [深入CGO编程 by chai2010 (柴树杉)](https://chai2010.cn/gopherchina2018-cgo-talk/#/)
