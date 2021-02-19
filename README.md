@@ -4,8 +4,12 @@
   - [ ] 有关C/C++
     - [ ] [C/C++学习](CC++/README.md)
     - [ ] 构建工具
-      - [ ] CMake
-      - [ ] AutoMa
+      - [ ] [CMake学习](CC++/Build/Cmake.md)
+      - [ ] [Autotoolset学习](CC++/Build/Autotoolset.md)
+      - [ ] [Ninja学习](CC++/Build/Ninja.md)
+      - [ ] [Scons学习](CC++/Build/Scons.md)
+    - [ ] 二进制
+      - [ ] [ELF学习](CC++/Bin/Elf.md)
   - [ ] 有关Rust
     - [ ] [Rust学习](Rust/README.md)
   - [ ] 有关Go
