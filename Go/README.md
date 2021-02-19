@@ -50,6 +50,12 @@ go tool trace & pprof
 
 ### 图形界面
 
+* 目前Qt for Golang三种方案:
+
+  2. [visualfc / goqt](https://github.com/visualfc/goqt)
+  2. [kitech / qt.go](https://github.com/kitech/qt.go)
+  3. [therecipe / go](https://github.com/therecipe/qt)
+
 ## 二. 实战案例
 
 1. **项目包管理改造 - apprtc/collider为例 (>go1.11, go module方式)**
