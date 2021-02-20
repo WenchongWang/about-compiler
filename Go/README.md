@@ -53,7 +53,17 @@ go tool trace & pprof
 * 目前Qt for Golang三种方案:
 
   2. [visualfc / goqt](https://github.com/visualfc/goqt)
-  2. [kitech / qt.go](https://github.com/kitech/qt.go)
+  2. [kitech / qt.go](https://github.com/kitech/qt.go), 主要采用libffi方式, 核心代码:
+     1. init(qtrt/ffi_invoke.go)
+        1. init_ffi_invoke
+           1. NewFFILibrary加载so(gtrt/[ffi_wrapper.go](https://github.com/kitech/qt.go/blob/58034ab430328f0bcd1e15a24909abb6d0ef9a19/qtrt/ffi_wrapper.go))
+        2. init_so_ffi_call
+           1. GetQtSymAddrRaw, 遍历qtlibs, 获取ffi_call_ex和ffi_call_var_ex指针
+           2. C.set_so_ffi_call_ex([qtrt/ffi_invoke.c](https://github.com/kitech/qt.go/blob/58034ab430328f0bcd1e15a24909abb6d0ef9a19/qtrt/ffi_invoke.c)), 传入上述指针
+     2. InvokeQtFunc5/6/7 
+        1. C.ffi_call_ex
+           1. ffi_call_ex(qtrt/ffi_invoke.c中实现)
+              1. ffi_call(libffi库函数, 需要安装libffi-dev)
   3. [therecipe / go](https://github.com/therecipe/qt)
 
 ## 二. 实战案例
