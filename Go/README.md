@@ -46,7 +46,7 @@ go tool trace & pprof
 
 ### 测试框架
 
-### Cgo & [Swig](http://www.swig.org/Doc2.0/Go.html) & [c2goasm](https://github.com/minio/c2goasm)编程
+### Cgo & FFI & [Swig](http://www.swig.org/Doc2.0/Go.html) & [c2goasm](https://github.com/minio/c2goasm)编程
 
 ### 图形界面
 
