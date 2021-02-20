@@ -33,5 +33,5 @@
 ## 四. 参考资料
 
 1. [awesome-wasm](https://github.com/WebAssembly-cn/awesome-wasm)
-
 2. [pywasm: A WebAssembly interpreter written in pure Python](https://github.com/mohanson/pywasm)
+3. [WasmFiddle](https://wasdk.github.io/WasmFiddle/)

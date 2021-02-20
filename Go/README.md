@@ -46,9 +46,15 @@ go tool trace & pprof
 
 ### 测试框架
 
-### Cgo & FFI & [Swig](http://www.swig.org/Doc2.0/Go.html) & [c2goasm](https://github.com/minio/c2goasm)编程
+### Cgo & [libffi](https://www.sourceware.org/libffi/) & [Swig](http://www.swig.org/Doc2.0/Go.html) & [c2goasm](https://github.com/minio/c2goasm)编程
+
+### 开源项目
+
+* [libffi](https://github.com/clevabit/libgoffi) is one of the most commonly used libraries to implement foreign function interfaces in programming languages or frameworks.
 
 ### 图形界面
+
+### 开源项目
 
 * 目前Qt for Golang三种方案:
 
@@ -151,3 +157,5 @@ go tool trace & pprof
 21. [plan9 assembly完全解析](https://github.com/cch123/golang-notes/blob/master/assembly.md#plan9-assembly-完全解析)
 22. [Go Internals](https://go-internals-cn.gitbook.io/go-internals/)
 23. [深入CGO编程 by chai2010 (柴树杉)](https://chai2010.cn/gopherchina2018-cgo-talk/#/)
+24. [Calling a Windows DLL](https://github.com/golang/go/wiki/WindowsDLLs)
+25. [cgo is not Go](https://dave.cheney.net/2016/01/18/cgo-is-not-go)
