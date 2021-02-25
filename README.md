@@ -10,10 +10,15 @@
       - [ ] [Autotoolset学习](CC++/Build/Autotoolset.md)
       - [ ] [Ninja学习](CC++/Build/Ninja.md)
       - [ ] [Scons学习](CC++/Build/Scons.md)
+    - [ ] 包管理
+      - [ ] [Conan学习](CC++/Package/Conan.md)
+      - [ ] [Vcpkg学习](CC++/Package/Vcpkg.md)
     - [ ] 二进制
       - [ ] [ELF学习](CC++/Bin/Elf.md)
   - [ ] 有关Rust
     - [ ] [Rust学习](Rust/README.md)
+  - [ ] 有关Zig
+    - [ ] Zig学习
   - [ ] 有关Go
     - [ ] [Go学习](Go/README.md)
   - [ ] 有关Python
