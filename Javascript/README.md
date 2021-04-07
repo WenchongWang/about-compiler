@@ -1,11 +1,13 @@
 ![](有关Javsscript_Browser_Nodejs_Deno.png)
 <img src="js_ecology.png"  />
 
-# Javascript语言™
+# JavaScript语言™
 
 ---
 
-## Javascript语言
+## JavaScript语言
+
+## TypeScript语言
 
 ## Browser浏览器
 
