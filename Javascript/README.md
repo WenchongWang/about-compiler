@@ -1,4 +1,4 @@
-![](有关Javsscript, Browser, Nodejs.png)
+![](有关Javsscript_Browser_Nodejs_Deno.png)
 
 # Javascript语言™
 
