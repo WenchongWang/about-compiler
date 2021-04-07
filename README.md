@@ -15,6 +15,8 @@
       - [ ] [Vcpkg学习](CC++/Package/Vcpkg.md)
     - [ ] 二进制
       - [ ] [ELF学习](CC++/Bin/Elf.md)
+    - [ ] IDE LSP
+      - [ ] Clangd
   - [ ] 有关Rust
     - [ ] [Rust学习](Rust/README.md)
   - [ ] 有关Zig
