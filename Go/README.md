@@ -159,3 +159,5 @@ go tool trace & pprof
 23. [深入CGO编程 by chai2010 (柴树杉)](https://chai2010.cn/gopherchina2018-cgo-talk/#/)
 24. [Calling a Windows DLL](https://github.com/golang/go/wiki/WindowsDLLs)
 25. [cgo is not Go](https://dave.cheney.net/2016/01/18/cgo-is-not-go)
+26. [Network Programming with Go by Jan Newmarch](http://tumregels.github.io/Network-Programming-with-Go/)
+
