@@ -5,6 +5,7 @@
 ## 语言级
 
 ### C/C++性能优化
+### Python性能优化
 
 ---
 
@@ -15,13 +16,15 @@
 
 ## 解释器/虚拟机
 
-### JVM 
+### JVM
+### CPython
 
 ---
 
 ## 编译器级
 
 ### Clang/LLVM
+### Graalvm
 
 ### 参考资料
 
@@ -36,23 +39,27 @@
 
 ## 操作系统级
 
+### 参考资料
+
+1. [Performance Analysis Methodology by Brendan Gregg, Joyent](http://www.brendangregg.com/methodology.html)
+2. [Tnking Methodically about Performance by Brendan Gregg, Joyent](https://queue.acm.org/detail.cfm?id=2413037)
+
 ---
 
 ## 硬件级
 
-### CPU/PMU/TMAM/VTune
+### CPU/PMU/TMAM/VTune or PMU-TOOLS
 
 ### GPU
 
 ### 参考资料
 
-1. [IA-32 Intel架构如那件开发人员手册 卷3:系统编程指南](https://kc.kexinshe.com/r/277831)
-
 ---
 
-## 资料汇总
+## 其他资料汇总
 
 1. [Intel® 64 and IA-32 Architectures Optimization Reference Manual](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf)
+2. [IA-32 Intel架构如那件开发人员手册 卷3:系统编程指南](https://kc.kexinshe.com/r/277831)
 2. [Intel® VTune™ Profiler Performance Analysis Cookbook](https://software.intel.com/content/www/us/en/develop/documentation/vtune-cookbook/top/methodologies.html)
 3. [Analyzing Open vSwitch* with DPDK Bottlenecks Using Intel® VTune™ Amplifier](https://software.intel.com/content/www/cn/zh/develop/articles/analyzing-open-vswitch-with-dpdk-bottlenecks-using-vtune-amplifier.html)
 4. [The microarchitecture of Intel, AMD, and  VIA CPUs An optimization guide for assembly programmers and  compiler makers](https://www.agner.org/optimize/microarchitecture.pdf)
