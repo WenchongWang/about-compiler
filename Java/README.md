@@ -6,7 +6,7 @@
 
 ## Java思维导图
 
-![](有关java.png)
+![](有关Java.png)
 
 ## Java并发编程
 ![](Java并发编程.png)

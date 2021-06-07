@@ -16,7 +16,8 @@
     - [ ] 二进制
       - [ ] [ELF学习](CC++/Bin/Elf.md)
     - [ ] IDE LSP
-      - [ ] Clangd
+      - [ ] Clangd(for C/C++)
+      - [ ] CCLS(for C/C++)
   - [ ] 有关Java
     - [ ] [Java学习](Java/README.md)
     
@@ -48,7 +49,8 @@
   - [ ] 有关R
     
     - [ ] [统计学习/机器学习(R语言版)](https://gitee.com/yejinlei/about-ml/blob/master/R)
-  - [ ] 有关Lua
+  - [ ] 有关Lua/LuaJIT
+    - [ ] [Lua/LuaJIT学习](Lua/README.md)
   - [ ] 有关WebAssembly
     
     - [ ] [WASM学习](Wasm/README.md)
