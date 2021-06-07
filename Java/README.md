@@ -4,10 +4,13 @@
 
 # 有关Java™
 
-## 语法
+## Java思维导图
 
-## 并发专题
-### 并发问题
+![](有关java.png)
+
+## Java并发编程
+![](Java并发编程.png)
+
 - 并发原理
 	- volatile
 		- 允许线程访问共享变量
@@ -21,4 +24,6 @@
 		- Lmbench3测量时长、vmsta测量次数
 		- 无锁并发编程、CAS算法、少使用线程、使用协程
 
-### 并发容器、工具类
+### 参考资料
+1. [Java虚拟机（JVM）你只要看这一篇就够了](https://blog.csdn.net/qq_41701956/article/details/81664921)
+2. [javacore](https://github.com/dunwu/javacore)
