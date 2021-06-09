@@ -66,4 +66,5 @@
 - [ ] 其他
   
   - [ ] [菜鸟工具](https://c.runoob.com/)
+  - [ ] [awesome-awesomeness](https://gitee.com/aimo-awesome/awesome-awesomeness)
 
