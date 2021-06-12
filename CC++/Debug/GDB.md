@@ -2,7 +2,7 @@
 
 ## 一. 思维导图
 
-![](/home/yee/src/about-compiler/CC++/Debug/有关GDB.png)
+![](有关GDB.png)
 
 ## 参考资料
 
