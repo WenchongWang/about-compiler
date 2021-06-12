@@ -62,8 +62,9 @@
 - [ ] 编译器技术
   - [ ] [有关Clang&LLVM](Clang/README.md)
   - [ ] [有关GCC](GCC/README.md)
+- [ ] 高性能计算
+  - [ ] [高性能计算](HPC/README.md)
 - [ ] 实战
-  
   - [ ] [OpenCppTest](https://gitee.com/yejinlei/OpenCppTest), 基于Clang的C++自动用例生成工具
 - [ ] 其他
   
