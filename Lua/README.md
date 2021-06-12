@@ -13,6 +13,25 @@
 
 *虚拟机核心*
 
+| 文件 | 作用     | 分析     |
+| :---- | ---- | ---- |
+| lua.c | lua主程入口 | main |
+| lapi.c | C语言接口 | lua_pcallk |
+| ldebug.c |      |      |
+| ldo.c | | luaD_rawrunprotected |
+| lfunc.c | | |
+| lgc.c | | |
+| lmem.c | | luaM_malloc_ |
+| lobject.c | | |
+| lopcodes.c | | |
+| lstate.c | 全局状态机 | lua_newstate<br />stack_init |
+| lstring.c | 字符串函数 | luaS_hash |
+| ltable.c | | |
+| ltm.c | | |
+| lvm.c | | |
+| lzio.c | | |
+| | | |
+
 *源代码解析和预编译*
 
 *内嵌库*
