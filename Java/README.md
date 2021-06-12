@@ -27,3 +27,5 @@
 ### 参考资料
 1. [Java虚拟机（JVM）你只要看这一篇就够了](https://blog.csdn.net/qq_41701956/article/details/81664921)
 2. [javacore](https://github.com/dunwu/javacore)
+3. [java并发框架](https://www.cnblogs.com/haimishasha/p/11199944.html)
+4. [java并发框架思维导图](https://raw.githubusercontent.com/dunwu/images/dev/snap/20200221175827.png)

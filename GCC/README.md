@@ -31,3 +31,4 @@
 1. [GCC and Make Compiling, Linking and Building C/C++ Applications, ehchua个人博客, 还包含比较多notes](https://personal.ntu.edu.sg/ehchua/programming/cpp/gcc_make.html) 
 1. [GDB: The GNU Project Debugger](https://sourceware.org/gdb/current/onlinedocs/)
 1. [compile cpp11 online](https://www.tutorialspoint.com/compile_cpp11_online.php)
+1. [hellogcc/100-gcc-tips](https://github.com/hellogcc/100-gcc-tips)

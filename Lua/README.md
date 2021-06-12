@@ -13,12 +13,12 @@
 
 *虚拟机核心*
 
-| 文件 | 作用     | 分析     |
+| 文件 | 作用     | 重要函数 |
 | :---- | ---- | ---- |
 | lua.c | lua主程入口 | main |
 | lapi.c | C语言接口 | lua_pcallk |
 | ldebug.c |      |      |
-| ldo.c | | luaD_rawrunprotected |
+| ldo.c | | luaD_pcall<br />luaD_rawrunprotected<br />luaD_closeprotected |
 | lfunc.c | | |
 | lgc.c | | |
 | lmem.c | | luaM_malloc_ |
