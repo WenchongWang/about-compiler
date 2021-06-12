@@ -9,7 +9,36 @@
 
 ![](Lua语言架构图.jpg)
 
-### Lua源码结构
+### 二. Lua源码结构
+
+#### 1. 编译Lua源码
+
+```shell
+diff --git a/src/Makefile b/src/Makefile
+index f78c0b8..050893e 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -7,7 +7,7 @@
+ PLAT= guess
+ 
+ CC= gcc -std=gnu99
+-CFLAGS= -O2 -Wall -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
++CFLAGS= -g -O0 -Wall -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
+ LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
+ LIBS= -lm $(SYSLIBS) $(MYLIBS)
+```
+
+
+
+#### 2. 函数列表
+
+```GDB
+//通过GDB导出所有函数
+(gdb) set logging file funcs.txt
+(gdb) set logging on 
+(gdb) info functions 
+(gdb) set logging off
+```
 
 *虚拟机核心*
 
