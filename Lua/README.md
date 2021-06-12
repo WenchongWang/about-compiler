@@ -1,10 +1,9 @@
-![](有关Lua.png)
-
----
 
 # 有关Lua/LuaJIT™
 
 ## 一. Lua基本语法
+
+![](有关Lua.png)
 
 ## 二. Lua源码分析
 
