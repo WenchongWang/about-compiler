@@ -11,7 +11,7 @@
 
 ### 二. Lua源码结构
 
-#### 1. 编译Lua源码
+#### 1. 编译调试版Lua
 
 ```shell
 diff --git a/src/Makefile b/src/Makefile
@@ -26,6 +26,9 @@ index f78c0b8..050893e 100644
 +CFLAGS= -g -O0 -Wall -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
  LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
  LIBS= -lm $(SYSLIBS) $(MYLIBS)
+ 
+ #或者
+ make CFLAGS+="-g -O0"
 ```
 
 
