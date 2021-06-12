@@ -4,9 +4,21 @@
 
 # 有关Lua/LuaJIT™
 
-## Lua源码分析
+## 一. Lua基本语法
 
-## LuaJIT源码分析
+## 二. Lua源码分析
+
+![](Lua语言架构图.jpg)
+
+### Lua源码结构
+
+*虚拟机核心*
+
+*源代码解析和预编译*
+
+*内嵌库*
+
+## 三. LuaJIT源码分析
 
 ## 参考资料
 
@@ -19,4 +31,5 @@
 7. [yuin/gopher-lua](https://github.com/yuin/gopher-lua)
 8. [zxh0/lua.go](https://github.com/zxh0/lua.go)
 9. [Shopify/go-lua](https://github.com/Shopify/go-lua)
+10. [Lua Performance Tips By Roberto Ierusalimschy](http://www.lua.org/gems/sample.pdf)
 
