@@ -10,6 +10,8 @@
       - [ ] [Autotoolset学习](CC++/Build/Autotoolset.md)
       - [ ] [Ninja学习](CC++/Build/Ninja.md)
       - [ ] [Scons学习](CC++/Build/Scons.md)
+    - [ ] 调试与跟踪
+      - [ ] [GDB学习](CC++/Debug/GDB.md)
     - [ ] 包管理
       - [ ] [Conan学习](CC++/Package/Conan.md)
       - [ ] [Vcpkg学习](CC++/Package/Vcpkg.md)
