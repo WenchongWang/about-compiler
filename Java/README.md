@@ -1,4 +1,4 @@
-![](java__history.png)
+![](java_history.png)
 
 ---
 
