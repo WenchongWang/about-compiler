@@ -67,7 +67,7 @@ make CFLAGS+="-dM -E"
 | ltm.c | 元方法 |  |
 | lvm.c | 虚拟机 |  |
 | lzio.c | 输入流接口 |  |
-| | | |
+
 
 *源代码解析和预编译*
 
@@ -78,7 +78,7 @@ make CFLAGS+="-dM -E"
 | llex.c    | 词法分析器               |          |
 | lparser.c | 解析器                   |          |
 | lundump.c | 还原预编译的字节码       |          |
-|           |                          |          |
+
 
 *内嵌库*
 
@@ -94,7 +94,6 @@ make CFLAGS+="-dM -E"
 | loslib.c   | OS 库                  |          |
 | lstrlib.c  | 字符串库               |          |
 | ltablib.c  | 表处理库               |          |
-|            |                        |          |
 *摘自*:https://blog.csdn.net/initphp/article/details/82703846
 
 
