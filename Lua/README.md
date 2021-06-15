@@ -7,11 +7,13 @@
 
 ## 二. Lua源码分析
 
+### 2.1 Lua语言架构图
+
 ![](Lua语言架构图.jpg)
 
-### 二. Lua源码结构
+### 2.2 Lua源码结构
 
-#### 1. 编译调试版Lua
+#### 编译调试版Lua
 
 ```shell
 diff --git a/src/Makefile b/src/Makefile
@@ -31,14 +33,14 @@ index f78c0b8..050893e 100644
  make CFLAGS+="-g -O0"
 ```
 
-#### 2. 编译宏
+#### 编译宏
 
 ```shell
 make CFLAGS+="-dM -E"
 ```
 
 
-#### 3. 函数列表
+#### 函数列表
 
 ```GDB
 //通过GDB导出所有函数
@@ -79,7 +81,6 @@ make CFLAGS+="-dM -E"
 | lparser.c | 解析器                   |          |
 | lundump.c | 还原预编译的字节码       |          |
 
-
 *内嵌库*
 
 | 文件       | 作用                   | 重要函数 |
@@ -97,19 +98,26 @@ make CFLAGS+="-dM -E"
 
 *摘自*:https://blog.csdn.net/initphp/article/details/82703846
 
-
 ## 三. LuaJIT源码分析
 
-## 参考资料
+### 3.1 LuaJIT核心项目
 
-1. 官网 [http://www.lua.org/](http://www.lua.org/)
-2. [lua教程](https://www.runoob.com/lua/lua-tutorial.html)
-3. [Lua 5.3 参考手册](https://www.runoob.com/manual/lua53doc/contents.html)
-4. [Lua程序设计](http://www.mianshigee.com/tutorial/LuaBook/)
-5. [Lua在线运行](https://www.runoob.com/try/runcode.php?filename=HelloWorld&type=lua)
-6. [Azure/golua](https://github.com/Azure/golua)
-7. [yuin/gopher-lua](https://github.com/yuin/gopher-lua)
-8. [zxh0/lua.go](https://github.com/zxh0/lua.go)
-9. [Shopify/go-lua](https://github.com/Shopify/go-lua)
-10. [Lua Performance Tips By Roberto Ierusalimschy](http://www.lua.org/gems/sample.pdf)
+- [LuaJIT](http://luajit.org/luajit.html) — a **Just-In-Time Compiler** for Lua.
+- [Coco](https://coco.luajit.org/) — a Lua extension for **True C Coroutines**.
+- [DynASM](http://luajit.org/dynasm.html) — a **Dynamic Assembler** for code generation engines.
+- [Lua Bitop](https://bitop.luajit.org/) — a Lua extension for **bitwise operations** on numbers.
+
+## 四. 参考资料
+
+1. Lua官网 [http://www.lua.org/](http://www.lua.org/)
+2. LuaJIT官网 [http://luajit.org/](http://luajit.org/index.html)
+3. [lua教程](https://www.runoob.com/lua/lua-tutorial.html)
+4. [Lua 5.3 参考手册](https://www.runoob.com/manual/lua53doc/contents.html)
+5. [Lua程序设计](http://www.mianshigee.com/tutorial/LuaBook/)
+6. [Lua在线运行](https://www.runoob.com/try/runcode.php?filename=HelloWorld&type=lua)
+7. [Azure/golua](https://github.com/Azure/golua)
+8. [yuin/gopher-lua](https://github.com/yuin/gopher-lua)
+9. [zxh0/lua.go](https://github.com/zxh0/lua.go)
+10. [Shopify/go-lua](https://github.com/Shopify/go-lua)
+11. [Lua Performance Tips By Roberto Ierusalimschy](http://www.lua.org/gems/sample.pdf)
 
