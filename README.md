@@ -2,9 +2,9 @@
 
 *语言决定知识的边界* - 维特根斯坦
 
-# 编程语言程序设计™      [↰](https://gitee.com/yejinlei/about-cs)
-
 ---
+
+# 编程语言程序设计™      [↰](https://gitee.com/yejinlei/about-cs)
 
 - [ ] 编程语言
   - [ ] 有关C/C++
