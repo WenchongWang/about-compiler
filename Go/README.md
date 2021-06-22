@@ -161,4 +161,5 @@ go tool trace & pprof
 25. [cgo is not Go](https://dave.cheney.net/2016/01/18/cgo-is-not-go)
 26. [Network Programming with Go by Jan Newmarch](http://tumregels.github.io/Network-Programming-with-Go/)
 27. [Golang 开发笔记](https://github.com/guyan0319/golang_development_notes/blob/master/zh/preface.md)
+28. [practical-go-lessons](https://www.practical-go-lessons.com/)
 

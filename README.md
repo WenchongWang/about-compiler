@@ -1,3 +1,7 @@
+![](Wittgenstein.jpeg)
+
+*语言决定知识的边界* - 维特根斯坦
+
 # 编程语言程序设计™      [↰](https://gitee.com/yejinlei/about-cs)
 
 ---
@@ -22,7 +26,7 @@
       - [ ] CCLS(for C/C++)
   - [ ] 有关Java
     - [ ] [Java学习](Java/README.md)
-    
+
     - [ ] 构建工具
       - [ ] Maven学习
       - [ ] Gradle学习
@@ -30,12 +34,7 @@
     - [ ] 框架
       - [ ] Spring Boot学习,  参考: [http://springboot.fun/](http://springboot.fun/)
       - [ ] Dubbo学习
-      
-    - [ ] 其他
     
-      - [ ] HotSpot
-      - [ ] Graalvm
-      - [ ] Quarkus
   - [ ] 有关Rust
     
     - [ ] [Rust学习](Rust/README.md)
@@ -59,12 +58,25 @@
   - [ ] 有关Javascript
   	
   	- [ ] [Javascript学习](Javascript/README.md)
-- [ ] 编译器技术
-  - [ ] [有关Clang&LLVM](Clang/README.md)
-  - [ ] [有关GCC](GCC/README.md)
-- [ ] 高性能计算
+- [ ] 高性能计算及编译器/运行时技术
   - [ ] [高性能计算](HPC/README.md)
+  - [ ] C/C++编译器
+    - [ ] [有关Clang&LLVM](Clang/README.md)
+    - [ ] [有关GCC](GCC/README.md)
+  
+  - [ ] JVM虚拟机
+    - [ ] HotSpot
+    - [ ] Graalvm
+    - [ ] Quarkus
+  - [ ] Python运行时
+    - [ ] PyPy
+    - [ ] Pyston
+  - [ ] Lua运行时LuaJIT
+    - [ ] DynASM
+  - [ ] 其他
+    - [ ] Nanojit/HHVM
 - [ ] 实战
+  
   - [ ] [OpenCppTest](https://gitee.com/yejinlei/OpenCppTest), 基于Clang的C++自动用例生成工具
 - [ ] 其他
   

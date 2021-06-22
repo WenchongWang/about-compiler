@@ -32,3 +32,4 @@
 1. [GDB: The GNU Project Debugger](https://sourceware.org/gdb/current/onlinedocs/)
 1. [compile cpp11 online](https://www.tutorialspoint.com/compile_cpp11_online.php)
 1. [hellogcc/100-gcc-tips](https://github.com/hellogcc/100-gcc-tips)
+1. [The 101 of ELF files on Linux: Understanding and Analysis](https://linux-audit.com/elf-binaries-on-linux-understanding-and-analysis/)

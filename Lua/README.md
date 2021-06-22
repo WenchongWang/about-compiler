@@ -107,6 +107,22 @@ make CFLAGS+="-dM -E"
 - [DynASM](http://luajit.org/dynasm.html) — a **Dynamic Assembler** for code generation engines.
 - [Lua Bitop](https://bitop.luajit.org/) — a Lua extension for **bitwise operations** on numbers.
 
+### 3.2 LuaJIT源码分析
+
+### 3.3 Coco分析
+
+### 3.4 DynASM分析
+
+​	参考资料:
+
+- [dynasm-doc](http://corsix.github.io/dynasm-doc/)
+- [DynASM 教程 [译文]](https://juejin.cn/post/6844904053105754120#heading-9)
+- [Brainfuck语言入门](https://blog.csdn.net/nameofcsdn/article/details/110231730)
+- [brainfuck-visualizer](https://fatiherikli.github.io/brainfuck-visualizer/)
+- [openresty/sregex](https://github.com/openresty/sregex)
+
+### 3.5 Lua Bitop分析
+
 ## 四. 参考资料
 
 1. Lua官网 [http://www.lua.org/](http://www.lua.org/)
