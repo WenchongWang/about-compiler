@@ -22,7 +22,7 @@
     - [ ] 二进制
       - [ ] [ELF学习](CC++/Bin/Elf.md)
     - [ ] IDE LSP
-      - [ ] Clangd(for C/C++)
+      - [ ] [Clangd(for C/C++)](CC++/LSP/Clangd.md)
       - [ ] CCLS(for C/C++)
   - [ ] 有关Java
     - [ ] [Java学习](Java/README.md)
