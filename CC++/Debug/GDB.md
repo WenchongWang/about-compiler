@@ -14,8 +14,8 @@
 ```shell
 pip install pipx
 pipx install gdbtui
-gdbtui -p 10001 -r
-chrome http://127.0.1.1:10001/
+gdbtui -p 10001 -r "./binary"
+chrome http://127.0.1.1:10001/dashboard
 ```
 
 

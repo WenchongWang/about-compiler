@@ -162,4 +162,5 @@ go tool trace & pprof
 26. [Network Programming with Go by Jan Newmarch](http://tumregels.github.io/Network-Programming-with-Go/)
 27. [Golang 开发笔记](https://github.com/guyan0319/golang_development_notes/blob/master/zh/preface.md)
 28. [practical-go-lessons](https://www.practical-go-lessons.com/)
+29. [Go语言标准库](https://books.studygolang.com/The-Golang-Standard-Library-by-Example/)
 
