@@ -34,7 +34,6 @@
     - [ ] 框架
       - [ ] Spring Boot学习,  参考: [http://springboot.fun/](http://springboot.fun/)
       - [ ] Dubbo学习
-    
   - [ ] 有关Rust
     
     - [ ] [Rust学习](Rust/README.md)
@@ -58,6 +57,8 @@
   - [ ] 有关Javascript
   	
   	- [ ] [Javascript学习](Javascript/README.md)
+  - [ ] 有关浏览器
+    - [ ] [浏览器底层原理, W3C规范及API](Browser/README.md)
 - [ ] 高性能计算及编译器/运行时技术
   - [ ] [高性能计算](HPC/README.md)
   - [ ] C/C++编译器

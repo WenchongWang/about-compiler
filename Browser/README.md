@@ -6,6 +6,9 @@
 
 *参考资料*
 
+- [Chromium Design Documents](https://github.com/chromium/chromium/tree/master/docs)
+- [Chromium中文文档](https://www.bookstack.cn/books/Chromium_doc_zh) 及 [github](https://github.com/ahangchen/Chromium_doc_zh)
+- [理解WebKit和Chromium](https://blog.csdn.net/milado_nju/article/details/7216067)
 - [图解浏览器的工作原理](https://www.infoq.cn/article/CS9-WZQlNR5h05HHDo1b)
 - [Web 性能](https://developer.mozilla.org/zh-CN/docs/Web/Performance) 及 [渲染页面：浏览器的工作原理](https://developer.mozilla.org/zh-CN/docs/Web/Performance/How_browsers_work)
 
@@ -39,8 +42,7 @@
 - [WebGPU Explainer Living Standard, 18 August 2021](https://gpuweb.github.io/gpuweb/explainer/)
 
 - [html dom和canvas 2d和webgl的性能对比](https://zhuanlan.zhihu.com/p/350323062), 打开观察CPU和Intel GPU使用情况
-
-  - dom: https://wow.techbrood.com/uploads/2101/perf_test/dom.html
+- dom: https://wow.techbrood.com/uploads/2101/perf_test/dom.html
   - canvas (2d): https://wow.techbrood.com/uploads/2101/perf_test/canvas.html
   - webgl: https://wow.techbrood.com/uploads/2101/perf_test/webgl.html
   
