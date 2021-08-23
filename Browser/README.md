@@ -17,7 +17,19 @@
 ## WebAssembly汇编
 ## WebGPU计算与渲染
 
-1. 下载Edge浏览器, /opt/microsoft/msedge-dev/msedge --enable-unsafe-webgpu --enable-features=Vulkan,UseSkiaRenderer
+1. WebGL vs WebGPU
+
+    ![](WebGLVsWebGPU.png)
+
+    1. 深入WebGPU
+
+    2. 深入Vulkan
+
+        *参考资料*
+
+        -  [about-os - Linux图形子系统](https://gitee.com/yejinlei/about-os/blob/master/humaninterface/hi/graphics/Linux%E5%9B%BE%E5%BD%A2%E5%AD%90%E7%B3%BB%E7%BB%9F.md)
+
+2. 下载Edge浏览器, /opt/microsoft/msedge-dev/msedge --enable-unsafe-webgpu --enable-features=Vulkan,UseSkiaRenderer
 
     ```sh
     https://www.microsoftedgeinsider.com/zh-cn/download #PC版
@@ -26,7 +38,7 @@
 
     
 
-2. Intel GPU工具
+3. Intel GPU工具
 
     ```sh
     sudo apt-get install intel-gpu-tools
