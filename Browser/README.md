@@ -47,19 +47,31 @@
 *参考资料*
 
 - [about-os - Linux图形子系统](https://gitee.com/yejinlei/about-os/blob/master/humaninterface/hi/graphics/Linux%E5%9B%BE%E5%BD%A2%E5%AD%90%E7%B3%BB%E7%BB%9F.md)
-- [WebGL Overview](https://www.khronos.org/webgl/)
-- [WebGL 2.0 Compute 已废弃](https://www.khronos.org/registry/webgl/specs/latest/2.0-compute/)
+- [WebGPU Github官网](https://github.com/gpuweb/gpuweb)
+- [WebGPU开发进度](https://github.com/gpuweb/gpuweb/wiki/Implementation-Status)
 - [WebGPU Editor’s Draft, 18 August 2021](https://gpuweb.github.io/gpuweb/)
+- [WebGL Overview](https://www.khronos.org/webgl/)
 - [WebGPU Explainer Living Standard, 18 August 2021](https://gpuweb.github.io/gpuweb/explainer/)
+- [WebGPU Samples](http://austin-eng.com/webgpu-samples)
+- [From 0 to glTF with WebGPU: The First Triangle](https://www.willusher.io/graphics/2020/06/15/0-to-gltf-triangle)
+
+---
+
+- [WebGL 2.0 Compute 已废弃](https://www.khronos.org/registry/webgl/specs/latest/2.0-compute/)
+- [WebGL Samples](https://webglsamples.org/)
+
+---
+
+- GPU.js, https://gpu.rocks
+- [使用GPU.js让你的Angular.js程序提速10倍](https://juejin.cn/post/6965657517376569380)
+
+---
+
 - [html dom和canvas 2d和webgl的性能对比](https://zhuanlan.zhihu.com/p/350323062), 打开观察CPU和Intel GPU使用情况
   - dom: https://wow.techbrood.com/uploads/2101/perf_test/dom.html
   - canvas (2d): https://wow.techbrood.com/uploads/2101/perf_test/canvas.html
   - webgl: https://wow.techbrood.com/uploads/2101/perf_test/webgl.html
-- GPU.js, https://gpu.rocks
-- [WebGPU Samples](http://austin-eng.com/webgpu-samples)
-- [From 0 to glTF with WebGPU: The First Triangle](https://www.willusher.io/graphics/2020/06/15/0-to-gltf-triangle)
 - [GPU加速在前端的应用](https://juejin.cn/post/6965810210283716644)
-- [使用GPU.js让你的Angular.js程序提速10倍](https://juejin.cn/post/6965657517376569380)
 
 ## WebXR虚拟/增强/混合现实
 
