@@ -64,10 +64,10 @@
 
 *参考资料*
 
-- WebXR API Emulator by [Mozilla Mixed Reality](https://addons.mozilla.org/en-US/firefox/user/15240799/)
-
+- [WebXR API Emulator by Mozilla Mixed Reality](https://addons.mozilla.org/en-US/firefox/user/15240799/)
+- [WebXR 设备 接口参考](https://developer.mozilla.org/zh-CN/docs/Web/API/WebXR_Device_API)
 - [Fundamentals of WebXR](https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API/Fundamentals)
-
 - [hello-webxr demo](https://mixedreality.mozilla.org/hello-webxr/)
-
 - [webxr samples](https://immersive-web.github.io/webxr-samples/)
+- [WebXR Overview](https://docs.microsoft.com/en-us/windows/mixed-reality/develop/javascript/webxr-overview)
+- [firefox reality](https://mixedreality.mozilla.org/firefox-reality/)
