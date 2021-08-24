@@ -25,7 +25,8 @@
     ![](WebGLVsWebGPU.png)
 
     1. 深入WebGPU
-    2. 深入Vulkan
+    2. 深入Vulkan, 详见: [about-os/Linux图形子系统](https://gitee.com/yejinlei/about-os/blob/master/humaninterface/hi/graphics/Linux%E5%9B%BE%E5%BD%A2%E5%AD%90%E7%B3%BB%E7%BB%9F.md)
+    3. FrameBuffer, 详见: [about-os/Linux图形子系统](https://gitee.com/yejinlei/about-os/blob/master/humaninterface/hi/graphics/Linux%E5%9B%BE%E5%BD%A2%E5%AD%90%E7%B3%BB%E7%BB%9F.md)
 
 2. 下载Edge浏览器, /opt/microsoft/msedge-dev/msedge --enable-unsafe-webgpu --enable-features=Vulkan,UseSkiaRenderer
 
