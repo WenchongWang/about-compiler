@@ -74,3 +74,4 @@
 - [firefox reality](https://mixedreality.mozilla.org/firefox-reality/)
 - [webvr samples](https://webvr.info/samples/)
 - [aframe examples](https://aframe.io/examples/showcase/modelviewer/)
+- [高盛VR与AR报告：下一个通用计算平台](https://tech.qq.com/a/20160202/011274.htm)
