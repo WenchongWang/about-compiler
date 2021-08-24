@@ -53,6 +53,7 @@
 - [WebGL Overview](https://www.khronos.org/webgl/)
 - [WebGPU Explainer Living Standard, 18 August 2021](https://gpuweb.github.io/gpuweb/explainer/)
 - [WebGPU Samples](http://austin-eng.com/webgpu-samples)
+- [WebGPU 技术进展及社区组状态更新](https://www.w3.org/2018/11/17-chinese-web-gpu.pdf)
 - [From 0 to glTF with WebGPU: The First Triangle](https://www.willusher.io/graphics/2020/06/15/0-to-gltf-triangle)
 
 ---
