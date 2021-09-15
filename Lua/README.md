@@ -126,14 +126,26 @@ make CFLAGS+="-dM -E"
 ## 四. 参考资料
 
 1. Lua官网 [http://www.lua.org/](http://www.lua.org/)
+
 2. LuaJIT官网 [http://luajit.org/](http://luajit.org/index.html)
+
 3. [lua教程](https://www.runoob.com/lua/lua-tutorial.html)
+
 4. [Lua 5.3 参考手册](https://www.runoob.com/manual/lua53doc/contents.html)
+
 5. [Lua程序设计](http://www.mianshigee.com/tutorial/LuaBook/)
+
 6. [Lua在线运行](https://www.runoob.com/try/runcode.php?filename=HelloWorld&type=lua)
+
 7. [Azure/golua](https://github.com/Azure/golua)
+
 8. [yuin/gopher-lua](https://github.com/yuin/gopher-lua)
+
 9. [zxh0/lua.go](https://github.com/zxh0/lua.go)
+
 10. [Shopify/go-lua](https://github.com/Shopify/go-lua)
+
 11. [Lua Performance Tips By Roberto Ierusalimschy](http://www.lua.org/gems/sample.pdf)
+
+12. [转]Lua和Lua JIT及优化指南](https://www.cnblogs.com/zhaoqingqing/p/10397867.html)
 

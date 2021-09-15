@@ -7,6 +7,8 @@
 * 参考资料
   
    1. [C/C++面向WebAssembly编程](https://www.cntofu.com/book/150/readme.html)
+   2. [Emscripten Docker Image](https://hub.docker.com/r/emscripten/emsdk)
+   3. [trzeci/emscripten](https://hub.docker.com/r/trzeci/emscripten/)
 
 ------
 

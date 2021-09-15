@@ -4,6 +4,8 @@
 
 ## 深入浏览器机制 
 
+![](chromium.jpg)
+
 *参考资料*
 
 - [Chromium Design Documents](https://github.com/chromium/chromium/tree/master/docs)
@@ -11,6 +13,13 @@
 - [理解WebKit和Chromium](https://blog.csdn.net/milado_nju/article/details/7216067)
 - [图解浏览器的工作原理](https://www.infoq.cn/article/CS9-WZQlNR5h05HHDo1b)
 - [Web 性能](https://developer.mozilla.org/zh-CN/docs/Web/Performance) 及 [渲染页面：浏览器的工作原理](https://developer.mozilla.org/zh-CN/docs/Web/Performance/How_browsers_work)
+- [Inside look at modern web browser](https://developers.google.cn/web/updates/2018/09/inside-browser-part1)
+- [修改Chromium源码，实现HEVC/H.265 4K视频播放](https://cloud.tencent.com/developer/news/474133)
+- [如何在浏览器中支持H265/HEVC](https://blog.csdn.net/yanrx76/article/details/116238315)
+- [让CEF支持HEVC(H.265)视频播放](https://blog.csdn.net/epubcn/article/details/103251688)
+- [henrypp/chromium](https://github.com/henrypp/chromium)
+- [epubcn/cef_enhancement](https://github.com/epubcn/cef_enhancement)
+- [浏览器支持H.265解码总结](https://www.cnblogs.com/lidabo/p/14763192.html)
 
 ## WebRTC实时通信
 
