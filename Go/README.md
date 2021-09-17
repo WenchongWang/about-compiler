@@ -163,4 +163,5 @@ go tool trace & pprof
 27. [Golang 开发笔记](https://github.com/guyan0319/golang_development_notes/blob/master/zh/preface.md)
 28. [practical-go-lessons](https://www.practical-go-lessons.com/)
 29. [Go语言标准库](https://books.studygolang.com/The-Golang-Standard-Library-by-Example/)
+30. [Go语言安全编程规范](https://yougg.github.io/2017/06/12/go语言安全编程规范/)
 
