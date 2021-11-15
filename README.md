@@ -10,11 +10,11 @@
   - [ ] 有关C/C++
     - [ ] [C/C++学习](CC++/README.md)
     - [ ] 构建工具
-      - [ ] [Autotoolset学习](CC++/Build/Autotoolset.md)
       - [ ] [CMake学习](CC++/Build/Cmake.md)
       - [ ] [Meson学习]()
       - [ ] [Ninja学习](CC++/Build/Ninja.md)
       - [ ] [Scons学习](CC++/Build/Scons.md)
+      - [ ] [Autotoolset学习](CC++/Build/Autotoolset.md)
     - [ ] 调试与跟踪
       - [ ] [GDB学习](CC++/Debug/GDB.md)
     - [ ] 包管理
@@ -27,14 +27,16 @@
       - [ ] CCLS(for C/C++)
   - [ ] 有关Java
     - [ ] [Java学习](Java/README.md)
-
-    - [ ] 构建工具
+  - [ ] 构建工具
       - [ ] Maven学习
       - [ ] Gradle学习
-      
     - [ ] 框架
       - [ ] Spring Boot学习,  参考: [http://springboot.fun/](http://springboot.fun/)
       - [ ] Dubbo学习
+    - [ ] 运行时
+      - [ ] HotSpot
+      - [ ] Graalvm
+      - [ ] Quarkus
   - [ ] 有关Rust
     
     - [ ] [Rust学习](Rust/README.md)
@@ -46,12 +48,17 @@
     - [ ] [Go学习](Go/README.md)
   - [ ] 有关Python
     - [ ] [Python学习](http://nbviewer.jupyter.org/github/yejinlei/about-python/tree/master/)
+    - [ ] Python可视化
     - [ ] [统计学习/机器学习(Python版)](https://gitee.com/yejinlei/about-ml/tree/master/Python)
+    - [ ] 运行时-PyPy
+    - [ ] 运行时-Pyston
   - [ ] 有关R
     
+    - [ ] R可视化
     - [ ] [统计学习/机器学习(R语言版)](https://gitee.com/yejinlei/about-ml/blob/master/R)
   - [ ] 有关Lua/LuaJIT
     - [ ] [Lua/LuaJIT学习](Lua/README.md)
+    - [ ] 运行时-DynASM
   - [ ] 有关WebAssembly
     
     - [ ] [WASM学习](Wasm/README.md)
@@ -62,15 +69,6 @@
   - [ ] C/C++编译器
     - [ ] [有关Clang&LLVM](Clang/README.md)
     - [ ] [有关GCC](GCC/README.md)
-  - [ ] JVM虚拟机
-    - [ ] HotSpot
-    - [ ] Graalvm
-    - [ ] Quarkus
-  - [ ] Python运行时
-    - [ ] PyPy
-    - [ ] Pyston
-  - [ ] Lua运行时LuaJIT
-    - [ ] DynASM
   - [ ] 浏览器
     - [ ] [浏览器底层原理, W3C规范及API](Browser/README.md)
   - [ ] 其他
