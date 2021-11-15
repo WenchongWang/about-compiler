@@ -16,7 +16,7 @@
 ## 二. Rust Wasm
 
 * 参考资料
-	1. [Rust and Webassembly](https://rustwasm.github.io/docs/book/#rust--and-webassembly-)
+	1. [Rust and Webassembly](https://rustwasm.github.io/docs/book/)
 	2. [Wasm-Bindgen doc](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html)
 
 ------
