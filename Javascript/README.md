@@ -5,11 +5,9 @@
 
 ---
 
-## JavaScript语言
+## JavaScript语言及BOM/DOM
 
 ## TypeScript语言
-
-## Browser浏览器
 
 ## Nodejs运行时
 
