@@ -27,9 +27,10 @@
       - [ ] CCLS(for C/C++)
   - [ ] 有关Java
     - [ ] [Java学习](Java/README.md)
-  - [ ] 构建工具
-      - [ ] Maven学习
-      - [ ] Gradle学习
+    - [ ] 构建工具
+        - [ ] Maven学习
+        - [ ] Gradle学习
+    
     - [ ] 框架
       - [ ] Spring Boot学习,  参考: [http://springboot.fun/](http://springboot.fun/)
       - [ ] Dubbo学习
@@ -37,6 +38,7 @@
       - [ ] HotSpot
       - [ ] Graalvm
       - [ ] Quarkus
+    
   - [ ] 有关Rust
     
     - [ ] [Rust学习](Rust/README.md)
@@ -50,24 +52,26 @@
     - [ ] [Python学习](http://nbviewer.jupyter.org/github/yejinlei/about-python/tree/master/)
     - [ ] Python可视化
     - [ ] [统计学习/机器学习(Python版)](https://gitee.com/yejinlei/about-ml/tree/master/Python)
-    - [ ] 运行时-PyPy
-    - [ ] 运行时-Pyston
+    - [ ] 运行时PyPy
+    - [ ] 运行时Pyston
   - [ ] 有关R
     
     - [ ] R可视化
     - [ ] [统计学习/机器学习(R语言版)](https://gitee.com/yejinlei/about-ml/blob/master/R)
   - [ ] 有关Lua/LuaJIT
+    
     - [ ] [Lua/LuaJIT学习](Lua/README.md)
-    - [ ] 运行时-DynASM
+    - [ ] 运行时DynASM
   - [ ] 有关WebAssembly
     
     - [ ] [WASM学习](Wasm/README.md)
   - [ ] 有关Javascript
   	
   	- [ ] [Javascript学习](Javascript/README.md)
-  	- [ ] 运行时-Nodejs
+  	- [ ] 运行时Nodejs
   	- [ ] [浏览器底层原理, W3C规范及API](Browser/README.md)
 - [ ] 高性能计算及编译器
+  
   - [ ] [高性能计算](HPC/README.md)
   - [ ] C/C++编译器
     - [ ] [有关Clang&LLVM](Clang/README.md)
